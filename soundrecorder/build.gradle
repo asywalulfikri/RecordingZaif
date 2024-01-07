@@ -15,7 +15,31 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                argument("includeCompileClasspath", "false")
+            }
+        }
+        kapt {
+            includeCompileClasspath = false
+        }
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
+
+        kapt {
+            correctErrorTypes = true
+        }
+
+        lint {
+            baseline = file("lint-baseline.xml")
+        }
     }
 
     buildTypes {
