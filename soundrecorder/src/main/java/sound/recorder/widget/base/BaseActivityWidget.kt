@@ -83,7 +83,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 import com.google.android.ump.UserMessagingPlatform
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import sound.recorder.widget.ads.AudienceNetworkInitializeHelper
 import sound.recorder.widget.animation.ParticleSystem
 import sound.recorder.widget.animation.modifiers.ScaleModifier
 import kotlin.time.Duration.Companion.seconds
