@@ -6,6 +6,9 @@ import android.os.Bundle
 import recording.host.databinding.ActivityMainBinding
 import sound.recorder.widget.RecordingSDK
 import sound.recorder.widget.base.BaseActivityWidget
+import sound.recorder.widget.builder.AdmobAdsBuilder
+import sound.recorder.widget.builder.FanAdsBuilder
+import sound.recorder.widget.builder.RecordingWidgetBuilder
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
 
 class MainActivity : BaseActivityWidget() {
@@ -24,6 +27,31 @@ class MainActivity : BaseActivityWidget() {
         setContentView(binding.root)
 
         RecordingSDK.run()
+
+        val fanAdsBuilder = FanAdsBuilder.builder(this)
+            .setBannerId("")
+            .setApplicationId("")
+            .setInterstitialId("")
+            .build()
+
+        val admobAdsBuilder = AdmobAdsBuilder.builder(this)
+            .setAdmobId("")
+            .setBannerId("")
+            .setInterstitialId("")
+            .setRewardId("")
+            .setRewardInterstitialId("")
+            .setNativeId("")
+            .build()
+
+        val recordingWidgetBuilder = RecordingWidgetBuilder.builder(this)
+            .setAppName("")
+            .setApplicationId("")
+            .setVersionCode(1)
+            .setVersionName("")
+            .setApplicationId("")
+            .showNote(true)
+
+
 
         sp = SoundPool(
             5,

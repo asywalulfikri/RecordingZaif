@@ -93,9 +93,9 @@ class BottomSheetSetting : BottomSheetDialogFragment,SharedPreferences.OnSharedP
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if(key== Constant.keyShared.backgroundColor){
+        if(key== Constant.KeyShared.backgroundColor){
             sharedPreferences?.let {
-                it.getInt(Constant.keyShared.backgroundColor,-1)
+                it.getInt(Constant.KeyShared.backgroundColor,-1)
                     .let { it1 -> binding?.btnColor?.setBackgroundColor(it1) }
             }
         }

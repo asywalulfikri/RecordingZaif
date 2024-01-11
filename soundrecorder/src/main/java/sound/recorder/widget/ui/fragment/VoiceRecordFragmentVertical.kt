@@ -127,7 +127,7 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget, BottomSheet.OnClickListe
             val tintList = ColorStateList.valueOf(Color.parseColor(DataSession(requireActivity()).getBackgroundRecord()))
             ViewCompat.setBackgroundTintList(binding.llRecordBackground, tintList)
 
-            val progress = sharedPreferences?.getInt(Constant.keyShared.volume,100)
+            val progress = sharedPreferences?.getInt(Constant.KeyShared.volume,100)
             volumes = (1 - ln((ToneGenerator.MAX_VOLUME - progress!!).toDouble()) / ln(
                 ToneGenerator.MAX_VOLUME.toDouble())).toFloat()
 
@@ -737,9 +737,9 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget, BottomSheet.OnClickListe
 
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if(key==Constant.keyShared.volume){
+        if(key==Constant.KeyShared.volume){
             if(mp!=null){
-                val progress = sharedPreferences?.getInt(Constant.keyShared.volume,100)
+                val progress = sharedPreferences?.getInt(Constant.KeyShared.volume,100)
                 val volume = (1 - ln((ToneGenerator.MAX_VOLUME - progress!!).toDouble()) / ln(
                     ToneGenerator.MAX_VOLUME.toDouble())).toFloat()
                 if(songIsPlaying){

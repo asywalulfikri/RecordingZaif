@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import org.greenrobot.eventbus.EventBus
@@ -26,7 +25,9 @@ object RecordingSDK {
     fun initSdkColor(context: Context,colorWidget : Int,colorRunningText: Int) {
         DataSession(context).addColor(colorWidget,colorRunningText)
     }
-    fun initSdk(context: Context,admobId: String, bannerId: String, interstitialId: String, rewardInterstitialId : String,rewardId : String, nativeId : String): RecordingSDK {
+
+
+    /*fun initSdk(context: Context,admobId: String, bannerId: String, interstitialId: String, rewardInterstitialId : String,rewardId : String, nativeId : String): RecordingSDK {
 
         initSdkRecording(
             context,
@@ -39,7 +40,7 @@ object RecordingSDK {
 
         )
         return this
-    }
+    }*/
     fun run(): RecordingSDK {
         return this
     }
@@ -49,9 +50,9 @@ object RecordingSDK {
         EventBus.getDefault().postSticky(listSong)
     }
 
-    fun addInfo(context: Context,versionCode : Int,versionName : String, appId : String,appName : String,jsonName : String,backgroundSplashScreen : String, isNote : Boolean,showSong : Boolean, llRecordBackground : String){
+    /*fun addInfo(context: Context,versionCode : Int,versionName : String, appId : String,appName : String,jsonName : String,backgroundSplashScreen : String, isNote : Boolean,showSong : Boolean, llRecordBackground : String){
         DataSession(context).setInfoApp(versionCode,versionName,appId,appName,jsonName,backgroundSplashScreen,isNote,showSong,llRecordBackground)
-    }
+    }*/
 
     fun isHaveSong(context: Context): Boolean{
         return DataSession(context).isContainSong()
@@ -95,7 +96,7 @@ object RecordingSDK {
                 override fun onChooseColor(position: Int, color: Int) {
 
                     if(color!=0){
-                        DataSession(context).saveColor(color,Constant.keyShared.backgroundColor)
+                        DataSession(context).saveColor(color,Constant.KeyShared.backgroundColor)
                     }
                 }
 

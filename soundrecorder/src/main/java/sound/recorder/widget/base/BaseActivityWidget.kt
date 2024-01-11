@@ -26,6 +26,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +34,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.multidex.BuildConfig
+import com.facebook.ads.Ad
+import com.facebook.ads.AudienceNetworkAds
+import com.facebook.ads.InterstitialAdListener
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -80,6 +83,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import com.google.android.ump.UserMessagingPlatform
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import sound.recorder.widget.ads.AudienceNetworkInitializeHelper
 import sound.recorder.widget.animation.ParticleSystem
 import sound.recorder.widget.animation.modifiers.ScaleModifier
 import kotlin.time.Duration.Companion.seconds
@@ -128,6 +132,10 @@ open class BaseActivityWidget : AppCompatActivity() {
         }catch (e : Exception){
             setToastError(e.message.toString())
         }
+    }
+
+    fun initFANSDK(){
+        AudienceNetworkAds.initialize(this);
     }
 
 
@@ -181,6 +189,81 @@ open class BaseActivityWidget : AppCompatActivity() {
         }catch (e : Exception){
             setLog(e.message.toString())
         }
+
+    }
+
+
+    fun setupBannerFacebook(adContainer : LinearLayout){
+        val id = getDataSession().getBannerFANId()
+        val adListener = object : com.facebook.ads.AdListener {
+            override fun onError(ad: Ad, adError: com.facebook.ads.AdError) {
+                setLog("FAN error loaded "+ adError.errorMessage)
+
+            }
+
+            override fun onAdLoaded(ad: Ad) {
+                setLog("FAN Banner Success Loaded id = " + ad.placementId)
+            }
+
+            override fun onAdClicked(ad: Ad) {
+                // Ad clicked callback
+            }
+
+            override fun onLoggingImpression(ad: Ad) {
+                // Ad impression logged callback
+            }
+        }
+
+        val adView = com.facebook.ads.AdView(this, id, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+        adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build())
+        adContainer.addView(adView);
+
+    }
+
+    fun setupInterstitialFacebook(){
+        val id = getDataSession().getInterstitialFANId()
+        val interstitialAd = com.facebook.ads.InterstitialAd(this, id)
+        val interstitialAdListener = object : InterstitialAdListener {
+            override fun onInterstitialDisplayed(ad: Ad) {
+                // Interstitial ad displayed callback
+                //Log.e(, "Interstitial ad displayed.")
+                setLog("FAN show success "+ad.placementId)
+            }
+
+            override fun onInterstitialDismissed(ad: Ad) {
+                // Interstitial dismissed callback
+                Log.e("FAN", "Interstitial ad dismissed.")
+            }
+
+            override fun onError(p0: Ad?, adError: com.facebook.ads.AdError?) {
+                Log.e(TAG, "Interstitial ad failed to load: ${adError?.errorMessage}")
+            }
+
+            override fun onAdLoaded(ad: Ad) {
+                // Interstitial ad is loaded and ready to be displayed
+                Log.d(TAG, "Interstitial ad is loaded and ready to be displayed!")
+                // Show the ad
+                interstitialAd.show()
+            }
+
+            override fun onAdClicked(ad: Ad) {
+                // Ad clicked callback
+                Log.d(TAG, "Interstitial ad clicked!")
+            }
+
+            override fun onLoggingImpression(ad: Ad) {
+                // Ad impression logged callback
+                Log.d(TAG, "Interstitial ad impression logged!")
+            }
+        }
+
+// For auto-play video ads, it's recommended to load the ad
+// at least 30 seconds before it is shown
+        interstitialAd.loadAd(
+            interstitialAd.buildLoadAdConfig()
+                .withAdListener(interstitialAdListener)
+                .build()
+        )
 
     }
 

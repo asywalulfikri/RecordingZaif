@@ -12,13 +12,6 @@ open class DataSession(private val mContext: Context) {
         lateinit var sharedPref: SharedPreferences
     }
 
-    var bannerIdName = "bannerId"
-    var admobIdName = "admobId"
-    var interstitialIdName = "interstitialIdName"
-    var rewardInterstitialName = "rewardInterstitialId"
-    var rewardName = "rewardId"
-    var nativeName = "nativeId"
-
     init {
         sharedPref = mContext.getSharedPreferences("recordingWidget", 0)
     }
@@ -32,7 +25,7 @@ open class DataSession(private val mContext: Context) {
     }
 
     fun getAnimation(): Boolean{
-        return sharedPref.getBoolean(Constant.keyShared.animation, false)
+        return sharedPref.getBoolean(Constant.KeyShared.animation, false)
     }
 
     fun isCoverSong(): Boolean{
@@ -52,7 +45,7 @@ open class DataSession(private val mContext: Context) {
     }
 
     fun getAppName(): String?{
-        return sharedPref.getString("appName","")
+        return sharedPref.getString(Constant.KeyShared.appName,"")
     }
 
     fun getShowNote(): Boolean{
@@ -68,18 +61,18 @@ open class DataSession(private val mContext: Context) {
     }
 
     fun getVolume(): Int{
-        return sharedPref.getInt(Constant.keyShared.volume, 100)
+        return sharedPref.getInt(Constant.KeyShared.volume, 100)
     }
 
     fun setupAds(status : Boolean,admobId : String, bannerId : String, interstitialId : String,rewardInterstitialId : String,rewardId : String, nativeId : String){
         val editor = sharedPref.edit()
         editor.putBoolean("initiate", status)
-        editor.putString(admobIdName, admobId)
-        editor.putString(bannerIdName, bannerId)
-        editor.putString(interstitialIdName, interstitialId)
-        editor.putString(rewardName,rewardId)
-        editor.putString(rewardInterstitialName,rewardInterstitialId)
-        editor.putString(nativeName,nativeId)
+        editor.putString(Constant.KeyShared.admobId, admobId)
+        editor.putString(Constant.KeyShared.admobBannerId, bannerId)
+        editor.putString(Constant.KeyShared.admobInterstitialId, interstitialId)
+        editor.putString(Constant.KeyShared.admobRewardId,rewardId)
+        editor.putString(Constant.KeyShared.admobRewardId,rewardInterstitialId)
+        editor.putString(Constant.KeyShared.admobNativeId,nativeId)
 
         editor.apply()
     }
@@ -103,10 +96,10 @@ open class DataSession(private val mContext: Context) {
     fun addColor(colorWidget : Int, colorRunningText: Int){
         val editor = sharedPref.edit()
         if(colorWidget!=0){
-            editor.putInt(Constant.keyShared.colorWidget, colorWidget)
+            editor.putInt(Constant.KeyShared.colorWidget, colorWidget)
         }
         if(colorRunningText!=0){
-            editor.putInt(Constant.keyShared.colorRunningText, colorRunningText)
+            editor.putInt(Constant.KeyShared.colorRunningText, colorRunningText)
         }
         editor.apply()
     }
@@ -125,11 +118,11 @@ open class DataSession(private val mContext: Context) {
     }
 
     fun getColorWidget(): Int{
-        return sharedPref.getInt(Constant.keyShared.colorWidget,R.color.color7)
+        return sharedPref.getInt(Constant.KeyShared.colorWidget,R.color.color7)
     }
 
     fun getColorRunningText(): Int{
-        return sharedPref.getInt(Constant.keyShared.colorRunningText, R.color.white)
+        return sharedPref.getInt(Constant.KeyShared.colorRunningText, R.color.white)
     }
 
     fun isContainSong(): Boolean {
@@ -172,50 +165,62 @@ open class DataSession(private val mContext: Context) {
 
     fun saveAnimation(value : Boolean){
         val editor = sharedPref.edit()
-        editor.putBoolean(Constant.keyShared.animation,value)
+        editor.putBoolean(Constant.KeyShared.animation,value)
         editor.apply()
     }
 
     fun saveVolume(value : Int){
         val editor = sharedPref.edit()
-        editor.putInt(Constant.keyShared.volume,value)
+        editor.putInt(Constant.KeyShared.volume,value)
         editor.apply()
     }
 
     fun getBackgroundColor(): Int{
-        return sharedPref.getInt(Constant.keyShared.backgroundColor, -1)
+        return sharedPref.getInt(Constant.KeyShared.backgroundColor, -1)
     }
 
 
     fun resetBackgroundColor(){
         val editor = sharedPref.edit()
-        editor.putInt(Constant.keyShared.backgroundColor,-1)
+        editor.putInt(Constant.KeyShared.backgroundColor,-1)
         editor.apply()
     }
 
 
     fun updateBackgroundColor(color:Int){
         val editor = sharedPref.edit()
-        editor.putInt(Constant.keyShared.backgroundColor,color)
+        editor.putInt(Constant.KeyShared.backgroundColor,color)
         editor.apply()
     }
 
 
 
     fun getBannerId(): String {
-        return sharedPref.getString(bannerIdName, "").toString()
+        return sharedPref.getString(Constant.KeyShared.admobBannerId, "").toString()
+    }
+
+    fun getFANId(): String{
+        return sharedPref.getString(Constant.KeyShared.fanId, "").toString()
+    }
+
+    fun getBannerFANId(): String{
+        return sharedPref.getString(Constant.KeyShared.fanBannerId, "").toString()
+    }
+
+    fun getInterstitialFANId(): String{
+        return sharedPref.getString(Constant.KeyShared.fanInterstitialId, "").toString()
     }
 
     fun getInterstitialId(): String {
-        return sharedPref.getString(interstitialIdName, "").toString()
+        return sharedPref.getString(Constant.KeyShared.admobInterstitialId, "").toString()
     }
 
     fun getRewardInterstitialId(): String {
-        return sharedPref.getString(rewardInterstitialName, "").toString()
+        return sharedPref.getString(Constant.KeyShared.admobRewardInterstitialId, "").toString()
     }
 
     fun getRewardId(): String {
-        return sharedPref.getString(rewardName, "").toString()
+        return sharedPref.getString(Constant.KeyShared.admobRewardId, "").toString()
     }
 
     fun getFirstLanguage(): String {
@@ -223,11 +228,11 @@ open class DataSession(private val mContext: Context) {
     }
 
     fun getNativeId(): String {
-        return sharedPref.getString(nativeName, "").toString()
+        return sharedPref.getString(Constant.KeyShared.admobNativeId, "").toString()
     }
 
     fun getAdmobId(): String {
-        return sharedPref.getString(admobIdName, "").toString()
+        return sharedPref.getString(Constant.KeyShared.admobId, "").toString()
     }
 
     fun setLog(message : String?=null){
