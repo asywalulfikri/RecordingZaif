@@ -462,7 +462,7 @@ open class BaseActivityWidget : AppCompatActivity() {
         // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
         // to get test ads on this device."
         MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder().setTestDeviceIds(listOf("0c302266-17a0-4f2a-a11a-10ca1ad1abe1","D48A46E523E6A96C8215178502423686")).build()
+            RequestConfiguration.Builder().setTestDeviceIds(listOf("D48A46E523E6A96C8215178502423686")).build()
         )
     }
 
