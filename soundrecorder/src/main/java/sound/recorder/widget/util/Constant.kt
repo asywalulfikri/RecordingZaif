@@ -50,4 +50,15 @@ open class Constant {
         }
     }
 
+    interface AdsTesterId{
+        companion object{
+            const val admobBannerId             = "ca-app-pub-3940256099942544/6300978111"
+            const val admobInterstitialId       = "ca-app-pub-3940256099942544/1033173712"
+            const val admobRewardInterstitialId = "ca-app-pub-3940256099942544/5354046379"
+            const val admobRewardId             = "ca-app-pub-3940256099942544/5224354917"
+            const val admobNativeId             = "ca-app-pub-3940256099942544/2247696110"
+
+        }
+    }
+
 }

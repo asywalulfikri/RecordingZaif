@@ -318,15 +318,15 @@ open class BaseActivityWidget : AppCompatActivity() {
                     UserMessagingPlatform.loadAndShowConsentFormIfRequired(this) {
 
                             loadAndShowError -> run {
-                            Log.w(
-                                TAG, String.format(
-                                    "%s: %s",
-                                    loadAndShowError?.errorCode,
-                                    loadAndShowError?.message
-                                )
+                        Log.w(
+                            TAG, String.format(
+                                "%s: %s",
+                                loadAndShowError?.errorCode,
+                                loadAndShowError?.message
                             )
+                        )
 
-                        }
+                    }
                         if (isPrivacyOptionsRequired) {
                             // Regenerate the options menu to include a privacy setting.
                             UserMessagingPlatform.showPrivacyOptionsForm(this) { formError ->
@@ -360,7 +360,6 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     private fun loadBanner(adViewContainer: FrameLayout) {
         try {
-            setLog("AdMob Banner Is "+ getDataSession().getBannerId())
             adView.adUnitId = getDataSession().getBannerId()
             adView.setAdSizes(getSize(adViewContainer))
             val adRequest = AdManagerAdRequest.Builder().build()
@@ -370,7 +369,7 @@ open class BaseActivityWidget : AppCompatActivity() {
                 }
 
                 override fun onAdFailedToLoad(p0: LoadAdError) {
-                    Log.d("AdMob", "Ad failed to load:"+ p0.message)
+                    Log.d("AdMob", "Ad failed to load:"+ p0.message + "id = "+getDataSession().getBannerId())
                 }
 
                 override fun onAdOpened() {
@@ -434,6 +433,7 @@ open class BaseActivityWidget : AppCompatActivity() {
 
             // This sample attempts to load ads using consent obtained in the previous session.
             if (googleMobileAdsConsentManager.canRequestAds) {
+                Log.d("AdMob New Request", "success")
                 initializeMobileAdsSdk(adViewContainer)
             }
 
@@ -445,6 +445,7 @@ open class BaseActivityWidget : AppCompatActivity() {
 
         // This sample attempts to load ads using consent obtained in the previous session.
         if (googleMobileAdsConsentManager.canRequestAds) {
+            Log.d("AdMob New Request", "success1")
             initializeMobileAdsSdk(adViewContainer)
         }
 
@@ -740,7 +741,7 @@ open class BaseActivityWidget : AppCompatActivity() {
                 }
 
                 override fun onAdFailedToLoad(p0: LoadAdError) {
-                    Log.d("AdMob", "Ad failed to load:"+ p0.message)
+                    Log.d("AdMob", "Ad failed to load:"+ p0.message + "id = "+getDataSession().getBannerId())
                 }
 
                 override fun onAdOpened() {
@@ -772,7 +773,7 @@ open class BaseActivityWidget : AppCompatActivity() {
                 }
             }
         }catch (e : Exception){
-           setLog(e.message.toString())
+            setLog(e.message.toString())
         }
 
     }
@@ -788,10 +789,12 @@ open class BaseActivityWidget : AppCompatActivity() {
                         override fun onAdLoaded(interstitialAd: InterstitialAd) {
                             mInterstitialAd = interstitialAd
                             isLoad = true
+                            setLog("AdMob Inters Loaded Success")
                         }
 
                         override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                             mInterstitialAd = null
+                            setLog("AdMob Inters Loaded Failed id = "+ getDataSession().getInterstitialId() + "--->"+ loadAdError.message)
                         }
                     })
             }
