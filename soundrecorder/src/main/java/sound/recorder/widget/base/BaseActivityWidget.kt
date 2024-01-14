@@ -277,7 +277,6 @@ open class BaseActivityWidget : AppCompatActivity() {
         }
     }
 
-
     private val installStateUpdatedListener = InstallStateUpdatedListener{ state ->
         if (state.installStatus() == InstallStatus.DOWNLOADED) {
             try {
@@ -358,9 +357,13 @@ open class BaseActivityWidget : AppCompatActivity() {
         return DataSession(this)
     }
 
-    private fun loadBanner(adViewContainer: FrameLayout) {
+    private fun loadBanner(adViewContainer: FrameLayout,bannerId : String? =null) {
         try {
-            adView.adUnitId = getDataSession().getBannerId()
+            if(bannerId.isNullOrEmpty() || bannerId.isBlank()){
+                adView.adUnitId = getDataSession().getBannerId()
+            }else{
+                adView.adUnitId = bannerId
+            }
             adView.setAdSizes(getSize(adViewContainer))
             val adRequest = AdManagerAdRequest.Builder().build()
             adView.adListener = object : AdListener() {
@@ -406,7 +409,7 @@ open class BaseActivityWidget : AppCompatActivity() {
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
     }
 
-    private fun initializeMobileAdsSdk(adViewContainer: FrameLayout) {
+    private fun initializeMobileAdsSdk(adViewContainer: FrameLayout,bannerId: String? =null) {
         if (isMobileAdsInitializeCalled.getAndSet(true)) {
             return
         }
@@ -416,11 +419,11 @@ open class BaseActivityWidget : AppCompatActivity() {
 
         // Load an ad.
         if (initialLayoutComplete.get()) {
-            loadBanner(adViewContainer)
+            loadBanner(adViewContainer,bannerId)
         }
     }
 
-    fun setupBannerNew(adViewContainer: FrameLayout){
+    fun setupBannerNew(adViewContainer: FrameLayout,bannerId : String? =null){
         adView = AdManagerAdView(this)
         adViewContainer.addView(adView)
 
@@ -434,7 +437,7 @@ open class BaseActivityWidget : AppCompatActivity() {
             // This sample attempts to load ads using consent obtained in the previous session.
             if (googleMobileAdsConsentManager.canRequestAds) {
                 Log.d("AdMob New Request", "success")
-                initializeMobileAdsSdk(adViewContainer)
+                initializeMobileAdsSdk(adViewContainer,bannerId)
             }
 
             if (googleMobileAdsConsentManager.isPrivacyOptionsRequired) {
@@ -446,7 +449,7 @@ open class BaseActivityWidget : AppCompatActivity() {
         // This sample attempts to load ads using consent obtained in the previous session.
         if (googleMobileAdsConsentManager.canRequestAds) {
             Log.d("AdMob New Request", "success1")
-            initializeMobileAdsSdk(adViewContainer)
+            initializeMobileAdsSdk(adViewContainer,bannerId)
         }
 
 
@@ -454,7 +457,7 @@ open class BaseActivityWidget : AppCompatActivity() {
         // view is laid out before we can get the width.
         adViewContainer.viewTreeObserver.addOnGlobalLayoutListener {
             if (!initialLayoutComplete.getAndSet(true) && googleMobileAdsConsentManager.canRequestAds) {
-                loadBanner(adViewContainer)
+                loadBanner(adViewContainer,bannerId)
             }
         }
 
@@ -734,7 +737,6 @@ open class BaseActivityWidget : AppCompatActivity() {
     fun setupBanner(mAdView: AdView){
         try {
             val adRequest = AdRequest.Builder().build()
-            mAdView.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
             mAdView.adListener = object : AdListener() {
                 override fun onAdLoaded() {
                     Log.d("AdMob", "Ad loaded successfully")
