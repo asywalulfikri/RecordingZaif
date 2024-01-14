@@ -359,20 +359,22 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     private fun loadBanner(adViewContainer: FrameLayout,bannerId : String? =null) {
         try {
-            if(bannerId.isNullOrEmpty() || bannerId.isBlank()){
-                adView.adUnitId = getDataSession().getBannerId()
+            var id = ""
+            id = if(bannerId.isNullOrEmpty() || bannerId.isBlank()){
+                getDataSession().getBannerId()
             }else{
-                adView.adUnitId = bannerId
+                bannerId
             }
+            adView.adUnitId = id
             adView.setAdSizes(getSize(adViewContainer))
             val adRequest = AdManagerAdRequest.Builder().build()
             adView.adListener = object : AdListener() {
                 override fun onAdLoaded() {
-                    Log.d("AdMob", "Ad loaded successfully")
+                    Log.d("AdMob", "Ad loaded successfully unit = $id")
                 }
 
                 override fun onAdFailedToLoad(p0: LoadAdError) {
-                    Log.d("AdMob", "Ad failed to load:"+ p0.message + "id = "+getDataSession().getBannerId())
+                    Log.d("AdMob", "Ad failed to load:"+ p0.message + "id = "+id)
                 }
 
                 override fun onAdOpened() {
