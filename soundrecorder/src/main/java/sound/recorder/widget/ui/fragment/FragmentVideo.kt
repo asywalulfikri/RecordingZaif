@@ -128,6 +128,12 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
         }
     }
 
+    fun onBackPressed(): Boolean {
+        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+        return false
+    }
+
+
     override fun onItemClick(position: Int) {
         val video = mVideoList[position]
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.url))
