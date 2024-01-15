@@ -64,7 +64,7 @@ class FragmentListSong(private var showBtnStop: Boolean, private var listener: O
             }
 
             binding.btnCLose.setOnClickListener {
-               // dismiss()
+
             }
 
             listTitleSong = ArrayList()
