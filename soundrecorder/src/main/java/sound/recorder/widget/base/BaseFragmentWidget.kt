@@ -15,7 +15,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
@@ -97,7 +96,7 @@ open class BaseFragmentWidget : Fragment(){
         }
     }
 
-    protected fun setupFragment(id : Int, fragment : Fragment?){
+    fun setupFragment(id : Int, fragment : Fragment?){
         try {
             if(fragment!=null){
                 val fragmentManager = activity?.supportFragmentManager
