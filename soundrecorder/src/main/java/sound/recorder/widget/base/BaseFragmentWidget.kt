@@ -82,16 +82,31 @@ open class BaseFragmentWidget : Fragment(){
 
     }
 
-    fun openFragment(view : Int, fragment : Fragment){
+    fun openFragment(view : Int, fragment : Fragment?){
         if(activity!=null){
             try {
                 // some code
-                activity?.supportFragmentManager?.beginTransaction()
-                    ?.add(view, fragment)
-                    ?.commit()
+                fragment?.let {
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.add(view, it)
+                        ?.commit()
+                }
             } catch (e: Exception) {
                 setToastError(activity,e.message.toString())
             }
+        }
+    }
+
+    protected fun setupFragment(id : Int, fragment : Fragment?){
+        try {
+            if(fragment!=null){
+                val fragmentManager = activity?.supportFragmentManager
+                val fragmentTransaction = fragmentManager?.beginTransaction()
+                fragmentTransaction?.replace(id, fragment)
+                fragmentTransaction?.commit()
+            }
+        }catch (e : Exception){
+            setLog(e.message.toString())
         }
     }
 
@@ -150,7 +165,7 @@ open class BaseFragmentWidget : Fragment(){
         builder.setCancelable(true)
         builder.setTitle("Permission")
         builder.setMessage(HtmlCompat.fromHtml("You need allow Permission Record Audio", HtmlCompat.FROM_HTML_MODE_LEGACY))
-        builder.setPositiveButton("Setting") { dialog, _ ->
+        builder.setPositiveButton(getString(R.string.setting)) { dialog, _ ->
             dialog.cancel()
             openSettings(context)
         }
