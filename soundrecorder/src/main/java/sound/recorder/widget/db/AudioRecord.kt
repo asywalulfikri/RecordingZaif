@@ -5,7 +5,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "audioRecords")
-internal data class AudioRecord (
+ data class AudioRecord (
     var filename: String,
     var filePath: String,
     var date: Long,

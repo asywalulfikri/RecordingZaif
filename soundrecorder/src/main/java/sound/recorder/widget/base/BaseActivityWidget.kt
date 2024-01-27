@@ -94,6 +94,7 @@ open class BaseActivityWidget : AppCompatActivity() {
     private var isLoad = false
     private var rewardedAd: RewardedAd? = null
     private var isLoadReward = false
+    private var interstitialFANAd : com.facebook.ads.InterstitialAd? =null
     private var isLoadInterstitialReward = false
     private var rewardedInterstitialAd : RewardedInterstitialAd? =null
 
@@ -105,6 +106,7 @@ open class BaseActivityWidget : AppCompatActivity() {
     private var TAG = "GDPR_App"
 
     private var isPrivacyOptionsRequired: Boolean = false
+    private var showFANInterstitial = false
 
     private lateinit var appUpdateManager: AppUpdateManager       // in app update
     private val updateType = AppUpdateType.FLEXIBLE
@@ -193,7 +195,7 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
 
 
-    fun setupBannerFacebook(adContainer : LinearLayout){
+    fun setupBannerFacebook(adContainer : FrameLayout){
         val id = getDataSession().getBannerFANId()
         val adListener = object : com.facebook.ads.AdListener {
             override fun onError(ad: Ad, adError: com.facebook.ads.AdError) {
@@ -222,12 +224,12 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     fun setupInterstitialFacebook(){
         val id = getDataSession().getInterstitialFANId()
-        val interstitialAd = com.facebook.ads.InterstitialAd(this, id)
+        interstitialFANAd = com.facebook.ads.InterstitialAd(this, id)
         val interstitialAdListener = object : InterstitialAdListener {
             override fun onInterstitialDisplayed(ad: Ad) {
                 // Interstitial ad displayed callback
                 //Log.e(, "Interstitial ad displayed.")
-                setLog("FAN show success "+ad.placementId)
+                setLog("FAN show Interstitial success "+ad.placementId)
             }
 
             override fun onInterstitialDismissed(ad: Ad) {
@@ -242,8 +244,8 @@ open class BaseActivityWidget : AppCompatActivity() {
             override fun onAdLoaded(ad: Ad) {
                 // Interstitial ad is loaded and ready to be displayed
                 Log.d(TAG, "Interstitial ad is loaded and ready to be displayed!")
-                // Show the ad
-                interstitialAd.show()
+                showFANInterstitial = true
+
             }
 
             override fun onAdClicked(ad: Ad) {
@@ -259,10 +261,10 @@ open class BaseActivityWidget : AppCompatActivity() {
 
 // For auto-play video ads, it's recommended to load the ad
 // at least 30 seconds before it is shown
-        interstitialAd.loadAd(
-            interstitialAd.buildLoadAdConfig()
-                .withAdListener(interstitialAdListener)
-                .build()
+        interstitialFANAd?.loadAd(
+            interstitialFANAd?.buildLoadAdConfig()
+                ?.withAdListener(interstitialAdListener)
+                ?.build()
         )
 
     }
@@ -374,6 +376,9 @@ open class BaseActivityWidget : AppCompatActivity() {
                 }
 
                 override fun onAdFailedToLoad(p0: LoadAdError) {
+                    if(getDataSession().getFanEnable()){
+                        setupBannerFacebook(adViewContainer)
+                    }
                     Log.d("AdMob", "Ad failed to load:"+ p0.message + "id = "+id)
                 }
 
@@ -785,6 +790,9 @@ open class BaseActivityWidget : AppCompatActivity() {
     private val requestPermissionNotification = registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
 
     fun setupInterstitial() {
+        if(getDataSession().getFanEnable()){
+            setupInterstitialFacebook()
+        }
         try {
             val adRequest = AdRequest.Builder().build()
             adRequest.let {
@@ -973,6 +981,10 @@ open class BaseActivityWidget : AppCompatActivity() {
         try {
             if(isLoad){
                 mInterstitialAd?.show(this)
+            }else{
+                if(showFANInterstitial){
+                    interstitialFANAd?.show()
+                }
             }
         }catch (e : Exception){
             setLog(e.message.toString())

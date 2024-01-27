@@ -255,4 +255,8 @@ internal class ListRecordActivity : BaseActivityWidget(), AudioRecorderAdapter.O
 
     }
 
+    override fun onShareClick(audioRecord: AudioRecord) {
+
+    }
+
 }

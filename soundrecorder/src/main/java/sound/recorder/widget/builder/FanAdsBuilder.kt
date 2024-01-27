@@ -7,7 +7,8 @@ import sound.recorder.widget.util.Constant
 class FanAdsBuilder private constructor(
     val applicationId : String?,
     val bannerId: String?,
-    val interstitialId: String?
+    val interstitialId: String?,
+    val enable : Boolean
 ) {
 
     // Builder class to construct MyObject
@@ -15,6 +16,7 @@ class FanAdsBuilder private constructor(
         private var applicationId: String? = null
         private var bannerId: String? = null
         private var interstitialId: String? = null
+        private var enable : Boolean = false
 
         fun setApplicationId(applicationId: String?): Builder {
             this.applicationId = applicationId
@@ -31,9 +33,14 @@ class FanAdsBuilder private constructor(
             return this
         }
 
+        fun setEnable(enable: Boolean): Builder {
+            this.enable = enable
+            return this
+        }
+
         // Build function to create an instance of MyObject
         fun build(): FanAdsBuilder {
-            val myObject = FanAdsBuilder(applicationId, bannerId, interstitialId)
+            val myObject = FanAdsBuilder(applicationId, bannerId, interstitialId,enable)
 
             // Save values to SharedPreferences
             saveToSharedPreferences(myObject)
@@ -51,6 +58,7 @@ class FanAdsBuilder private constructor(
             editor.putString(Constant.KeyShared.fanId, fanAdsBuilder.applicationId)
             editor.putString(Constant.KeyShared.fanBannerId, fanAdsBuilder.bannerId)
             editor.putString(Constant.KeyShared.fanInterstitialId, fanAdsBuilder.interstitialId)
+            editor.putBoolean(Constant.KeyShared.fanEnable,fanAdsBuilder.enable)
 
             editor.apply()
         }

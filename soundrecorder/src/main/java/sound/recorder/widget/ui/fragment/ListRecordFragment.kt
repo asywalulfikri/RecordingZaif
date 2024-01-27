@@ -1,7 +1,10 @@
 package sound.recorder.widget.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.google.android.material.appbar.AppBarLayout
@@ -243,9 +247,38 @@ class ListRecordFragment : BaseFragmentWidget(), AudioRecorderAdapter.OnItemClic
 
     }
 
+    override fun onShareClick(audioRecord: AudioRecord) {
+        try {
+            shareAudio(getUriFromFile(audioRecord.filePath))
+        }catch (e : Exception){
+            setLog(e.message)
+           setToastError(activity,e.message.toString())
+        }
+
+    }
+
+    private fun getUriFromFile(filePath: String): Uri {
+        val file = File(filePath)
+        return FileProvider.getUriForFile(activity as Context, requireActivity().packageName + ".provider", file)
+    }
+
     fun onBackPressed(): Boolean {
         activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         return false
+    }
+
+    private fun shareAudio(audioFileUri: Uri) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "audio/*"
+        shareIntent.putExtra(Intent.EXTRA_STREAM, audioFileUri)
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        try {
+            activity?.startActivity(shareIntent)
+        } catch (e: ActivityNotFoundException) {
+            // Handle case where WhatsApp is not installed
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

@@ -1,17 +1,23 @@
 package recording.host
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import recording.host.databinding.ActivityMainBinding
 import sound.recorder.widget.RecordingSDK
 import sound.recorder.widget.base.BaseActivityWidget
 import sound.recorder.widget.builder.AdmobAdsBuilder
 import sound.recorder.widget.builder.FanAdsBuilder
 import sound.recorder.widget.builder.RecordingWidgetBuilder
+import sound.recorder.widget.listener.FragmentListener
+import sound.recorder.widget.listener.MyFragmentListener
+import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
 
-class MainActivity : BaseActivityWidget() {
+class MainActivity : BaseActivityWidget(),FragmentListener {
 
     private lateinit var sp : SoundPool
 
@@ -26,12 +32,15 @@ class MainActivity : BaseActivityWidget() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        MyFragmentListener.setMyListener(this)
+
         RecordingSDK.run()
 
         val fanAdsBuilder = FanAdsBuilder.builder(this)
             .setBannerId("")
             .setApplicationId("")
             .setInterstitialId("")
+            .setEnable(false)
             .build()
 
         val admobAdsBuilder = AdmobAdsBuilder.builder(this)
@@ -76,5 +85,24 @@ class MainActivity : BaseActivityWidget() {
         setupFragment(binding.recordingView.id,VoiceRecordFragmentVertical())
 
 
+    }
+
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragmentFileViewer)
+
+        if (fragment is ListRecordFragment) {
+            val consumed = fragment.onBackPressed()
+            if (consumed) {
+                return
+            }
+        }else{
+            finish()
+        }
+    }
+
+    override fun openFragment(fragment: Fragment?) {
+        setupFragment(binding.fragmentFileViewer.id,fragment)
     }
 }

@@ -32,6 +32,7 @@ open class Constant {
             const val fanBannerId = "fanBannerId"
             const val fanId = "fanId"
             const val fanInterstitialId = "fanInterstitialId"
+            const val fanEnable = "fanEnable"
 
 
 

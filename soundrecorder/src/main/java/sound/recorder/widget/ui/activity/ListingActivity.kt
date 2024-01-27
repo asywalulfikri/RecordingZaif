@@ -243,4 +243,8 @@ internal class ListingActivity : AppCompatActivity(), AudioRecorderAdapter.OnIte
 
     }
 
+    override fun onShareClick(audioRecord: AudioRecord) {
+
+    }
+
 }

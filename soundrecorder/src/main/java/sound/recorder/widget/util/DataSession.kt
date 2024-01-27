@@ -199,6 +199,10 @@ open class DataSession(private val mContext: Context) {
         return sharedPref.getString(Constant.KeyShared.admobBannerId, "").toString()
     }
 
+    fun getFanEnable(): Boolean{
+        return sharedPref.getBoolean(Constant.KeyShared.fanEnable,false)
+    }
+
     fun getFANId(): String{
         return sharedPref.getString(Constant.KeyShared.fanId, "").toString()
     }

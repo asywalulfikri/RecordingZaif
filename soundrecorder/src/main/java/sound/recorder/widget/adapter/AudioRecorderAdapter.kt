@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import sound.recorder.widget.R
@@ -20,12 +21,14 @@ internal class AudioRecorderAdapter(private var audioRecords: List<AudioRecord>,
     interface OnItemClickListener {
         fun onItemClick(position: Int)
         fun onItemLongClick(position: Int)
+        fun onShareClick(audioRecord: AudioRecord)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
         var filename : TextView = itemView.findViewById(R.id.filename)
         var fileMeta : TextView = itemView.findViewById(R.id.file_meta)
         var checkBox : CheckBox = itemView.findViewById(R.id.checkbox)
+        var ivShare : ImageView = itemView.findViewById(R.id.ivShare)
 
         init {
             itemView.setOnClickListener(this)
@@ -78,6 +81,10 @@ internal class AudioRecorderAdapter(private var audioRecords: List<AudioRecord>,
                 holder.checkBox.visibility = View.GONE
                 audioRecord.isChecked = false
                 holder.checkBox.isChecked = false
+            }
+
+            holder.ivShare.setOnClickListener {
+                listener.onShareClick(audioRecord)
             }
         }
 
