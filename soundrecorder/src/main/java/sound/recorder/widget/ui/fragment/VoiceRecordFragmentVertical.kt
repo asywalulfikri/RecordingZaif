@@ -609,15 +609,18 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget, BottomSheet.OnClickListe
 
     override fun onPlaySong(filePath: String) {
         if(activity!=null){
-            if(mp!=null){
-               mp.apply {
-                   mp?.release()
-                   mp = null
-                   MyMusicListener.postAction(null)
-               }
+            try {
+                if(mp!=null){
+                    mp.apply {
+                        mp?.release()
+                        mp = null
+                        MyMusicListener.postAction(null)
+                    }
+                }
+            }catch (e : Exception){
+                setToastError(activity,e.message.toString())
             }
-            val handler = Handler(Looper.getMainLooper())
-            handler.postDelayed({
+            Handler().postDelayed({
                 try {
                     mp = MediaPlayer()
                     mp?.apply {
@@ -645,6 +648,11 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget, BottomSheet.OnClickListe
                     setToastError(activity,e.message.toString())
                 }
             }, 100)
+
+            //val handler = Handler(Looper.getMainLooper())
+           /* handler.postDelayed({
+
+            }, 100)*/
 
         }
     }

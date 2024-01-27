@@ -40,24 +40,30 @@ class BottomSheetNoteFirebase : BottomSheetDialogFragment {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = BottomSheetNotesBinding.inflate(layoutInflater)
         if(activity!=null){
-            (dialog as? BottomSheetDialog)?.behavior?.state = STATE_EXPANDED
-            (dialog as? BottomSheetDialog)?.behavior?.isDraggable = false
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                dialog?.window?.let { WindowCompat.setDecorFitsSystemWindows(it, false) }
-            } else {
-                @Suppress("DEPRECATION")
-                dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            try {
+                (dialog as? BottomSheetDialog)?.behavior?.state = STATE_EXPANDED
+                (dialog as? BottomSheetDialog)?.behavior?.isDraggable = false
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    dialog?.window?.let { WindowCompat.setDecorFitsSystemWindows(it, false) }
+                } else {
+                    @Suppress("DEPRECATION")
+                    dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                }
+
+
+                fetchDocumentsFromCollection()
+
+                binding.fab.visibility = View.GONE
+
+                binding.ivClose.setOnClickListener {
+                    dismiss()
+                }
+            }catch (e : Exception){
+                setToastWarning(activity,e.message.toString())
             }
 
-
-            fetchDocumentsFromCollection()
-
-            binding.fab.visibility = View.GONE
-
-            binding.ivClose.setOnClickListener {
-                dismiss()
-            }
         }
         return binding.root
 
