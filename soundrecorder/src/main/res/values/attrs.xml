@@ -5,6 +5,9 @@
         <attr name="fallSpeed" format="float"/>
     </declare-styleable>
 
+    <declare-styleable name="SpeedMarquee">
+        <attr name="marquee_speed" format="float" />
+    </declare-styleable>
 
     <array name="language_array">
         <item>@string/english</item>

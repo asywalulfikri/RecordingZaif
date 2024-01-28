@@ -35,7 +35,6 @@ import sound.recorder.widget.util.DataSession
 
 class BottomSheetListSong(private var showBtnStop: Boolean, private var listener: OnClickListener) : BottomSheetDialogFragment(),SharedPreferences.OnSharedPreferenceChangeListener,StopSDKMusicListener{
 
-
     //Load Song
     private var listTitleSong: ArrayList<String>? = null
     private var listLocationSong: ArrayList<String>? = null
@@ -55,7 +54,7 @@ class BottomSheetListSong(private var showBtnStop: Boolean, private var listener
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = BottomSheetSongBinding.inflate(layoutInflater)
 
-        if(activity!=null&&requireActivity()!=null){
+        if(activity!=null){
             try {
                 (dialog as? BottomSheetDialog)?.behavior?.state = STATE_EXPANDED
                 (dialog as? BottomSheetDialog)?.behavior?.isDraggable = false
@@ -148,7 +147,7 @@ class BottomSheetListSong(private var showBtnStop: Boolean, private var listener
 
     @SuppressLint("Recycle")
     private fun getAllMediaMp3Files(songList : ArrayList<Song>) {
-        if(activity!=null&&requireActivity()!=null){
+        if(activity!=null){
             val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             val cursor = requireActivity().contentResolver?.query(uri,
                 null,

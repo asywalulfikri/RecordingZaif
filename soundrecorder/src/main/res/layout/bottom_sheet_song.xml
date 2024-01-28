@@ -25,13 +25,11 @@
         android:background="@drawable/piring"
         android:padding="15dp"
         app:srcCompat="@drawable/ic_pause"
-        android:textColor="@android:color/white"
         tools:ignore="HardcodedText"
         android:contentDescription="@string/app_name" />
 
     <RelativeLayout
         android:layout_alignParentEnd="true"
-        android:background="#141414"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -40,7 +38,7 @@
             android:layout_gravity="right"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            app:srcCompat="@drawable/ic_close"
+            app:srcCompat="@drawable/close"
             android:contentDescription="@string/app_name"
             tools:ignore="RtlHardcoded" />
     </RelativeLayout>

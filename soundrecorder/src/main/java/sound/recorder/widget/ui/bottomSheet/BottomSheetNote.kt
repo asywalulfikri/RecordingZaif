@@ -36,6 +36,7 @@ class BottomSheetNote : BottomSheetDialogFragment {
     private var notesList: ArrayList<Note> = ArrayList()
     private var db: DatabaseHelper? = null
     private var mAdapter: NotesAdapter? = null
+    private var activity : Activity? =null
 
     constructor() : super() {
         // Empty constructor required for DialogFragment
@@ -43,6 +44,7 @@ class BottomSheetNote : BottomSheetDialogFragment {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = BottomSheetNotesBinding.inflate(layoutInflater)
+        activity = getActivity()
         if(activity!=null){
             try {
                 (dialog as? BottomSheetDialog)?.behavior?.state = STATE_EXPANDED
