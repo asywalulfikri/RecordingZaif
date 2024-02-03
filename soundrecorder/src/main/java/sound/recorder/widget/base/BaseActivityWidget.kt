@@ -83,6 +83,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import com.google.android.ump.UserMessagingPlatform
 import com.startapp.sdk.ads.banner.Banner
 import com.startapp.sdk.ads.banner.Mrec
+import com.startapp.sdk.adsbase.StartAppAd
 import com.startapp.sdk.adsbase.StartAppSDK
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -1007,11 +1008,19 @@ open class BaseActivityWidget : AppCompatActivity() {
             }else{
                 if(showFANInterstitial){
                     interstitialFANAd?.show()
+                }else{
+                    if(getDataSession().getStarAppEnable()){
+                        StartAppAd.showAd(this);
+                    }
                 }
             }
         }catch (e : Exception){
             setLog(e.message.toString())
         }
+    }
+
+    fun showInterstitialStarApp(){
+        StartAppAd.showAd(this);
     }
 
     protected fun showReward(){

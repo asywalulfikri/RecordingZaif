@@ -83,7 +83,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
         // btn2 = findViewById(R.id.btn2)
 
         binding.btn1.setOnClickListener {
-            sp.play(ss1, 1f, 1f, 0, 0, 1f)
+            showInterstitialStarApp()
+           // sp.play(ss1, 1f, 1f, 0, 0, 1f)
         }
 
         binding.btn2.setOnClickListener {
