@@ -9,7 +9,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "recording.host"
+        applicationId "balera.music.android"
         minSdk 19
         targetSdk 34
         versionCode 14

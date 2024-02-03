@@ -203,6 +203,10 @@ open class DataSession(private val mContext: Context) {
         return sharedPref.getBoolean(Constant.KeyShared.fanEnable,false)
     }
 
+    fun getStarAppEnable(): Boolean{
+        return sharedPref.getBoolean(Constant.KeyShared.starAppEnable,false)
+    }
+
     fun getFANId(): String{
         return sharedPref.getString(Constant.KeyShared.fanId, "").toString()
     }
@@ -225,6 +229,10 @@ open class DataSession(private val mContext: Context) {
 
     fun getRewardId(): String {
         return sharedPref.getString(Constant.KeyShared.admobRewardId, "").toString()
+    }
+
+    fun getStarAppId(): String{
+        return sharedPref.getString(Constant.KeyShared.starAppId, "").toString()
     }
 
     fun getFirstLanguage(): String {

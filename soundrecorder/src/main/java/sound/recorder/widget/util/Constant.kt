@@ -34,6 +34,9 @@ open class Constant {
             const val fanInterstitialId = "fanInterstitialId"
             const val fanEnable = "fanEnable"
 
+            const val starAppId = "starAppId"
+            const val starAppEnable = "starAppEnable"
+
 
 
         }

@@ -12,6 +12,7 @@ import sound.recorder.widget.base.BaseActivityWidget
 import sound.recorder.widget.builder.AdmobAdsBuilder
 import sound.recorder.widget.builder.FanAdsBuilder
 import sound.recorder.widget.builder.RecordingWidgetBuilder
+import sound.recorder.widget.builder.StarAppBuilder
 import sound.recorder.widget.listener.FragmentListener
 import sound.recorder.widget.listener.MyFragmentListener
 import sound.recorder.widget.ui.fragment.ListRecordFragment
@@ -52,6 +53,11 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
             .setNativeId("")
             .build()
 
+        StarAppBuilder.builder(this)
+            .setApplicationId("205917032")
+            .setEnable(true)
+            .build()
+
         val recordingWidgetBuilder = RecordingWidgetBuilder.builder(this)
             .setAppName("")
             .setApplicationId("")
@@ -67,6 +73,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
             AudioManager.STREAM_MUSIC, 5
         )
 
+
+        setupBannerStarApp(binding.bannerView)
 
         ss1 = sp.load(this,R.raw.dum,1)
         ss2 = sp.load(this,R.raw.dek,1)

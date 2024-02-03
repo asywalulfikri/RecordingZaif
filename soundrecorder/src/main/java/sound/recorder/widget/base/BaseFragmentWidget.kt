@@ -20,12 +20,14 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
+import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.startapp.sdk.adsbase.StartAppSDK
 import sound.recorder.widget.R
 import sound.recorder.widget.RecordingSDK
 import sound.recorder.widget.util.DataSession
@@ -45,7 +47,26 @@ open class BaseFragmentWidget : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataSession = DataSession(activity as Context)
+
     }
+
+    fun initFANSDK(){
+        if(getDataSession().getFanEnable()){
+            AudienceNetworkAds.initialize(activity);
+        }
+
+    }
+
+    fun initStarApp(){
+        if(getDataSession().getStarAppEnable()){
+            StartAppSDK.init(activity as Context, getDataSession().getStarAppId(), false);
+        }
+    }
+
+    private fun getDataSession() : DataSession{
+        return DataSession(activity as Context)
+    }
+
 
     fun isInternetConnected(): Boolean {
         val connectivityManager = requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

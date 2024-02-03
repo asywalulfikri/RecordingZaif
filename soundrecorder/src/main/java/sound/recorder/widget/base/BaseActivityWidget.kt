@@ -81,6 +81,9 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 import com.google.android.ump.UserMessagingPlatform
+import com.startapp.sdk.ads.banner.Banner
+import com.startapp.sdk.ads.banner.Mrec
+import com.startapp.sdk.adsbase.StartAppSDK
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sound.recorder.widget.animation.ParticleSystem
@@ -117,6 +120,8 @@ open class BaseActivityWidget : AppCompatActivity() {
 
         try {
             FirebaseApp.initializeApp(this)
+            initFANSDK()
+            initStarApp()
             /*MobileAds.initialize(this) {}
             val testDeviceIds = listOf("D48A46E523E6A96C8215178502423686")
             val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
@@ -133,11 +138,21 @@ open class BaseActivityWidget : AppCompatActivity() {
         }catch (e : Exception){
             setToastError(e.message.toString())
         }
+
     }
 
 
     fun initFANSDK(){
-        AudienceNetworkAds.initialize(this);
+        if(getDataSession().getFanEnable()){
+            AudienceNetworkAds.initialize(this);
+        }
+
+    }
+
+    fun initStarApp(){
+        if(getDataSession().getStarAppEnable()){
+            StartAppSDK.init(this, getDataSession().getStarAppId(), false);
+        }
     }
 
 
@@ -193,12 +208,19 @@ open class BaseActivityWidget : AppCompatActivity() {
         }
 
     }
+    
+    fun setupBannerStarApp(adViewContainer: FrameLayout){
+        val startAppBanner = Banner(this)
+        startAppBanner.showBanner()
+        adViewContainer.addView(startAppBanner)
+    }
 
 
     fun setupBannerFacebook(adContainer : FrameLayout){
         val id = getDataSession().getBannerFANId()
         val adListener = object : com.facebook.ads.AdListener {
             override fun onError(ad: Ad, adError: com.facebook.ads.AdError) {
+                setupBannerStarApp(adContainer)
                 setLog("FAN error loaded id = "+ ad.placementId +"---> "+ adError.errorMessage)
 
             }
@@ -221,6 +243,7 @@ open class BaseActivityWidget : AppCompatActivity() {
         adContainer.addView(adView);
 
     }
+
 
     fun setupInterstitialFacebook(){
         val id = getDataSession().getInterstitialFANId()
