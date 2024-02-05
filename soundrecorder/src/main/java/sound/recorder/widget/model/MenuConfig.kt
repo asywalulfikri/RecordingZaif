@@ -13,8 +13,12 @@ class MenuConfig : Serializable {
     var forceUpdate : Boolean? = null
     var maintenance : Boolean? =null
     var showDialog : Boolean? = null
-    var fanAds : Boolean? =null
-    var starAppAds : Boolean? =null
-    var inMobiAds : Boolean? =null
+    var starAppAds : StarAppAds? =null
+
+    data class StarAppAds(
+        var enable: Boolean = false,
+        var showBanner: Boolean = false,
+        var showInterstitial: Boolean = false
+    )
 
 }

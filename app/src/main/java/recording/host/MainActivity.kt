@@ -16,6 +16,7 @@ import sound.recorder.widget.builder.RecordingWidgetBuilder
 import sound.recorder.widget.builder.StarAppBuilder
 import sound.recorder.widget.listener.FragmentListener
 import sound.recorder.widget.listener.MyFragmentListener
+import sound.recorder.widget.model.MenuConfig
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
 
@@ -82,7 +83,6 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
             5,
             AudioManager.STREAM_MUSIC, 5
         )
-
 
         setupBannerStarApp(binding.bannerView)
 
