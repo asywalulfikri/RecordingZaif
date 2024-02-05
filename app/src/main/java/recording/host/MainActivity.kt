@@ -11,6 +11,7 @@ import sound.recorder.widget.RecordingSDK
 import sound.recorder.widget.base.BaseActivityWidget
 import sound.recorder.widget.builder.AdmobAdsBuilder
 import sound.recorder.widget.builder.FanAdsBuilder
+import sound.recorder.widget.builder.InMobiBuilder
 import sound.recorder.widget.builder.RecordingWidgetBuilder
 import sound.recorder.widget.builder.StarAppBuilder
 import sound.recorder.widget.listener.FragmentListener
@@ -37,14 +38,14 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
 
         RecordingSDK.run()
 
-        val fanAdsBuilder = FanAdsBuilder.builder(this)
+        FanAdsBuilder.builder(this)
             .setBannerId("")
             .setApplicationId("")
             .setInterstitialId("")
             .setEnable(false)
             .build()
 
-        val admobAdsBuilder = AdmobAdsBuilder.builder(this)
+        AdmobAdsBuilder.builder(this)
             .setAdmobId("")
             .setBannerId("")
             .setInterstitialId("")
@@ -53,19 +54,28 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
             .setNativeId("")
             .build()
 
-        StarAppBuilder.builder(this)
-            .setApplicationId("205917032")
+
+        InMobiBuilder.builder(this)
+            .setBannerId(1705420822194)
+            .setApplicationId("1706737529085")
+            .setInterstitialId(1708302528403)
             .setEnable(true)
             .build()
 
-        val recordingWidgetBuilder = RecordingWidgetBuilder.builder(this)
+        StarAppBuilder.builder(this)
+            .setApplicationId("205917032")
+            .showBanner(false)
+            .showInterstitial(false)
+            .setEnable(true)
+            .build()
+
+        RecordingWidgetBuilder.builder(this)
             .setAppName("")
             .setApplicationId("")
             .setVersionCode(1)
             .setVersionName("")
             .setApplicationId("")
             .showNote(true)
-
 
 
         sp = SoundPool(

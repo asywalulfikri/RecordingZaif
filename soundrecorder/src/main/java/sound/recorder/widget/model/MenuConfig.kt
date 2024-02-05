@@ -13,7 +13,8 @@ class MenuConfig : Serializable {
     var forceUpdate : Boolean? = null
     var maintenance : Boolean? =null
     var showDialog : Boolean? = null
-    var checkForUpdate : Boolean? =null
-    var releaseNote : String? =null
-    var releaseNoteEn : String? =null
+    var fanAds : Boolean? =null
+    var starAppAds : Boolean? =null
+    var inMobiAds : Boolean? =null
+
 }

@@ -82,7 +82,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 import com.google.android.ump.UserMessagingPlatform
 import com.startapp.sdk.ads.banner.Banner
-import com.startapp.sdk.ads.banner.Mrec
 import com.startapp.sdk.adsbase.StartAppAd
 import com.startapp.sdk.adsbase.StartAppSDK
 import kotlinx.coroutines.delay
@@ -211,11 +210,14 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
     
     fun setupBannerStarApp(adViewContainer: FrameLayout){
-        val startAppBanner = Banner(this)
-        startAppBanner.showBanner()
-        adViewContainer.addView(startAppBanner)
+        if(getDataSession().getStarAppEnable()){
+            if(getDataSession().getStarAppShowBanner()){
+                val startAppBanner = Banner(this)
+                startAppBanner.showBanner()
+                adViewContainer.addView(startAppBanner)
+            }
+        }
     }
-
 
     fun setupBannerFacebook(adContainer : FrameLayout){
         val id = getDataSession().getBannerFANId()
@@ -1010,7 +1012,9 @@ open class BaseActivityWidget : AppCompatActivity() {
                     interstitialFANAd?.show()
                 }else{
                     if(getDataSession().getStarAppEnable()){
-                        StartAppAd.showAd(this);
+                        if(getDataSession().getStarAppShowInterstitial()){
+                            StartAppAd.showAd(this);
+                        }
                     }
                 }
             }
@@ -1020,7 +1024,11 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
 
     fun showInterstitialStarApp(){
-        StartAppAd.showAd(this);
+        if(getDataSession().getStarAppEnable()){
+            if(getDataSession().getStarAppShowInterstitial()){
+                StartAppAd.showAd(this);
+            }
+        }
     }
 
     protected fun showReward(){

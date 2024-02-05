@@ -4,17 +4,17 @@ import android.content.Context
 import android.content.SharedPreferences
 import sound.recorder.widget.util.Constant
 
-class StarAppBuilder private constructor(
+class InMobiBuilder private constructor(
     val applicationId : String?,
-    val showBanner : Boolean = false,
-    val showInterstitial : Boolean = false,
+    val bannerId: Long = 0,
+    val interstitialId: Long = 0,
     val enable : Boolean) {
 
     // Builder class to construct MyObject
     class Builder(private val context: Context) {
         private var applicationId: String? = null
-        private var showBanner : Boolean = false
-        private var showInterstitial : Boolean = false
+        private var bannerId: Long = 0
+        private var interstitialId: Long = 0
         private var enable : Boolean = false
 
         fun setApplicationId(applicationId: String?): Builder {
@@ -22,40 +22,42 @@ class StarAppBuilder private constructor(
             return this
         }
 
-        fun showBanner(showBanner: Boolean): Builder {
-            this.showBanner = showBanner
+        fun setBannerId(bannerId: Long): Builder {
+            this.bannerId = bannerId
             return this
         }
 
-        fun showInterstitial(showInterstitial: Boolean): Builder {
-            this.showInterstitial= showInterstitial
+        fun setInterstitialId(interstitialId: Long):Builder {
+            this.interstitialId = interstitialId
             return this
         }
+
         fun setEnable(enable: Boolean): Builder {
             this.enable = enable
             return this
         }
 
         // Build function to create an instance of MyObject
-        fun build(): StarAppBuilder {
-            val myObject = StarAppBuilder(applicationId,showBanner,showInterstitial,enable)
+        fun build(): InMobiBuilder {
+            val myObject = InMobiBuilder(applicationId,bannerId,interstitialId,enable)
 
+            // Save values to SharedPreferences
             saveToSharedPreferences(myObject)
 
             return myObject
         }
 
-        private fun saveToSharedPreferences(starAppBuilder: StarAppBuilder) {
+        private fun saveToSharedPreferences(inMobiBuilder: InMobiBuilder) {
             val sharedPreferences: SharedPreferences = context.getSharedPreferences(
                 Constant.KeyShared.shareKey,
                 Context.MODE_PRIVATE
             )
             val editor = sharedPreferences.edit()
 
-            editor.putString(Constant.KeyShared.starAppId, starAppBuilder.applicationId)
-            editor.putBoolean(Constant.KeyShared.starAppShowBanner,starAppBuilder.showBanner)
-            editor.putBoolean(Constant.KeyShared.starAppShowInterstitial,starAppBuilder.showInterstitial)
-            editor.putBoolean(Constant.KeyShared.starAppEnable,starAppBuilder.enable)
+            editor.putString(Constant.KeyShared.inMobiId, inMobiBuilder.applicationId)
+            editor.putLong(Constant.KeyShared.inMobiBannerId, inMobiBuilder.bannerId)
+            editor.putLong(Constant.KeyShared.inMobiInterstitialId, inMobiBuilder.interstitialId)
+            editor.putBoolean(Constant.KeyShared.inMobiEnable,inMobiBuilder.enable)
 
             editor.apply()
         }

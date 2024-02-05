@@ -36,6 +36,13 @@ open class Constant {
 
             const val starAppId = "starAppId"
             const val starAppEnable = "starAppEnable"
+            const val starAppShowBanner = "starAppShowBanner"
+            const val starAppShowInterstitial = "starAppShowInterstitial"
+
+            const val inMobiId = "inMobiId"
+            const val inMobiBannerId = "inMobiBannerId"
+            const val inMobiInterstitialId = "inMobiInterstitialId"
+            const val inMobiEnable = "inMobiEnable"
 
 
 

@@ -3,7 +3,9 @@ package sound.recorder.widget.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.google.gson.Gson
 import sound.recorder.widget.R
+import sound.recorder.widget.model.MenuConfig
 
 open class DataSession(private val mContext: Context) {
 
@@ -163,6 +165,21 @@ open class DataSession(private val mContext: Context) {
         }
     }
 
+    fun saveRemoteConfig(menuConfig: MenuConfig){
+        try {
+            val editor = sharedPref.edit()
+            editor.putString("menuConfig",Gson().toJson(menuConfig))
+            editor.apply()
+        }catch (e : Exception){
+            setLog(e.message)
+        }
+    }
+
+    fun getMenuConfig(): MenuConfig {
+        val json = sharedPref.getString("menuConfig", "{}")
+        return Gson().fromJson(json, MenuConfig::class.java)
+    }
+
     fun saveAnimation(value : Boolean){
         val editor = sharedPref.edit()
         editor.putBoolean(Constant.KeyShared.animation,value)
@@ -199,12 +216,37 @@ open class DataSession(private val mContext: Context) {
         return sharedPref.getString(Constant.KeyShared.admobBannerId, "").toString()
     }
 
+    fun getBannerInMobi(): Long {
+        return sharedPref.getLong(Constant.KeyShared.inMobiBannerId, 0)
+    }
+
+    fun getInMobiInterstitialId(): Long {
+        return sharedPref.getLong(Constant.KeyShared.inMobiInterstitialId, 0)
+    }
+
     fun getFanEnable(): Boolean{
         return sharedPref.getBoolean(Constant.KeyShared.fanEnable,false)
     }
 
     fun getStarAppEnable(): Boolean{
         return sharedPref.getBoolean(Constant.KeyShared.starAppEnable,false)
+    }
+
+    fun getStarAppShowBanner(): Boolean{
+        return sharedPref.getBoolean(Constant.KeyShared.starAppShowBanner,false)
+    }
+
+    fun getStarAppShowInterstitial(): Boolean{
+        return sharedPref.getBoolean(Constant.KeyShared.starAppShowInterstitial,false)
+    }
+
+    fun getInMobiEnable(): Boolean{
+        return sharedPref.getBoolean(Constant.KeyShared.inMobiEnable,false)
+    }
+
+
+    fun getInMobiId(): String{
+        return sharedPref.getString(Constant.KeyShared.inMobiId, "").toString()
     }
 
     fun getFANId(): String{
