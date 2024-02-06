@@ -15,10 +15,12 @@ class MenuConfig : Serializable {
     var showDialog : Boolean? = null
     var starAppAds : StarAppAds? =null
 
-    data class StarAppAds(
-        var enable: Boolean = false,
-        var showBanner: Boolean = false,
+    @Keep
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    class StarAppAds : Serializable{
+        var enable: Boolean = false
+        var showBanner: Boolean = false
         var showInterstitial: Boolean = false
-    )
+    }
 
 }
