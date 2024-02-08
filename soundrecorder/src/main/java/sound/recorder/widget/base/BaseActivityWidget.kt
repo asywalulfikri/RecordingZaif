@@ -120,7 +120,6 @@ open class BaseActivityWidget : AppCompatActivity() {
 
         try {
             FirebaseApp.initializeApp(this)
-            initFANSDK()
             initStarApp()
             /*MobileAds.initialize(this) {}
             val testDeviceIds = listOf("D48A46E523E6A96C8215178502423686")
@@ -381,7 +380,7 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
 
 
-    private fun getDataSession() : DataSession{
+    fun getDataSession() : DataSession{
         return DataSession(this)
     }
 
