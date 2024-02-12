@@ -47,7 +47,6 @@ import sound.recorder.widget.listener.MyStopSDKMusicListener
 import sound.recorder.widget.listener.PauseListener
 import sound.recorder.widget.tools.Timer
 import sound.recorder.widget.ui.bottomSheet.BottomSheet
-import sound.recorder.widget.ui.bottomSheet.BottomSheetListSong
 import sound.recorder.widget.ui.bottomSheet.BottomSheetNote
 import sound.recorder.widget.ui.bottomSheet.BottomSheetSetting
 import sound.recorder.widget.util.*
@@ -59,7 +58,7 @@ import kotlin.math.ln
 
 
 class VoiceRecordFragmentVertical : BaseFragmentWidget, BottomSheet.OnClickListener,
-    BottomSheetListSong.OnClickListener, Timer.OnTimerUpdateListener,SharedPreferences.OnSharedPreferenceChangeListener,PauseListener {
+    FragmentSheetListSong.OnClickListener, Timer.OnTimerUpdateListener,SharedPreferences.OnSharedPreferenceChangeListener,PauseListener {
 
     private var recorder: MediaRecorder? = null
     private var recordingAudio = false
@@ -239,9 +238,10 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget, BottomSheet.OnClickListe
     private fun showBottomSheetSong(){
         try {
             if(activity!=null){
-                val bottomSheet = BottomSheetListSong(showBtnStop,this)
+               /* val bottomSheet = BottomSheetListSong(showBtnStop,this)
                 bottomSheet.isCancelable = false
-                bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)
+                bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)*/
+                MyFragmentListener.openFragment(FragmentSheetListSong(showBtnStop,this))
             }
         }catch (e : Exception){
             setLog(e.message)

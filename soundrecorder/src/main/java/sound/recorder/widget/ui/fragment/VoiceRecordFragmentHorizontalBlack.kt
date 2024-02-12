@@ -59,7 +59,7 @@ import kotlin.math.ln
 
 
 class VoiceRecordFragmentHorizontalBlack : BaseFragmentWidget, BottomSheet.OnClickListener,
-    BottomSheetListSong.OnClickListener, Timer.OnTimerUpdateListener,SharedPreferences.OnSharedPreferenceChangeListener,PauseListener {
+    FragmentSheetListSong.OnClickListener, Timer.OnTimerUpdateListener,SharedPreferences.OnSharedPreferenceChangeListener,PauseListener {
 
     private var recorder: MediaRecorder? = null
     private var recordingAudio = false
@@ -239,9 +239,10 @@ class VoiceRecordFragmentHorizontalBlack : BaseFragmentWidget, BottomSheet.OnCli
     private fun showBottomSheetSong(){
         try {
             if(activity!=null){
-                val bottomSheet = BottomSheetListSong(showBtnStop,this)
+                /*val bottomSheet = BottomSheetListSong(showBtnStop,this)
                 bottomSheet.isCancelable = false
-                bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)
+                bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)*/
+                MyFragmentListener.openFragment(FragmentSheetListSong(showBtnStop,this))
             }
         }catch (e : Exception){
             setLog(e.message)

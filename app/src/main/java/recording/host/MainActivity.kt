@@ -17,6 +17,7 @@ import sound.recorder.widget.builder.StarAppBuilder
 import sound.recorder.widget.listener.FragmentListener
 import sound.recorder.widget.listener.MyFragmentListener
 import sound.recorder.widget.model.MenuConfig
+import sound.recorder.widget.ui.fragment.FragmentSheetListSong
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
 
@@ -112,6 +113,11 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
         val fragment = supportFragmentManager.findFragmentById(R.id.fragmentFileViewer)
 
         if (fragment is ListRecordFragment) {
+            val consumed = fragment.onBackPressed()
+            if (consumed) {
+                return
+            }
+        } else if (fragment is FragmentSheetListSong) {
             val consumed = fragment.onBackPressed()
             if (consumed) {
                 return
