@@ -47,7 +47,6 @@ import sound.recorder.widget.listener.MyStopSDKMusicListener
 import sound.recorder.widget.listener.PauseListener
 import sound.recorder.widget.tools.Timer
 import sound.recorder.widget.ui.bottomSheet.BottomSheet
-import sound.recorder.widget.ui.bottomSheet.BottomSheetListSong
 import sound.recorder.widget.ui.bottomSheet.BottomSheetNote
 import sound.recorder.widget.ui.bottomSheet.BottomSheetSetting
 import sound.recorder.widget.util.*
@@ -754,58 +753,6 @@ class VoiceRecordFragmentVerticalBlack : BaseFragmentWidget, BottomSheet.OnClick
                     mp?.setVolume(volume,volume)
                 }
             }
-        }
-    }
-
-    private fun setupInterstitial() {
-        if(activity!=null){
-            try {
-                val adRequestInterstitial = AdRequest.Builder().build()
-                InterstitialAd.load(requireActivity(),DataSession(requireActivity()).getInterstitialId(), adRequestInterstitial,
-                    object : InterstitialAdLoadCallback() {
-                        override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                            mInterstitialAd = interstitialAd
-                            isLoadInterstitial = true
-                        }
-
-                        override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                            mInterstitialAd = null
-                        }
-                    })
-            }catch (e : Exception){
-                setLog(e.message)
-
-            }
-
-        }
-    }
-
-    private fun showInterstitial(){
-        if(activity!=null){
-            if(isLoadInterstitial){
-                mInterstitialAd?.show(requireActivity())
-            }
-        }
-    }
-
-    private fun showRewardInterstitial(){
-        if(activity!=null){
-            if(isLoadInterstitialReward){
-                Log.d("response ads", "show")
-                rewardedInterstitialAd?.let { ad ->
-                    ad.show(requireActivity()) { rewardItem ->
-                        // Handle the reward.
-                        val rewardAmount = rewardItem.amount
-                        val rewardType = rewardItem.type
-                        Log.d("response ads", "User earned the reward.$rewardAmount--$rewardType")
-                    }
-                } ?: run {
-                    Log.d("response ads", "The rewarded ad wasn't ready yet.")
-                    showInterstitial()
-                }
-            }
-        }else{
-            Log.d("response ads", "null")
         }
     }
 
