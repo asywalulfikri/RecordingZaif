@@ -27,6 +27,7 @@ import sound.recorder.widget.base.BaseFragmentWidget
 import sound.recorder.widget.databinding.ActivityListingNewBinding
 import sound.recorder.widget.db.AppDatabase
 import sound.recorder.widget.db.AudioRecord
+import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.ui.activity.PlayerActivityWidget
 import java.io.File
 
@@ -263,6 +264,7 @@ class ListRecordFragment : BaseFragmentWidget(), AudioRecorderAdapter.OnItemClic
     }
 
     fun onBackPressed(): Boolean {
+        MyAdsListener.setAds(false)
         activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         return false
     }

@@ -17,6 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import sound.recorder.widget.databinding.ListNoteBinding
+import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.notes.Note
 
 import sound.recorder.widget.notes.NotesAdapter
@@ -151,6 +152,12 @@ open class NoteFragmentFirebase : BottomSheetDialogFragment() {
         } else {
             binding.emptyNotesView.visibility = View.VISIBLE
         }
+    }
+
+    fun onBackPressed(): Boolean {
+        MyAdsListener.setAds(true)
+        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+        return false
     }
 
 }

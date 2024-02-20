@@ -14,7 +14,9 @@ import sound.recorder.widget.builder.FanAdsBuilder
 import sound.recorder.widget.builder.InMobiBuilder
 import sound.recorder.widget.builder.RecordingWidgetBuilder
 import sound.recorder.widget.builder.StarAppBuilder
+import sound.recorder.widget.listener.AdsListener
 import sound.recorder.widget.listener.FragmentListener
+import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.listener.MyFragmentListener
 import sound.recorder.widget.model.MenuConfig
 import sound.recorder.widget.model.Song
@@ -22,7 +24,7 @@ import sound.recorder.widget.ui.fragment.FragmentSheetListSong
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
 
-class MainActivity : BaseActivityWidget(),FragmentListener {
+class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
 
     private lateinit var sp : SoundPool
 
@@ -151,5 +153,9 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
 
     override fun openFragment(fragment: Fragment?) {
         setupFragment(binding.fragmentFileViewer.id,fragment)
+    }
+
+    override fun onViewAds(boolean: Boolean) {
+
     }
 }

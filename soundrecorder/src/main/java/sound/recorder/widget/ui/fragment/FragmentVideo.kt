@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import sound.recorder.widget.adapter.VideoListAdapter
 import sound.recorder.widget.base.BaseFragmentWidget
 import sound.recorder.widget.databinding.ActivityListVideoBinding
+import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.model.Video
 import sound.recorder.widget.model.VideoWrapper
 
@@ -129,6 +130,7 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
     }
 
     fun onBackPressed(): Boolean {
+        MyAdsListener.setAds(true)
         activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         return false
     }

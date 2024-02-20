@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.ThreadMode
 import sound.recorder.widget.R
 import sound.recorder.widget.RecordingSDK
 import sound.recorder.widget.databinding.BottomSheetSongBinding
+import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.listener.MyStopSDKMusicListener
 import sound.recorder.widget.listener.StopSDKMusicListener
 import sound.recorder.widget.model.Song
@@ -254,6 +255,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
     }
 
     fun onBackPressed(): Boolean {
+        MyAdsListener.setAds(true)
         activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         return false
     }

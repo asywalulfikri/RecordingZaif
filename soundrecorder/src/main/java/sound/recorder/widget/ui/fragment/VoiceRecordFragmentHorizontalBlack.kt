@@ -39,6 +39,7 @@ import sound.recorder.widget.base.BaseFragmentWidget
 import sound.recorder.widget.databinding.WidgetRecordHorizontalBlackBinding
 import sound.recorder.widget.db.AppDatabase
 import sound.recorder.widget.db.AudioRecord
+import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.listener.MyFragmentListener
 import sound.recorder.widget.listener.MyMusicListener
 import sound.recorder.widget.listener.MyPauseListener
@@ -158,7 +159,7 @@ class VoiceRecordFragmentHorizontalBlack : BaseFragmentWidget, BottomSheet.OnCli
             }
 
             binding.listBtn.setOnClickListener {
-               // startActivity(Intent(activity, ListMusicActivity::class.java))
+                MyAdsListener.setAds(false)
                 MyFragmentListener.openFragment(ListRecordFragment())
             }
 
@@ -242,6 +243,7 @@ class VoiceRecordFragmentHorizontalBlack : BaseFragmentWidget, BottomSheet.OnCli
                 bottomSheet.isCancelable = false
                 bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)*/
                 MyFragmentListener.openFragment(FragmentSheetListSong(showBtnStop,this))
+                MyAdsListener.setAds(false)
             }
         }catch (e : Exception){
             setLog(e.message)

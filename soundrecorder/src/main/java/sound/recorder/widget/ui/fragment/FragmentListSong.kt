@@ -16,6 +16,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import sound.recorder.widget.RecordingSDK
 import sound.recorder.widget.databinding.BottomSheetSongBinding
+import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.model.Song
 import sound.recorder.widget.util.DataSession
 
@@ -221,5 +222,11 @@ class FragmentListSong(private var showBtnStop: Boolean, private var listener: O
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
 
+    }
+
+    fun onBackPressed(): Boolean {
+        MyAdsListener.setAds(true)
+        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+        return false
     }
 }

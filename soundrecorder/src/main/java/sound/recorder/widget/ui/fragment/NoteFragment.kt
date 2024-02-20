@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDE
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import sound.recorder.widget.databinding.ListNoteBinding
+import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.notes.DatabaseHelper
 import sound.recorder.widget.notes.Note
 
@@ -119,6 +120,7 @@ internal class NoteFragment : BottomSheetDialogFragment() {
     }
 
     fun onBackPressed(): Boolean {
+        MyAdsListener.setAds(true)
         activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         return false
     }
