@@ -7,5 +7,8 @@ object MyAdsListener {
     fun setMyListener(listener: AdsListener) {
         myListener = listener
     }
+    fun setAds(show : Boolean) {
+        myListener?.onViewAds(show)
+    }
 
 }
