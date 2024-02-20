@@ -264,7 +264,7 @@ class ListRecordFragment : BaseFragmentWidget(), AudioRecorderAdapter.OnItemClic
     }
 
     fun onBackPressed(): Boolean {
-        MyAdsListener.setAds(false)
+        MyAdsListener.setAds(true)
         activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         return false
     }
