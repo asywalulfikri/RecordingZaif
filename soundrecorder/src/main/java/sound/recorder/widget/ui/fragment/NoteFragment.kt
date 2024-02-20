@@ -118,4 +118,9 @@ internal class NoteFragment : BottomSheetDialogFragment() {
         }
     }
 
+    fun onBackPressed(): Boolean {
+        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+        return false
+    }
+
 }

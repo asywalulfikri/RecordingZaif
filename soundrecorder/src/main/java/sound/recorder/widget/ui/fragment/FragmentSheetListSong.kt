@@ -1,9 +1,6 @@
 package sound.recorder.widget.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.media.MediaPlayer
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -95,6 +92,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
         getAllMediaMp3Files(list)
     }
 
+
     private fun getAllMediaMp3Files(songList: ArrayList<Song>) {
         if (activity != null) {
             val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
@@ -107,15 +105,18 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
             )
             if (cursor == null) {
                 Toast.makeText(requireActivity(), "Something Went Wrong.", Toast.LENGTH_LONG).show()
-            } else if (!cursor.moveToFirst()) {
-                Toast.makeText(requireActivity(), "No Music Found on SD Card.", Toast.LENGTH_LONG).show()
-            } else {
+            } /*else if (!cursor.moveToFirst()) {
+               // Toast.makeText(requireActivity(), "No Music Found on SD Card.", Toast.LENGTH_LONG).show()
+                setLog("yeeeeeee111")
+            }*/ else {
                 val title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
                 val location = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
+
 
                 MainScope().launch {
                     var songTitle1: String
                     var songLocation1: String
+
 
                     withContext(Dispatchers.Default) {
                         for (i in songList.indices) {
@@ -127,24 +128,35 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
                     }
 
                     MainScope().launch {
-                        withContext(Dispatchers.Default) {
-                            do {
-                                var songTitle = ""
-                                var songLocation = ""
-                                if (cursor.getString(title) != null) {
-                                    songTitle = cursor.getString(title)
-                                }
 
-                                if (cursor.getString(location) != null) {
-                                    songLocation = cursor.getString(location)
-                                }
+                        if (cursor.moveToFirst()) {
+                            withContext(Dispatchers.Default) {
 
-                                listLocationSong?.add(songLocation)
-                                listTitleSong?.add(songTitle)
+                                do {
+                                    setLog("yeeeeee5")
+                                    var songTitle = ""
+                                    var songLocation = ""
 
-                            } while (cursor.moveToNext())
+
+
+
+                                    if (cursor.getString(title) != null) {
+                                        songTitle = cursor.getString(title)
+                                    }
+
+                                    if (cursor.getString(location) != null) {
+                                        songLocation = cursor.getString(location)
+                                    }
+
+                                    listLocationSong?.add(songLocation)
+                                    listTitleSong?.add(songTitle)
+
+                                } while (cursor.moveToNext())
+                            }
+                            updateView()
+                        }else{
+                            updateView()
                         }
-                        updateView()
                     }
 
                 }

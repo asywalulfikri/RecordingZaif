@@ -5,6 +5,8 @@ import android.content.Intent
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import recording.host.databinding.ActivityMainBinding
 import sound.recorder.widget.RecordingSDK
@@ -22,12 +24,10 @@ import sound.recorder.widget.ui.fragment.FragmentSheetListSong
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
 
-class MainActivity : BaseActivityWidget(),FragmentListener {
+class SplashActivity : BaseActivityWidget() {
 
     private lateinit var sp : SoundPool
 
-    private var ss1 = 1
-    private var ss2 = 2
 
     private lateinit var binding : ActivityMainBinding
 
@@ -57,9 +57,6 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
             song.add(itemSong)
         }
         RecordingSDK.addSong(this,song)
-
-        MyFragmentListener.setMyListener(this)
-
         RecordingSDK.run()
 
         FanAdsBuilder.builder(this)
@@ -102,54 +99,14 @@ class MainActivity : BaseActivityWidget(),FragmentListener {
             .showNote(true)
 
 
-        sp = SoundPool(
-            5,
-            AudioManager.STREAM_MUSIC, 5
-        )
 
-        setupBannerStarApp(binding.bannerView)
-
-        ss1 = sp.load(this,R.raw.dum,1)
-        ss2 = sp.load(this,R.raw.dek,1)
-
-        // btn1 = findViewById(R.id.btn1)
-        // btn2 = findViewById(R.id.btn2)
-
-        binding.btn1.setOnClickListener {
-            showInterstitialStarApp()
-           // sp.play(ss1, 1f, 1f, 0, 0, 1f)
-        }
-
-        binding.btn2.setOnClickListener {
-            sp.play(ss2, 1f, 1f, 0, 0, 1f)
-        }
-
-        setupFragment(binding.recordingView.id,VoiceRecordFragmentVertical())
-
-
-    }
-
-    @Deprecated("Deprecated in Java")
-    @SuppressLint("MissingSuperCall")
-    override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.fragmentFileViewer)
-
-        if (fragment is ListRecordFragment) {
-            val consumed = fragment.onBackPressed()
-            if (consumed) {
-                return
-            }
-        } else if (fragment is FragmentSheetListSong) {
-            val consumed = fragment.onBackPressed()
-            if (consumed) {
-                return
-            }
-        }else{
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
             finish()
-        }
+        }, 500)
+
+
     }
 
-    override fun openFragment(fragment: Fragment?) {
-        setupFragment(binding.fragmentFileViewer.id,fragment)
-    }
 }
