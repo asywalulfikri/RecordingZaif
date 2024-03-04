@@ -641,18 +641,16 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget, BottomSheet.OnClickListe
 
                     }
                 } catch (e: IOException) {
-                    MyStopSDKMusicListener.postAction(true)
-                    MyStopMusicListener.postAction(true)
-                    showBtnStop = false
-                    setToastError(activity,e.message.toString())
+                    try {
+                        MyStopSDKMusicListener.postAction(true)
+                        MyStopMusicListener.postAction(true)
+                        showBtnStop = false
+                        setToastError(activity,e.message.toString())
+                    }catch (e : Exception){
+                        setLog(e.message)
+                    }
                 }
             }, 100)
-
-            //val handler = Handler(Looper.getMainLooper())
-           /* handler.postDelayed({
-
-            }, 100)*/
-
         }
     }
 

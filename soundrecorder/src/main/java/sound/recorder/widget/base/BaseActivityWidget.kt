@@ -149,9 +149,7 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
 
     fun initStarApp(){
-        if(getDataSession().getStarAppEnable()){
-            StartAppSDK.init(this, getDataSession().getStarAppId(), false);
-        }
+        StartAppSDK.init(this, getDataSession().getStarAppId(), false);
     }
 
 

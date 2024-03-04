@@ -645,10 +645,14 @@ class VoiceRecordFragmentHorizontalNew : BaseFragmentWidget, BottomSheet.OnClick
 
                     }
                 } catch (e: IOException) {
-                    MyStopSDKMusicListener.postAction(true)
-                    MyStopMusicListener.postAction(true)
-                    showBtnStop = false
-                    setToastError(activity,e.message.toString())
+                    try {
+                        MyStopSDKMusicListener.postAction(true)
+                        MyStopMusicListener.postAction(true)
+                        showBtnStop = false
+                        setToastError(activity,e.message.toString())
+                    }catch (e : Exception){
+                        setLog(e.message)
+                    }
                 }
             }, 100)
 

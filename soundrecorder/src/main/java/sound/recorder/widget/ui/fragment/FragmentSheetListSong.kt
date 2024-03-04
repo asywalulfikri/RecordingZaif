@@ -1,5 +1,7 @@
 package sound.recorder.widget.ui.fragment
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.MediaStore
@@ -29,6 +31,10 @@ import sound.recorder.widget.util.DataSession
 class FragmentSheetListSong(private var showBtnStop: Boolean, private var listener: OnClickListener) :
     Fragment(), SharedPreferences.OnSharedPreferenceChangeListener, StopSDKMusicListener {
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
     interface OnClickListener {
         fun onPlaySong(filePath: String)
         fun onStopSong()
@@ -47,7 +53,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
 
         if (activity != null) {
             try {
-                sharedPreferences = DataSession(requireActivity()).getShared()
+                sharedPreferences = DataSession(requireContext()).getShared()
                 sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
                 MyStopSDKMusicListener.setMyListener(this)
@@ -74,7 +80,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
                 listLocationSong = ArrayList()
 
                 try {
-                    if (!RecordingSDK.isHaveSong(requireActivity())) {
+                    if (!RecordingSDK.isHaveSong(requireContext())) {
                         getSong(lisSong)
                     }
                 } catch (e: Exception) {
@@ -90,14 +96,19 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
     }
 
     private fun getSong(list: ArrayList<Song>) {
-        getAllMediaMp3Files(list)
+        try {
+            getAllMediaMp3Files(list)
+        }catch (e : Exception){
+           setLog(e.message.toString())
+        }
     }
 
 
+    @SuppressLint("Recycle")
     private fun getAllMediaMp3Files(songList: ArrayList<Song>) {
         if (activity != null) {
             val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            val cursor = requireActivity().contentResolver?.query(
+            val cursor = requireContext().contentResolver?.query(
                 uri,
                 null,
                 null,
@@ -105,11 +116,8 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
                 null
             )
             if (cursor == null) {
-                Toast.makeText(requireActivity(), "Something Went Wrong.", Toast.LENGTH_LONG).show()
-            } /*else if (!cursor.moveToFirst()) {
-               // Toast.makeText(requireActivity(), "No Music Found on SD Card.", Toast.LENGTH_LONG).show()
-                setLog("yeeeeeee111")
-            }*/ else {
+                Toast.makeText(requireContext(), "Something Went Wrong.", Toast.LENGTH_LONG).show()
+            }else {
                 val title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
                 val location = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
 
@@ -128,38 +136,41 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
                         }
                     }
 
-                    MainScope().launch {
+                    try {
+                        MainScope().launch {
 
-                        if (cursor.moveToFirst()) {
-                            withContext(Dispatchers.Default) {
+                            if (cursor.moveToFirst()) {
+                                withContext(Dispatchers.Default) {
 
-                                do {
-                                    setLog("yeeeeee5")
-                                    var songTitle = ""
-                                    var songLocation = ""
-
-
+                                    do {
+                                        var songTitle = ""
+                                        var songLocation = ""
 
 
-                                    if (cursor.getString(title) != null) {
-                                        songTitle = cursor.getString(title)
-                                    }
 
-                                    if (cursor.getString(location) != null) {
-                                        songLocation = cursor.getString(location)
-                                    }
 
-                                    listLocationSong?.add(songLocation)
-                                    listTitleSong?.add(songTitle)
+                                        if (cursor.getString(title) != null) {
+                                            songTitle = cursor.getString(title)
+                                        }
 
-                                } while (cursor.moveToNext())
+                                        if (cursor.getString(location) != null) {
+                                            songLocation = cursor.getString(location)
+                                        }
+
+                                        listLocationSong?.add(songLocation)
+                                        listTitleSong?.add(songTitle)
+
+                                    } while (cursor.moveToNext())
+                                }
+                                updateView()
+                            }else{
+                                updateView()
                             }
-                            updateView()
-                        }else{
-                            updateView()
                         }
-                    }
 
+                    }catch (e : Exception){
+                        setLog(e.message.toString())
+                    }
                 }
 
             }
@@ -169,15 +180,19 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
 
     private fun updateView() {
         if (activity != null) {
-            val listSong = listTitleSong!!.toTypedArray()
+            try {
+                val listSong = listTitleSong!!.toTypedArray()
 
-            adapter = ArrayAdapter(requireActivity(), R.layout.item_simple_song, listSong)
-            binding.listView.adapter = adapter
-            adapter?.notifyDataSetChanged()
-            binding.listView.onItemClickListener =
-                AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
-                    listener.onPlaySong(listLocationSong?.get(i).toString())
-                }
+                adapter = ArrayAdapter(requireContext(), R.layout.item_simple_song, listSong)
+                binding.listView.adapter = adapter
+                adapter?.notifyDataSetChanged()
+                binding.listView.onItemClickListener =
+                    AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
+                        listener.onPlaySong(listLocationSong?.get(i).toString())
+                    }
+            }catch (e : Exception){
+                setLog(e.message.toString())
+            }
         }
 
     }
