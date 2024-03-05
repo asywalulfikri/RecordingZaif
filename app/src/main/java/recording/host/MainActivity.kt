@@ -23,6 +23,7 @@ import sound.recorder.widget.model.Song
 import sound.recorder.widget.ui.fragment.FragmentSheetListSong
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
+import sound.recorder.widget.util.SnowFlakesLayout
 
 class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
 
@@ -45,12 +46,15 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
         "android.resource://"+BuildConfig.APPLICATION_ID+"/raw/ampar_ampar_pisang"
     )
 
+    private lateinit var salju : SnowFlakesLayout
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        salju = SnowFlakesLayout(this)
+        salju.init()
 
         for (i in listTitle.indices) {
             val itemSong = Song()
@@ -63,6 +67,9 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
         MyFragmentListener.setMyListener(this)
 
         RecordingSDK.run()
+
+        salju.startSnowing()
+        binding.layoutBackground.addView(salju)
 
         FanAdsBuilder.builder(this)
             .setBannerId("")
