@@ -19,15 +19,14 @@ import android.os.Handler
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import android.view.animation.AccelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.RadioButton
+import android.widget.RelativeLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
@@ -65,30 +64,32 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
-import org.json.JSONObject
-import sound.recorder.widget.R
-import sound.recorder.widget.RecordingSDK
-import sound.recorder.widget.ads.GoogleMobileAdsConsentManager
-import sound.recorder.widget.notes.Note
-import sound.recorder.widget.util.DataSession
-import sound.recorder.widget.util.Toastic
-import java.util.Locale
-import java.util.concurrent.atomic.AtomicReference
-import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
-
-import com.google.android.ump.UserMessagingPlatform
 import com.startapp.sdk.ads.banner.Banner
+import com.startapp.sdk.ads.banner.BannerListener
+import com.startapp.sdk.ads.banner.Mrec
 import com.startapp.sdk.adsbase.StartAppAd
 import com.startapp.sdk.adsbase.StartAppSDK
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import sound.recorder.widget.BuildConfig
+import sound.recorder.widget.R
+import sound.recorder.widget.RecordingSDK
+import sound.recorder.widget.ads.GoogleMobileAdsConsentManager
 import sound.recorder.widget.animation.ParticleSystem
 import sound.recorder.widget.animation.modifiers.ScaleModifier
+import sound.recorder.widget.notes.Note
+import sound.recorder.widget.util.DataSession
+import sound.recorder.widget.util.Toastic
+import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.time.Duration.Companion.seconds
+
 
 open class BaseActivityWidget : AppCompatActivity() {
 
@@ -148,9 +149,13 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     }
 
-    fun initStarApp(){
-        StartAppSDK.init(this, getDataSession().getStarAppId(), false);
-    }
+    private fun initStarApp() = runCatching {
+        StartAppSDK.init(this, getDataSession().getStarAppId(), false)
+        if(BuildConfig.DEBUG){
+            StartAppSDK.setTestAdsEnabled(true);
+        }
+        StartAppSDK.setUserConsent (this, "pas", System.currentTimeMillis(), false)
+    }.onFailure { Log.d("startApp Failed", "initAds", it) }.getOrNull()
 
 
     protected fun setupFragment(id : Int, fragment : Fragment?){
@@ -207,11 +212,37 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
     
     fun setupBannerStarApp(adViewContainer: FrameLayout){
+        Log.d("startAppExecute","true "+getDataSession().getStarAppId())
+        Log.d("startAppEnable",getDataSession().getStarAppEnable().toString())
+        Log.d("startAppBannerShow",getDataSession().getStarAppShowBanner().toString())
         if(getDataSession().getStarAppEnable()){
             if(getDataSession().getStarAppShowBanner()){
                 val startAppBanner = Banner(this)
-                startAppBanner.showBanner()
+                val bannerParameters = RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+                )
+                bannerParameters.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                bannerParameters.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+
                 adViewContainer.addView(startAppBanner)
+                startAppBanner.setBannerListener(object : BannerListener {
+                    override fun onReceiveAd(view: View) {
+                        Log.d("startAppBannerSuccess ",view.id.toString())
+                        startAppBanner.showBanner()
+                    }
+
+                    override fun onFailedToReceiveAd(view: View) {
+                        Log.d("startAppBannerFailed ",view.id.toString())
+                        startAppBanner.hideBanner()
+                    }
+
+                    override fun onImpression(view: View) {}
+                    override fun onClick(view: View) {}
+                })
+
+                startAppBanner.loadAd()
+
             }
         }
     }

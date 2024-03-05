@@ -90,7 +90,7 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
 
         StarAppBuilder.builder(this)
             .setApplicationId("205917032")
-            .showBanner(false)
+            .showBanner(true)
             .showInterstitial(false)
             .setEnable(true)
             .build()
