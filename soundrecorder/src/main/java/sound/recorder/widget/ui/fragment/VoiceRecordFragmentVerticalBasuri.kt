@@ -644,7 +644,7 @@ class VoiceRecordFragmentVerticalBasuri : BaseFragmentWidget, BottomSheet.OnClic
                         songIsPlaying = true
 
                     }
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     try {
                         MyStopSDKMusicListener.postAction(true)
                         MyStopMusicListener.postAction(true)
