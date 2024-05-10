@@ -1033,20 +1033,25 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     fun showInterstitial(){
         try {
+            Log.d("showInters","execute")
             if(isLoad){
+                Log.d("showIntersAdmob","true")
                 mInterstitialAd?.show(this)
             }else{
                 if(showFANInterstitial){
+                    Log.d("showIntersFA","true")
                     interstitialFANAd?.show()
                 }else{
                     if(getDataSession().getStarAppEnable()){
                         if(getDataSession().getStarAppShowInterstitial()){
                             StartAppAd.showAd(this);
+                            Log.d("showIntersSA","true")
                         }
                     }
                 }
             }
         }catch (e : Exception){
+            Log.d("showInters","false")
             setLog(e.message.toString())
         }
     }

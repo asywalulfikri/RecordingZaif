@@ -24,6 +24,7 @@ import sound.recorder.widget.model.Song
 import sound.recorder.widget.ui.fragment.FragmentSheetListSong
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
+import sound.recorder.widget.util.Constant
 
 class SplashActivity : BaseActivityWidget() {
 
@@ -50,6 +51,8 @@ class SplashActivity : BaseActivityWidget() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupInterstitial()
+
 
         for (i in listTitle.indices) {
             val itemSong = Song()
@@ -69,8 +72,8 @@ class SplashActivity : BaseActivityWidget() {
 
         AdmobAdsBuilder.builder(this)
             .setAdmobId("")
-            .setBannerId("")
-            .setInterstitialId("")
+            .setBannerId(Constant.AdsTesterId.admobBannerId)
+            .setInterstitialId(Constant.AdsTesterId.admobInterstitialId)
             .setRewardId("")
             .setRewardInterstitialId("")
             .setNativeId("")

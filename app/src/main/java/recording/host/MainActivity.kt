@@ -23,6 +23,7 @@ import sound.recorder.widget.model.Song
 import sound.recorder.widget.ui.fragment.FragmentSheetListSong
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
+import sound.recorder.widget.util.Constant
 import sound.recorder.widget.util.SnowFlakesLayout
 
 class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
@@ -53,6 +54,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupInterstitial()
+
         salju = SnowFlakesLayout(this)
         salju.init()
 
@@ -80,8 +83,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
 
         AdmobAdsBuilder.builder(this)
             .setAdmobId("")
-            .setBannerId("")
-            .setInterstitialId("")
+            .setBannerId(Constant.AdsTesterId.admobBannerId)
+            .setInterstitialId(Constant.AdsTesterId.admobInterstitialId)
             .setRewardId("")
             .setRewardInterstitialId("")
             .setNativeId("")
@@ -125,8 +128,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
         // btn2 = findViewById(R.id.btn2)
 
         binding.btn1.setOnClickListener {
-           // showInterstitialStarApp()
-            sp.play(ss1, 1f, 1f, 0, 0, 1f)
+            showInterstitial()
+          //  sp.play(ss1, 1f, 1f, 0, 0, 1f)
         }
 
         binding.btn2.setOnClickListener {
