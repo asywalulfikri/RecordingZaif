@@ -85,6 +85,7 @@
 
 
     <string name="download_success">ดาวน์โหลดสำเร็จ รอ 5 วินาที</string>
+    <string name="data_empty">ข้อมูลว่าง</string>
 
 
 </resources>

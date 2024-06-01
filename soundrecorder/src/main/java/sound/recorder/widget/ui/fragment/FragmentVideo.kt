@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.*
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
+import sound.recorder.widget.R
 import sound.recorder.widget.adapter.VideoListAdapter
 import sound.recorder.widget.base.BaseFragmentWidget
 import sound.recorder.widget.databinding.ActivityListVideoBinding
@@ -81,7 +82,9 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
                         result(wrapper, loadMore)
                         mAdapter?.notifyDataSetChanged()
                     } else if (task.result!!.size() == 0) {
-                        setToastInfo(activity,"No Data")
+                        setToastInfo(activity,getString(R.string.data_empty))
+                        binding.progressBar.visibility = View.GONE
+                        binding.tvEmpty.visibility = View.VISIBLE
                     }
                 } else {
                     setToastError(activity,"Failed get data")
@@ -95,7 +98,7 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
             Log.e("gg2", "mm")
             if (wrapper.list.size == 0) {
                 Log.e("gg3", "mm")
-                setToastInfo(activity,"Tidak ada data")
+                setToastInfo(activity,getString(R.string.data_empty))
             } else {
                 mVideoList = ArrayList()
                 updateList(wrapper)
@@ -109,7 +112,7 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
             }
         } else {
             Log.e("gg4", "mm")
-            setToastInfo(activity,"No Data Found")
+            setToastInfo(activity,getString(R.string.data_empty))
         }
     }
 

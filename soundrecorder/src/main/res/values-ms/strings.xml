@@ -86,5 +86,7 @@
 
     <string name="download_success">Muat turun Berjaya, Tunggu 5 Saat</string>
 
+    <string name="data_empty">Data Kosong</string>
+
 
 </resources>

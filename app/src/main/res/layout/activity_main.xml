@@ -45,6 +45,36 @@
             android:layout_height="wrap_content"
             tools:ignore="HardcodedText" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_marginTop="50dp"
+                android:id="@+id/btnInterstitialAdmob"
+                android:text="Interstitial Admob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btnInterstitialStarApp"
+                android:text="Interstitial StarApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btnVideo"
+                android:text="video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+
 
 
     </LinearLayout>

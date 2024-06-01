@@ -85,6 +85,7 @@
     <string name="arabic">Arabe</string>
 
     <string name="download_success">ダウンロード成功、5秒お待ちください</string>
+    <string name="data_empty">データが空です</string>
 
 
 </resources>

@@ -20,6 +20,7 @@ import sound.recorder.widget.listener.MyAdsListener
 import sound.recorder.widget.listener.MyFragmentListener
 import sound.recorder.widget.model.MenuConfig
 import sound.recorder.widget.model.Song
+import sound.recorder.widget.ui.bottomSheet.BottomSheetVideo
 import sound.recorder.widget.ui.fragment.FragmentSheetListSong
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
@@ -128,12 +129,27 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
         // btn2 = findViewById(R.id.btn2)
 
         binding.btn1.setOnClickListener {
-            showInterstitial()
-          //  sp.play(ss1, 1f, 1f, 0, 0, 1f)
+           // showInterstitial()
+
+            sp.play(ss1, 1f, 1f, 0, 0, 1f)
         }
 
         binding.btn2.setOnClickListener {
             sp.play(ss2, 1f, 1f, 0, 0, 1f)
+        }
+
+
+        binding.btnInterstitialAdmob.setOnClickListener {
+            showInterstitial()
+        }
+
+        binding.btnInterstitialStarApp.setOnClickListener {
+            showInterstitialStarApp()
+        }
+
+        binding.btnVideo.setOnClickListener {
+            val bottomSheetFragment = BottomSheetVideo()
+            bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
         }
 
         setupFragment(binding.recordingView.id,VoiceRecordFragmentVertical())

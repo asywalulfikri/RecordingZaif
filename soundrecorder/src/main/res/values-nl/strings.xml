@@ -85,6 +85,7 @@
     <string name="arabic">Arabisch</string>
 
     <string name="download_success">Download geslaagd, Wacht 5 seconden</string>
+    <string name="data_empty">Geen gegevens</string>
 
 
 </resources>

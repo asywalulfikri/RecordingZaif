@@ -105,6 +105,7 @@ class SplashActivity : BaseActivityWidget() {
 
 
         Handler(Looper.getMainLooper()).postDelayed({
+            setToastSuccess("ikoo")
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
             finish()

@@ -113,7 +113,11 @@ internal class PlayerActivityWidget : BaseActivityWidget() {
 
             binding.seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                    if(p2) mediaPlayer.seekTo(p1)
+                    try {
+                        if(p2) mediaPlayer.seekTo(p1)
+                    }catch (e : Exception){
+                       setToast(e.message.toString())
+                    }
                 }
                 override fun onStartTrackingTouch(p0: SeekBar?) {}
 

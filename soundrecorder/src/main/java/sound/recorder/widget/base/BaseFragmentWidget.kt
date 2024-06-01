@@ -1022,7 +1022,7 @@ open class BaseFragmentWidget : Fragment() {
     }
 
 
-    fun showInterstitial(){
+    /*fun showInterstitial(){
         try {
             if(isLoad){
                 mInterstitialAd?.show(requireActivity())
@@ -1038,6 +1038,31 @@ open class BaseFragmentWidget : Fragment() {
                 }
             }
         }catch (e : Exception){
+            setLog(e.message.toString())
+        }
+    }*/
+
+    fun showInterstitial(){
+        try {
+            Log.d("showInters","execute")
+            if(isLoad){
+                Log.d("showIntersAdmob","true")
+                mInterstitialAd?.show(requireActivity())
+            }else{
+                if(showFANInterstitial){
+                    Log.d("showIntersFA","true")
+                    interstitialFANAd?.show()
+                }else{
+                    if(getDataSession().getStarAppEnable()){
+                        if(getDataSession().getStarAppShowInterstitial()){
+                            StartAppAd.showAd(requireActivity());
+                            Log.d("showIntersSA","true")
+                        }
+                    }
+                }
+            }
+        }catch (e : Exception){
+            Log.d("showInters","false")
             setLog(e.message.toString())
         }
     }
@@ -1141,7 +1166,7 @@ open class BaseFragmentWidget : Fragment() {
 
 
     fun setLog(message : String? =null){
-        Log.e("error", "$message.")
+        Log.d("response ", "$message.")
     }
 
     protected fun simpleAnimation(view: View , drawable:Int? = null) {

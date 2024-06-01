@@ -27,6 +27,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.RadioButton
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
@@ -1098,6 +1099,10 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     }
 
+
+    protected fun setToast(message : String){
+        Toast.makeText(this, "$message.",Toast.LENGTH_SHORT).show()
+    }
     protected fun setToastWarning(message : String){
         try {
             Toastic.toastic(
