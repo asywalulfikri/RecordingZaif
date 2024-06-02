@@ -29,15 +29,9 @@ open class FragmentSetting : BaseFragmentWidget() {
     private var dataSession: DataSession? = null
 
 
-    fun FragmentSetting() {
-        // Required empty public constructor
-    }
-
     companion object {
-        fun newInstance() = FragmentSetting().apply {
-            arguments = Bundle(1).apply {
-                // putInt("ORDER_ID", orderId)
-            }
+        fun newInstance(): FragmentSetting {
+            return FragmentSetting()
         }
     }
 

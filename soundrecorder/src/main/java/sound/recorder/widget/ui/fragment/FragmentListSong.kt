@@ -30,6 +30,7 @@ class FragmentListSong(private var showBtnStop: Boolean, private var listener: O
     private var adapter: ArrayAdapter<String>? = null
 
 
+
     // Step 1 - This interface defines the type of messages I want to communicate to my owner
     interface OnClickListener {
         fun onPlaySong(filePath: String)

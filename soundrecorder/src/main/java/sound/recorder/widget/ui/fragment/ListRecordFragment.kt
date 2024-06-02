@@ -44,6 +44,12 @@ class ListRecordFragment : BaseFragmentWidget(), AudioRecorderAdapter.OnItemClic
     private val binding get() = _binding!!
 
 
+    companion object {
+        fun newInstance(): ListRecordFragment{
+            return ListRecordFragment()
+        }
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("NotifyDataSetChanged")
 

@@ -28,6 +28,13 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
     private var isFragmentAdded = false
     private var firestore: FirebaseFirestore? = FirebaseFirestore.getInstance()
 
+
+    companion object {
+        fun newInstance(): FragmentVideo {
+            return FragmentVideo()
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = ActivityListVideoBinding.inflate(layoutInflater)
 
@@ -78,6 +85,7 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
                         }
                         rowList++
                     }
+                    binding.progressBar.visibility = View.GONE
                     if (wrapper.list.size != 0) {
                         result(wrapper, loadMore)
                         mAdapter?.notifyDataSetChanged()

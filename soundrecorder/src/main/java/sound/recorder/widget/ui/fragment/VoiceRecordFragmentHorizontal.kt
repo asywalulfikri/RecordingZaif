@@ -58,7 +58,7 @@ import java.util.*
 import kotlin.math.ln
 
 
-class VoiceRecordFragmentHorizontal : BaseFragmentWidget, BottomSheet.OnClickListener,
+class VoiceRecordFragmentHorizontal : BaseFragmentWidget(), BottomSheet.OnClickListener,
     FragmentSheetListSong.OnClickListener, Timer.OnTimerUpdateListener,SharedPreferences.OnSharedPreferenceChangeListener,PauseListener {
 
     private var recorder: MediaRecorder? = null
@@ -86,21 +86,14 @@ class VoiceRecordFragmentHorizontal : BaseFragmentWidget, BottomSheet.OnClickLis
     private var volumes : Float? =null
     private var showNote : Boolean? =null
 
-    constructor() : super() {
-        // Required empty public constructor
-    }
-
-    fun VoiceRecordFragmentHorizontal() {
-        // Required empty public constructor
-    }
 
     companion object {
-        fun newInstance() = VoiceRecordFragmentHorizontal().apply {
-            arguments = Bundle(1).apply {
-               // putInt("ORDER_ID", orderId)
-            }
+        fun newInstance(): VoiceRecordFragmentHorizontal {
+            return VoiceRecordFragmentHorizontal()
         }
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         newInstance()

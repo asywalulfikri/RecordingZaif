@@ -37,18 +37,11 @@ internal class NoteFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    fun NoteFragment() {
-        // Required empty public constructor
-    }
-
     companion object {
-        fun newInstance() = NoteFragment().apply {
-            arguments = Bundle(1).apply {
-                // putInt("ORDER_ID", orderId)
-            }
+        fun newInstance(): NoteFragment{
+            return NoteFragment()
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         newInstance()
         val b = Bundle()

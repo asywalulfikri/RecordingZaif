@@ -40,19 +40,9 @@ open class NoteFragmentFirebase : BottomSheetDialogFragment() {
         return binding.root
     }
 
-   /* constructor() : super() {
-        // Required empty public constructor
-    }*/
-
-    fun NoteFragmentFirebase() {
-        // Required empty public constructor
-    }
-
     companion object {
-        fun newInstance() = NoteFragmentFirebase().apply {
-            arguments = Bundle(1).apply {
-                // putInt("ORDER_ID", orderId)
-            }
+        fun newInstance(): NoteFragmentFirebase {
+            return NoteFragmentFirebase()
         }
     }
 

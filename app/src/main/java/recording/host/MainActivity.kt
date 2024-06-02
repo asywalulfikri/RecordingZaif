@@ -148,8 +148,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
         }
 
         binding.btnVideo.setOnClickListener {
-            val bottomSheetFragment = BottomSheetVideo()
-            bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
+           /* val bottomSheetFragment = BottomSheetVideo()
+            bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)*/
         }
 
         setupFragment(binding.recordingView.id,VoiceRecordFragmentVertical())

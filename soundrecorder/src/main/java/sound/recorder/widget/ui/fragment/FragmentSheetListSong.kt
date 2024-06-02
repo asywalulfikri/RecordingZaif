@@ -28,11 +28,17 @@ import sound.recorder.widget.listener.StopSDKMusicListener
 import sound.recorder.widget.model.Song
 import sound.recorder.widget.util.DataSession
 
-class FragmentSheetListSong(private var showBtnStop: Boolean, private var listener: OnClickListener) :
+class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var listener: OnClickListener? =null) :
     Fragment(), SharedPreferences.OnSharedPreferenceChangeListener, StopSDKMusicListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+    }
+
+    companion object {
+        fun newInstance(): FragmentSheetListSong {
+            return FragmentSheetListSong()
+        }
     }
 
     interface OnClickListener {
@@ -60,7 +66,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
 
                 initAnim()
 
-                if (showBtnStop) {
+                if (showBtnStop==true) {
                     binding.ivStop.visibility = View.VISIBLE
                     startAnimation()
                 } else {
@@ -68,7 +74,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
                 }
 
                 binding.ivStop.setOnClickListener {
-                    listener.onStopSong()
+                    listener?.onStopSong()
                     stopAnimation()
                 }
 
@@ -188,7 +194,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean, private var listen
                 adapter?.notifyDataSetChanged()
                 binding.listView.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
-                        listener.onPlaySong(listLocationSong?.get(i).toString())
+                        listener?.onPlaySong(listLocationSong?.get(i).toString())
                     }
             }catch (e : Exception){
                 setLog(e.message.toString())
