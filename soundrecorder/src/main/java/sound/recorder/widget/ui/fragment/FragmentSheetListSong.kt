@@ -205,7 +205,10 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
                 adapter?.notifyDataSetChanged()
                 binding.listView.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
-                        listener?.onPlaySong(listLocationSong?.get(i).toString())
+                        run {
+                            listener?.onPlaySong(listLocationSong?.get(i).toString())
+                            listener?.onNoteSong(listNoteSong?.get(i).toString())
+                        }
                     }
             }catch (e : Exception){
                 setLog(e.message.toString())
