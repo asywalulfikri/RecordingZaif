@@ -716,6 +716,10 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
         }
     }
 
+    override fun onNoteSong(note: String) {
+        MyMusicListener.postNote(note)
+    }
+
     override fun onTimerUpdate(duration: String) {
         activity?.runOnUiThread{
             if(recordingAudio)

@@ -728,6 +728,10 @@ class VoiceRecordFragmentHorizontalNew : BaseFragmentWidget(), BottomSheet.OnCli
         }
     }
 
+    override fun onNoteSong(note: String) {
+        MyMusicListener.postNote(note)
+    }
+
     override fun onTimerUpdate(duration: String) {
         activity?.runOnUiThread{
             if(recordingAudio)

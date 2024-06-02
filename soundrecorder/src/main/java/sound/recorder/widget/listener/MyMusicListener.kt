@@ -11,4 +11,7 @@ object MyMusicListener {
     fun postAction(mediaPlayer: MediaPlayer?) {
         myListener?.onMusic(mediaPlayer)
     }
+    fun postNote(note : String?){
+        myListener?.onNote(note)
+    }
 }

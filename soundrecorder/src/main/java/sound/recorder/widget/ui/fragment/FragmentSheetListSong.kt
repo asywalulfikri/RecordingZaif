@@ -44,12 +44,16 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
     interface OnClickListener {
         fun onPlaySong(filePath: String)
         fun onStopSong()
+
+        fun onNoteSong(note : String)
+
     }
 
     private lateinit var binding: BottomSheetSongBinding
     private var sharedPreferences: SharedPreferences? = null
     private var listTitleSong: ArrayList<String>? = null
     private var listLocationSong: ArrayList<String>? = null
+    private var listNoteSong : ArrayList<String>? =null
     private var adapter: ArrayAdapter<String>? = null
     private var mPanAnim: Animation? = null
     private var lisSong = ArrayList<Song>()
@@ -84,6 +88,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
 
                 listTitleSong = ArrayList()
                 listLocationSong = ArrayList()
+                listNoteSong = ArrayList()
 
                 try {
                     if (!RecordingSDK.isHaveSong(requireContext())) {
@@ -131,14 +136,18 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
                 MainScope().launch {
                     var songTitle1: String
                     var songLocation1: String
+                    var songNote1 : String
 
 
                     withContext(Dispatchers.Default) {
                         for (i in songList.indices) {
                             songTitle1 = songList[i].title.toString()
                             songLocation1 = songList[i].pathRaw.toString()
+                            songNote1 = songList[i].note.toString()
+
                             listLocationSong?.add(songLocation1)
                             listTitleSong?.add(songTitle1)
+                            listNoteSong?.add(songNote1)
                         }
                     }
 
@@ -151,6 +160,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
                                     do {
                                         var songTitle = ""
                                         var songLocation = ""
+                                        var songNote = ""
 
 
 
@@ -165,6 +175,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
 
                                         listLocationSong?.add(songLocation)
                                         listTitleSong?.add(songTitle)
+                                        listNoteSong?.add(songNote)
 
                                     } while (cursor.moveToNext())
                                 }

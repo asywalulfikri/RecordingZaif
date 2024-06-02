@@ -6,5 +6,6 @@ interface MusicListener {
 
     fun onMusic(mediaPlayer: MediaPlayer?)
     fun onComplete()
+    fun onNote(note : String?)
 
 }
