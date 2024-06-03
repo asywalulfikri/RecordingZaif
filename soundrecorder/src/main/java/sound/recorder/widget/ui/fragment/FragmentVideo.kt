@@ -65,40 +65,44 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
     @SuppressLint("NotifyDataSetChanged")
     private fun load(loadMore: Boolean) {
 
-        firestore?.collection("videos")
-            ?.get()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val wrapper = VideoWrapper()
-                    wrapper.list = ArrayList()
-                    var rowList = 1
-                    for (doc in task.result!!) {
-                        if (rowList <= mPage * 50 && rowList > (mPage - 1) * 50) {
-                            val video = Video()
-                            video.datepublish = doc.getString("datepublish")
-                            video.description = doc.getString("description")
-                            video.thumbnail = doc.getString("thumbnail")
-                            video.url = doc.getString("url")
-                            video.title = doc.getString("title")
-                            Log.d("title", video.url + "-")
-                            wrapper.list.add(video)
+        try {
+            firestore?.collection("videos")
+                ?.get()
+                ?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val wrapper = VideoWrapper()
+                        wrapper.list = ArrayList()
+                        var rowList = 1
+                        for (doc in task.result!!) {
+                            if (rowList <= mPage * 50 && rowList > (mPage - 1) * 50) {
+                                val video = Video()
+                                video.datepublish = doc.getString("datepublish")
+                                video.description = doc.getString("description")
+                                video.thumbnail = doc.getString("thumbnail")
+                                video.url = doc.getString("url")
+                                video.title = doc.getString("title")
+                                Log.d("title", video.url + "-")
+                                wrapper.list.add(video)
+                            }
+                            rowList++
                         }
-                        rowList++
-                    }
-                    binding.progressBar.visibility = View.GONE
-                    if (wrapper.list.size != 0) {
-                        result(wrapper, loadMore)
-                        mAdapter?.notifyDataSetChanged()
-                    } else if (task.result!!.size() == 0) {
-                        setToastInfo(activity,getString(R.string.data_empty))
                         binding.progressBar.visibility = View.GONE
-                        binding.tvEmpty.visibility = View.VISIBLE
-                    }
-                } else {
-                    setToastError(activity,"Failed get data")
+                        if (wrapper.list.size != 0) {
+                            result(wrapper, loadMore)
+                            mAdapter?.notifyDataSetChanged()
+                        } else if (task.result!!.size() == 0) {
+                           // setToastInfo(activity,getString(R.string.data_empty))
+                            binding.progressBar.visibility = View.GONE
+                            binding.tvEmpty.visibility = View.VISIBLE
+                        }
+                    } else {
+                        setToastError(activity,"Failed get data")
 
+                    }
                 }
-            }
+        }catch (e : Exception){
+            setToast(activity,e.message.toString())
+        }
     }
 
     private fun result(wrapper: VideoWrapper?, loadMore: Boolean) {
@@ -106,7 +110,7 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
             Log.e("gg2", "mm")
             if (wrapper.list.size == 0) {
                 Log.e("gg3", "mm")
-                setToastInfo(activity,getString(R.string.data_empty))
+               // setToastInfo(activity,getString(R.string.data_empty))
             } else {
                 mVideoList = ArrayList()
                 updateList(wrapper)
@@ -120,7 +124,7 @@ class FragmentVideo : BaseFragmentWidget(),VideoListAdapter.OnItemClickListener 
             }
         } else {
             Log.e("gg4", "mm")
-            setToastInfo(activity,getString(R.string.data_empty))
+           // setToastInfo(activity,getString(R.string.data_empty))
         }
     }
 

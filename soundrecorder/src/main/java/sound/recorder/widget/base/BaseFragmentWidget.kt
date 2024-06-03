@@ -28,6 +28,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -1095,47 +1096,74 @@ open class BaseFragmentWidget : Fragment() {
 
 
     fun setToastError(activity: Activity?, message : String){
-        if(activity!=null){
-            Toastic.toastic(activity,
-                message = "Error : $message",
-                duration = Toastic.LENGTH_SHORT,
-                type = Toastic.ERROR,
-                isIconAnimated = true
-            ).show()
+        try {
+            if(activity!=null){
+                Toastic.toastic(activity,
+                    message = "Error : $message",
+                    duration = Toastic.LENGTH_SHORT,
+                    type = Toastic.ERROR,
+                    isIconAnimated = true
+                ).show()
+            }
+        }catch (e : Exception){
+            setLog(e.message.toString())
         }
     }
 
+    fun setToast(activity: Activity?, message : String){
+        try {
+            if(activity!=null){
+                Toast.makeText(activity, "$message.",Toast.LENGTH_SHORT).show()
+            }
+        }catch (e : Exception){
+            setLog(e.message.toString())
+        }
+
+    }
+
     fun setToastWarning(activity: Activity?, message : String){
-        if(activity!=null){
-            Toastic.toastic(activity,
-                message = "$message.",
-                duration = Toastic.LENGTH_SHORT,
-                type = Toastic.WARNING,
-                isIconAnimated = true
-            ).show()
+        try {
+            if(activity!=null){
+                Toastic.toastic(activity,
+                    message = "$message.",
+                    duration = Toastic.LENGTH_SHORT,
+                    type = Toastic.WARNING,
+                    isIconAnimated = true
+                ).show()
+            }
+        }catch (e : Exception){
+            setLog(e.message.toString())
         }
     }
 
     fun setToastSuccess(activity: Activity?, message : String){
-        if(activity!=null){
-            Toastic.toastic(
-                activity,
-                message = "$message.",
-                duration = Toastic.LENGTH_SHORT,
-                type = Toastic.SUCCESS,
-                isIconAnimated = true
-            ).show()
+        try {
+            if(activity!=null){
+                Toastic.toastic(
+                    activity,
+                    message = "$message.",
+                    duration = Toastic.LENGTH_SHORT,
+                    type = Toastic.SUCCESS,
+                    isIconAnimated = true
+                ).show()
+            }
+        }catch (e : Exception){
+            setLog(e.message.toString())
         }
     }
 
     fun setToastInfo(activity: Activity?, message : String){
-        if(activity!=null){
-            Toastic.toastic(activity,
-                message = "$message.",
-                duration = Toastic.LENGTH_SHORT,
-                type = Toastic.INFO,
-                isIconAnimated = true
-            ).show()
+        try {
+            if(activity!=null){
+                Toastic.toastic(activity,
+                    message = "$message.",
+                    duration = Toastic.LENGTH_SHORT,
+                    type = Toastic.INFO,
+                    isIconAnimated = true
+                ).show()
+            }
+        }catch (e : Exception){
+            setLog(e.message.toString())
         }
     }
 
@@ -1152,7 +1180,6 @@ open class BaseFragmentWidget : Fragment() {
         }catch (e : Exception){
             setLog(e.message.toString())
         }
-
     }
 
     fun showAllowPermission(){
