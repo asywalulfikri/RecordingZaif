@@ -22,6 +22,7 @@ import sound.recorder.widget.model.MenuConfig
 import sound.recorder.widget.model.Song
 import sound.recorder.widget.ui.bottomSheet.BottomSheetVideo
 import sound.recorder.widget.ui.fragment.FragmentSheetListSong
+import sound.recorder.widget.ui.fragment.FragmentVideo
 import sound.recorder.widget.ui.fragment.ListRecordFragment
 import sound.recorder.widget.ui.fragment.VoiceRecordFragmentVertical
 import sound.recorder.widget.util.Constant
@@ -148,8 +149,24 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
         }
 
         binding.btnVideo.setOnClickListener {
-           /* val bottomSheetFragment = BottomSheetVideo()
-            bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)*/
+            try {
+                // some code
+                if (savedInstanceState == null) {
+                    val fragment = FragmentVideo.newInstance()
+                    MyAdsListener.setAds(false)
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentFileViewer, fragment)
+                        .commit()
+                }
+            } catch (e: Exception) {
+                setToastError(e.message.toString())
+            } catch (e : IllegalStateException){
+                setToastError(e.message.toString())
+            } catch (e : IllegalAccessException){
+                setToastError(e.message.toString())
+            }catch (e : NoSuchFieldException){
+                setToastError(e.message.toString())
+            }
         }
 
         setupFragment(binding.recordingView.id,VoiceRecordFragmentVertical())
@@ -168,6 +185,12 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
                 return
             }
         } else if (fragment is FragmentSheetListSong) {
+            val consumed = fragment.onBackPressed()
+            if (consumed) {
+                return
+            }
+        }
+        else if (fragment is FragmentVideo) {
             val consumed = fragment.onBackPressed()
             if (consumed) {
                 return
