@@ -15,19 +15,21 @@ import sound.recorder.widget.util.Constant
 import sound.recorder.widget.util.DataSession
 
 
-class BottomSheetSetting : BottomSheetDialogFragment,SharedPreferences.OnSharedPreferenceChangeListener {
+class BottomSheetSetting : BottomSheetDialogFragment(),SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var binding : BottomSheetSettingBinding? = null
     private var sharedPreferences : SharedPreferences? =null
 
-    constructor() : super() {
-        // Empty constructor required for DialogFragment
+    companion object {
+        fun newInstance(): BottomSheetDialogFragment {
+            return BottomSheetDialogFragment()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): RelativeLayout? {
         binding = BottomSheetSettingBinding.inflate(layoutInflater)
 
-        if(activity!=null&&requireActivity()!=null){
+        if(activity!=null&&context!=null){
             (dialog as? BottomSheetDialog)?.behavior?.state = STATE_EXPANDED
             (dialog as? BottomSheetDialog)?.behavior?.isDraggable = false
 

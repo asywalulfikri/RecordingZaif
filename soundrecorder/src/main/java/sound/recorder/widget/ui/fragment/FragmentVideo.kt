@@ -36,6 +36,7 @@ class FragmentVideo : BaseFragmentWidget(), VideoListAdapter.OnItemClickListener
         setupRecyclerView()
         load(false)
         binding.ivClose.visibility = View.GONE
+        MyAdsListener.setAds(false)
         return binding.root
     }
 

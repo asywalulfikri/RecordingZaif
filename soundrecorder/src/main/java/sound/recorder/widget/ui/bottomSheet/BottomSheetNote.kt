@@ -29,7 +29,7 @@ import sound.recorder.widget.notes.utils.RecyclerTouchListener
 import sound.recorder.widget.util.Toastic
 
 
-class BottomSheetNote : BottomSheetDialogFragment {
+class BottomSheetNote : BottomSheetDialogFragment() {
 
     private lateinit var binding : BottomSheetNotesBinding
 
@@ -38,14 +38,16 @@ class BottomSheetNote : BottomSheetDialogFragment {
     private var mAdapter: NotesAdapter? = null
     private var activity : Activity? =null
 
-    constructor() : super() {
-        // Empty constructor required for DialogFragment
+    companion object {
+        fun newInstance(): BottomSheetDialogFragment {
+            return BottomSheetDialogFragment()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = BottomSheetNotesBinding.inflate(layoutInflater)
         activity = getActivity()
-        if(activity!=null){
+        if(activity!=null&&context!=null){
             try {
                 (dialog as? BottomSheetDialog)?.behavior?.state = STATE_EXPANDED
                 (dialog as? BottomSheetDialog)?.behavior?.isDraggable = false

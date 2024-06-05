@@ -109,7 +109,7 @@ class VoiceRecordFragmentHorizontal : BaseFragmentWidget(), BottomSheet.OnClickL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Record to the external cache directory for visibility
-        if(activity!=null){
+        if(activity!=null&&context!=null){
 
             sharedPreferences = DataSession(requireActivity()).getShared()
             sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
@@ -147,19 +147,30 @@ class VoiceRecordFragmentHorizontal : BaseFragmentWidget(), BottomSheet.OnClickL
             }
 
             binding.doneBtn.setOnClickListener {
-                stopRecordingAudio("")
-                showBottomSheet()
+                try {
+                    stopRecordingAudio("")
+                    showBottomSheet()
+                }catch (e : Exception){
+                    setToast(activity,e.message.toString())
+                }
             }
 
             binding.listBtn.setOnClickListener {
-               // startActivity(Intent(activity, ListMusicActivity::class.java))
-                MyFragmentListener.openFragment(ListRecordFragment())
-                MyAdsListener.setAds(false)
+                try {
+                    MyFragmentListener.openFragment(ListRecordFragment())
+                    MyAdsListener.setAds(false)
+                }catch (e : Exception){
+                    setToast(activity,e.message.toString())
+                }
             }
 
             binding.deleteBtn.setOnClickListener {
-                stopRecordingAudio(requireActivity().getString(R.string.record_canceled))
-                File(dirPath+fileName).delete()
+                try {
+                    stopRecordingAudio(requireActivity().getString(R.string.record_canceled))
+                    File(dirPath+fileName).delete()
+                }catch (e : Exception){
+                    setToast(activity,e.message.toString())
+                }
             }
 
             binding.songBtn.setOnClickListener {
@@ -181,13 +192,22 @@ class VoiceRecordFragmentHorizontal : BaseFragmentWidget(), BottomSheet.OnClickL
             binding.deleteBtn.isClickable = false
 
             binding.settingBtn.setOnClickListener {
-                val bottomSheet = BottomSheetSetting()
-                bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)
+                try {
+                    val bottomSheet = BottomSheetSetting()
+                    bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)
+                }catch (e : Exception){
+                    setToast(activity,e.message.toString())
+                }
+
             }
 
             binding.noteBtn.setOnClickListener {
-                val bottomSheet = BottomSheetNote()
-                bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)
+                try {
+                    val bottomSheet = BottomSheetNote()
+                    bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)
+                }catch (e : Exception){
+                    setToast(activity,e.message.toString())
+                }
             }
         }
     }

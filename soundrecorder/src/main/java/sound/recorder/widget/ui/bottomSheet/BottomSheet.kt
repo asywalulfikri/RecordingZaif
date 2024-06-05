@@ -15,10 +15,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import sound.recorder.widget.R
+import sound.recorder.widget.ui.fragment.FragmentVideo
 import java.io.File
 
 
-class BottomSheet(private var dirPath: String, private var filename: String, private var listener: OnClickListener) : BottomSheetDialogFragment() {
+class BottomSheet(private var dirPath: String? =null, private var filename: String? =null, private var listener: OnClickListener? =null) : BottomSheetDialogFragment() {
 
     // Step 1 - This interface defines the type of messages I want to communicate to my owner
     interface OnClickListener {
@@ -30,61 +31,70 @@ class BottomSheet(private var dirPath: String, private var filename: String, pri
 
     private var isChange = false
 
+    companion object {
+        fun newInstance(): BottomSheet {
+            return BottomSheet()
+        }
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.bottom_sheet, container)
         val editText = view.findViewById<TextInputEditText>(R.id.filenameInput)
 
-        (dialog as? BottomSheetDialog)?.behavior?.state = STATE_EXPANDED
+        if(activity!=null&&context!=null){
 
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            (dialog as? BottomSheetDialog)?.behavior?.state = STATE_EXPANDED
 
-        if(isDarkTheme()){
-            editText.setTextColor(Color.parseColor("#000000"))
-        }
+            dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
-        // set edittext to filename
-        filename = filename.split(".mp3")[0]
-        editText.setText(filename)
-
-       // showKeyboard(editText)
-
-        // deal with OK button
-        view.findViewById<Button>(R.id.okBtn).setOnClickListener {
-            // hide keyboard
-            hideKeyboard(view)
-
-            // update filename if need
-            val updatedFilename = editText.text.toString()
-            if(updatedFilename != filename){
-                isChange = true
-               /* val newFile = File("$dirPath$updatedFilename.mp3")
-                File(dirPath+filename).renameTo(newFile)
-                Log.d("namaya",dirPath+filename)
-                Log.d("namayaTO",dirPath+updatedFilename)*/
+            if(isDarkTheme()){
+                editText.setTextColor(Color.parseColor("#000000"))
             }
 
-            // add entry to db
+            // set edittext to filename
+            filename = filename.toString().split(".mp3")[0]
+            editText.setText(filename)
 
-            // dismiss dialog
-            dismiss()
+            // showKeyboard(editText)
 
-            // fire ok callback
-            listener.onOkClicked("$dirPath$updatedFilename.mp3", updatedFilename,isChange)
-        }
+            // deal with OK button
+            view.findViewById<Button>(R.id.okBtn).setOnClickListener {
+                // hide keyboard
+                hideKeyboard(view)
 
-        // deal with cancel button
-        view.findViewById<Button>(R.id.cancelBtn).setOnClickListener {
-            // hide keyboard
-            hideKeyboard(view)
-            // delete file from storage
-            File(dirPath+filename).delete()
+                // update filename if need
+                val updatedFilename = editText.text.toString()
+                if(updatedFilename != filename){
+                    isChange = true
+                    /* val newFile = File("$dirPath$updatedFilename.mp3")
+                     File(dirPath+filename).renameTo(newFile)
+                     Log.d("namaya",dirPath+filename)
+                     Log.d("namayaTO",dirPath+updatedFilename)*/
+                }
 
-            // dismiss dialog
-            dismiss()
+                // add entry to db
 
-            // fire cancel callback
-            listener.onCancelClicked()
+                // dismiss dialog
+                dismiss()
+
+                // fire ok callback
+                listener?.onOkClicked("$dirPath$updatedFilename.mp3", updatedFilename,isChange)
+            }
+
+            // deal with cancel button
+            view.findViewById<Button>(R.id.cancelBtn).setOnClickListener {
+                // hide keyboard
+                hideKeyboard(view)
+                // delete file from storage
+                File(dirPath+filename).delete()
+
+                // dismiss dialog
+                dismiss()
+
+                // fire cancel callback
+                listener?.onCancelClicked()
+            }
         }
 
         return view
