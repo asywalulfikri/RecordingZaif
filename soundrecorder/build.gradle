@@ -94,7 +94,7 @@ dependencies {
     implementation 'com.facebook.android:audience-network-sdk:6.16.0'
 
     //config starApp
-    implementation 'com.startapp:inapp-sdk:4.11.5'
+ //   implementation 'com.startapp:inapp-sdk:4.11.5'
 /*
     //config InMobi
     implementation 'com.inmobi.monetization:inmobi-ads:10.1.3'

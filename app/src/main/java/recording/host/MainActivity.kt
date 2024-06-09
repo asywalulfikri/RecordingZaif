@@ -58,6 +58,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
 
         setupInterstitial()
 
+        permissionNotification()
+
         salju = SnowFlakesLayout(this)
         salju.init()
 
@@ -145,7 +147,7 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener {
         }
 
         binding.btnInterstitialStarApp.setOnClickListener {
-            showInterstitialStarApp()
+
         }
 
         binding.btnVideo.setOnClickListener {

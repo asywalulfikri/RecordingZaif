@@ -78,9 +78,6 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 import com.google.android.ump.UserMessagingPlatform
-import com.startapp.sdk.ads.banner.Banner
-import com.startapp.sdk.adsbase.StartAppAd
-import com.startapp.sdk.adsbase.StartAppSDK
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sound.recorder.widget.animation.ParticleSystem
@@ -121,12 +118,6 @@ open class BaseFragmentWidget : Fragment() {
 
         try {
             FirebaseApp.initializeApp(requireContext())
-            initStarApp()
-            /*MobileAds.initialize(this) {}
-            val testDeviceIds = listOf("D48A46E523E6A96C8215178502423686")
-            val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-            MobileAds.setRequestConfiguration(configuration)*/
-
         }catch (e : Exception){
             setLog(e.message.toString())
         }
@@ -149,13 +140,6 @@ open class BaseFragmentWidget : Fragment() {
 
     }
 
-    fun initStarApp(){
-        if(getDataSession().getStarAppEnable()){
-            StartAppSDK.init(activity as Context, getDataSession().getStarAppId(), false);
-        }
-    }
-
-
 
     fun setupFragment(id : Int, fragment : Fragment?){
         try {
@@ -171,23 +155,11 @@ open class BaseFragmentWidget : Fragment() {
     }
 
 
-    fun setupBannerStarApp(adViewContainer: FrameLayout){
-        if(getDataSession().getStarAppEnable()){
-            if(getDataSession().getStarAppShowBanner()){
-                val startAppBanner = Banner(activity)
-                startAppBanner.showBanner()
-                adViewContainer.addView(startAppBanner)
-            }
-        }
-    }
-
     fun setupBannerFacebook(adContainer : FrameLayout){
         val id = getDataSession().getBannerFANId()
         val adListener = object : com.facebook.ads.AdListener {
             override fun onError(ad: Ad, adError: com.facebook.ads.AdError) {
-                setupBannerStarApp(adContainer)
                 setLog("FAN error loaded id = "+ ad.placementId +"---> "+ adError.errorMessage)
-
             }
 
             override fun onAdLoaded(ad: Ad) {
@@ -1053,26 +1025,11 @@ open class BaseFragmentWidget : Fragment() {
                 if(showFANInterstitial){
                     Log.d("showIntersFA","true")
                     interstitialFANAd?.show()
-                }else{
-                    if(getDataSession().getStarAppEnable()){
-                        if(getDataSession().getStarAppShowInterstitial()){
-                            StartAppAd.showAd(requireActivity());
-                            Log.d("showIntersSA","true")
-                        }
-                    }
                 }
             }
         }catch (e : Exception){
             Log.d("showInters","false")
             setLog(e.message.toString())
-        }
-    }
-
-    fun showInterstitialStarApp(){
-        if(getDataSession().getStarAppEnable()){
-            if(getDataSession().getStarAppShowInterstitial()){
-                StartAppAd.showAd(activity);
-            }
         }
     }
 

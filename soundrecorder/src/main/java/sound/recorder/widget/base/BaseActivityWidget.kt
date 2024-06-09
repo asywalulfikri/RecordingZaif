@@ -69,11 +69,6 @@ import com.google.android.ump.UserMessagingPlatform
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
-import com.startapp.sdk.ads.banner.Banner
-import com.startapp.sdk.ads.banner.BannerListener
-import com.startapp.sdk.ads.banner.Mrec
-import com.startapp.sdk.adsbase.StartAppAd
-import com.startapp.sdk.adsbase.StartAppSDK
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -122,12 +117,6 @@ open class BaseActivityWidget : AppCompatActivity() {
 
         try {
             FirebaseApp.initializeApp(this)
-            initStarApp()
-            /*MobileAds.initialize(this) {}
-            val testDeviceIds = listOf("D48A46E523E6A96C8215178502423686")
-            val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-            MobileAds.setRequestConfiguration(configuration)*/
-
         }catch (e : Exception){
             setLog(e.message.toString())
         }
@@ -149,15 +138,6 @@ open class BaseActivityWidget : AppCompatActivity() {
         }
 
     }
-
-    private fun initStarApp() = runCatching {
-        StartAppSDK.init(this, getDataSession().getStarAppId(), false)
-        if(BuildConfig.DEBUG){
-            StartAppSDK.setTestAdsEnabled(true);
-        }
-        StartAppSDK.setUserConsent (this, "pas", System.currentTimeMillis(), false)
-    }.onFailure { Log.d("startApp Failed", "initAds", it) }.getOrNull()
-
 
     protected fun setupFragment(id : Int, fragment : Fragment?){
         try {
@@ -213,7 +193,7 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
     
     fun setupBannerStarApp(adViewContainer: FrameLayout){
-        Log.d("startAppExecute","true "+getDataSession().getStarAppId())
+       /* Log.d("startAppExecute","true "+getDataSession().getStarAppId())
         Log.d("startAppEnable",getDataSession().getStarAppEnable().toString())
         Log.d("startAppBannerShow",getDataSession().getStarAppShowBanner().toString())
         if(getDataSession().getStarAppEnable()){
@@ -245,7 +225,7 @@ open class BaseActivityWidget : AppCompatActivity() {
                 startAppBanner.loadAd()
 
             }
-        }
+        }*/
     }
 
     fun setupBannerFacebook(adContainer : FrameLayout){
@@ -828,7 +808,7 @@ open class BaseActivityWidget : AppCompatActivity() {
         }
     }
 
-    private fun permissionNotification(){
+     fun permissionNotification(){
         try {
             if (Build.VERSION.SDK_INT >= 33) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -1042,26 +1022,11 @@ open class BaseActivityWidget : AppCompatActivity() {
                 if(showFANInterstitial){
                     Log.d("showIntersFA","true")
                     interstitialFANAd?.show()
-                }else{
-                    if(getDataSession().getStarAppEnable()){
-                        if(getDataSession().getStarAppShowInterstitial()){
-                            StartAppAd.showAd(this);
-                            Log.d("showIntersSA","true")
-                        }
-                    }
                 }
             }
         }catch (e : Exception){
             Log.d("showInters","false")
             setLog(e.message.toString())
-        }
-    }
-
-    fun showInterstitialStarApp(){
-        if(getDataSession().getStarAppEnable()){
-            if(getDataSession().getStarAppShowInterstitial()){
-                StartAppAd.showAd(this);
-            }
         }
     }
 
