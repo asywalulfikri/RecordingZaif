@@ -2,12 +2,14 @@ package sound.recorder.widget.base
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.ConnectivityManager
@@ -81,6 +83,7 @@ import sound.recorder.widget.animation.modifiers.ScaleModifier
 import sound.recorder.widget.notes.Note
 import sound.recorder.widget.util.DataSession
 import sound.recorder.widget.util.Toastic
+import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
@@ -111,6 +114,8 @@ open class BaseActivityWidget : AppCompatActivity() {
     private lateinit var appUpdateManager: AppUpdateManager       // in app update
     private val updateType = AppUpdateType.FLEXIBLE
 
+    var sharedPreferences : SharedPreferences? =null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,7 +139,7 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     fun initFANSDK(){
         if(getDataSession().getFanEnable()){
-            AudienceNetworkAds.initialize(this);
+            AudienceNetworkAds.initialize(this)
         }
 
     }
@@ -250,9 +255,9 @@ open class BaseActivityWidget : AppCompatActivity() {
             }
         }
 
-        val adView = com.facebook.ads.AdView(this, id, com.facebook.ads.AdSize.BANNER_HEIGHT_50);
+        val adView = com.facebook.ads.AdView(this, id, com.facebook.ads.AdSize.BANNER_HEIGHT_50)
         adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build())
-        adContainer.addView(adView);
+        adContainer.addView(adView)
 
     }
 
@@ -313,6 +318,12 @@ open class BaseActivityWidget : AppCompatActivity() {
             Log.d("not","support")
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mInterstitialAd = null
+    }
+
 
     private val installStateUpdatedListener = InstallStateUpdatedListener{ state ->
         if (state.installStatus() == InstallStatus.DOWNLOADED) {
@@ -598,7 +609,7 @@ open class BaseActivityWidget : AppCompatActivity() {
             intent.setPackage("com.android.vending") // Specify the Play Store app package name
 
             startActivity(intent)
-        } catch (e: android.content.ActivityNotFoundException) {
+        } catch (e: ActivityNotFoundException) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=$devName"))
 
             startActivity(intent)
@@ -836,6 +847,18 @@ open class BaseActivityWidget : AppCompatActivity() {
                         override fun onAdLoaded(interstitialAd: InterstitialAd) {
                             mInterstitialAd = interstitialAd
                             isLoad = true
+                            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                                override fun onAdDismissedFullScreenContent() {
+                                    // Setelah interstitial ditutup, hapus callback
+                                    mInterstitialAd?.fullScreenContentCallback = null
+                                }
+
+
+                                override fun onAdShowedFullScreenContent() {
+                                    // Setelah interstitial ditampilkan, hapus callback
+                                    mInterstitialAd?.fullScreenContentCallback = null
+                                }
+                            }
                             setLog("AdMob Inters Loaded Success")
                         }
 
@@ -843,6 +866,8 @@ open class BaseActivityWidget : AppCompatActivity() {
                             mInterstitialAd = null
                             setLog("AdMob Inters Loaded Failed id = "+ getDataSession().getInterstitialId() + "--->"+ loadAdError.message)
                         }
+
+
                     })
             }
         }catch (e : Exception){

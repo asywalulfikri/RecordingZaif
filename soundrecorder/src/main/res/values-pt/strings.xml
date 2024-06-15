@@ -87,5 +87,30 @@
     <string name="data_empty">Dados Vazios</string>
 
 
+    <string name="yes">Sim</string>
+    <string name="title_recording_dialog">O processo de gravação começará depois de selecionar SIM</string>
+    <string name="title_recording_canceled">Deseja cancelar a gravação?</string>
+    <string name="title_recording_stop">Deseja salvar a gravação?</string>
+    <string name="notification">Notificação</string>
+    <string name="skip">Saltar</string>
+    <string name="next">Próximo</string>
+    <string name="stop">Parar</string>
+    <string name="pause">Pausar</string>
+    <string name="open">Abrir</string>
+    <string name="close">Fechar</string>
+    <string name="play">Reproduzir</string>
+    <string name="previously">Anteriormente</string>
+    <string name="version">Versão</string>
+    <string name="share">Compartilhar</string>
+    <string name="write_note">Escrever Nota</string>
+    <string name="song_key">Tom da Música</string>
+    <string name="beginner">Iniciante</string>
+    <string name="middle">Intermediário</string>
+    <string name="Master">Mestre</string>
+    <string name="remove_ads">Remover Anúncios</string>
+    <string name="search">Buscar</string>
+    <string name="recommed_message">Deixe-me recomendar este aplicativo para você</string>
+
+
 
 </resources>

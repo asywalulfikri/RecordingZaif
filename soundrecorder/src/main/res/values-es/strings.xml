@@ -87,6 +87,31 @@
     <string name="download_success">Descarga exitosa, espere 5 segundos</string>
     <string name="data_empty">Datos Vacíos</string>
 
+    <string name="yes">Sí</string>
+    <string name="title_recording_dialog">El proceso de grabación comenzará después de seleccionar SÍ</string>
+    <string name="title_recording_canceled">¿Deseas cancelar la grabación?</string>
+    <string name="title_recording_stop">¿Deseas guardar la grabación?</string>
+    <string name="notification">Notificación</string>
+    <string name="skip">Saltar</string>
+    <string name="next">Siguiente</string>
+    <string name="stop">Detener</string>
+    <string name="pause">Pausa</string>
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
+    <string name="play">Reproducir</string>
+    <string name="previously">Anteriormente</string>
+    <string name="version">Versión</string>
+    <string name="share">Compartir</string>
+    <string name="write_note">Escribir Notas</string>
+    <string name="song_key">Tonalidad de la Canción</string>
+    <string name="beginner">Principiante</string>
+    <string name="middle">Intermedio</string>
+    <string name="Master">Maestro</string>
+    <string name="remove_ads">Eliminar Anuncios</string>
+    <string name="search">Buscar</string>
+    <string name="recommed_message">Déjame recomendarte esta aplicación</string>
+
+
 
 
 </resources>

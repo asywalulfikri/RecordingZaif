@@ -1,14 +1,12 @@
 package recording.host
 
-import android.annotation.SuppressLint
+
 import android.content.Intent
-import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
-import recording.host.databinding.ActivityMainBinding
+import recording.host.databinding.ActivitySplashBinding
 import sound.recorder.widget.RecordingSDK
 import sound.recorder.widget.base.BaseActivityWidget
 import sound.recorder.widget.builder.AdmobAdsBuilder
@@ -31,7 +29,7 @@ class SplashActivity : BaseActivityWidget() {
     private lateinit var sp : SoundPool
 
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding : ActivitySplashBinding
 
     private val listTitle = arrayOf(
         "Gundul Gundul Pacul",
@@ -48,10 +46,10 @@ class SplashActivity : BaseActivityWidget() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupInterstitial()
+        //setupInterstitial()
 
 
         for (i in listTitle.indices) {
@@ -95,21 +93,20 @@ class SplashActivity : BaseActivityWidget() {
             .build()
 
         RecordingWidgetBuilder.builder(this)
-            .setAppName("")
-            .setApplicationId("")
-            .setVersionCode(1)
-            .setVersionName("")
-            .setApplicationId("")
+            .setAppName(getString(R.string.app_name))
+            .setVersionCode(BuildConfig.VERSION_CODE)
+            .setVersionName(BuildConfig.VERSION_NAME)
+            .setApplicationId(BuildConfig.APPLICATION_ID)
+            .setDeveloperName("Developer+Receh")
             .showNote(true)
 
 
 
         Handler(Looper.getMainLooper()).postDelayed({
-            setToastSuccess("ikoo")
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 500)
+        }, 3000)
 
 
     }

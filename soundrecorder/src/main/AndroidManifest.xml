@@ -21,8 +21,7 @@
             android:value="true"/>
 
         <activity android:name=".ui.activity.PlayerActivityWidget"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="sensorLandscape"/>
+            android:configChanges="orientation|screenSize"/>
 
         <activity android:name=".ui.activity.ListingActivity"
             android:configChanges="orientation|screenSize"

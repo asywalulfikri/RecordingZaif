@@ -12,6 +12,7 @@ open class Constant {
             const val showNote = "showNote"
             const val showSong = "showSong"
             const val backgroundWidgetColor = "llRecordBackground"
+            const val developerName = "developerName"
 
 
 

@@ -50,6 +50,11 @@ open class DataSession(private val mContext: Context) {
         return sharedPref.getString(Constant.KeyShared.appName,"")
     }
 
+    fun getDeveloperName(): String?{
+        return sharedPref.getString(Constant.KeyShared.developerName,"")
+    }
+
+
     fun getShowNote(): Boolean{
         return sharedPref.getBoolean("showNote",false)
     }

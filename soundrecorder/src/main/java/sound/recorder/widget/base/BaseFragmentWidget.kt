@@ -253,6 +253,16 @@ open class BaseFragmentWidget : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mInterstitialAd = null
+    }
+
 
     fun setupGDPR(){
         try {

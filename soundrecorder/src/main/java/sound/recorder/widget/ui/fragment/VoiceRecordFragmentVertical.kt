@@ -2,6 +2,7 @@ package sound.recorder.widget.ui.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -16,7 +17,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +26,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.room.Room
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -74,9 +69,6 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
     private var mp :  MediaPlayer? =null
     private var showBtnStop = false
     private var songIsPlaying = false
-    private var isLoadInterstitial = false
-    private var isLoadInterstitialReward = false
-    private var rewardedInterstitialAd : RewardedInterstitialAd? =null
 
     //ScreenRecorder
     private var screenRecorder: ScreenRecorder? =null
@@ -85,6 +77,7 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
 
     private var volumes : Float? =null
     private var showNote : Boolean? =null
+
 
     companion object {
         fun newInstance(): VoiceRecordFragmentVertical{
@@ -105,7 +98,7 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Record to the external cache directory for visibility
+
         if(activity!=null&&context!=null){
 
             sharedPreferences = DataSession(requireActivity()).getShared()
@@ -131,8 +124,9 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
 
             handler = Handler(Looper.myLooper()!!)
 
+
             binding.rlRecord.setOnClickListener {
-                if(Build.VERSION.SDK_INT> Build.VERSION_CODES.N){
+                /*if(Build.VERSION.SDK_INT> Build.VERSION_CODES.N){
                     when {
                         pauseRecordAudio -> resumeRecordingAudio()
                         recordingAudio -> pauseRecordingAudio()
@@ -140,6 +134,11 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
                     }
                 }else{
                     setToastError(activity,requireActivity().getString(R.string.device_not_support))
+                }*/
+                when {
+                    pauseRecordAudio -> resumeRecordingAudio()
+                    recordingAudio -> pauseRecordingAudio()
+                    else -> startPermission()
                 }
             }
 
@@ -163,8 +162,7 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
 
             binding.deleteBtn.setOnClickListener {
                 try {
-                    stopRecordingAudio(requireActivity().getString(R.string.record_canceled))
-                    File(dirPath+fileName).delete()
+                    showCancelDialog()
                 }catch (e : Exception){
                     setToast(activity,e.message.toString())
                 }
@@ -210,6 +208,29 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
     }
 
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (mp != null) {
+            mp?.apply {
+                release()
+                showBtnStop = false
+                songIsPlaying = false
+                MyMusicListener.setMyListener(null)
+                MyStopSDKMusicListener.setMyListener(null)
+                MyStopMusicListener.setMyListener(null)
+            }
+        }
+        if(recorder!=null&&recordingAudio){
+            recorder?.apply {
+                release()
+                recordingAudio = false
+                pauseRecordAudio= false
+            }
+            recorder = null
+            showLayoutStopRecord()
+        }
+    }
+
     private fun showDialogRecord() {
         // custom dialog
         val dialog = Dialog(requireActivity())
@@ -222,7 +243,7 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
         val btnScreenAudio = dialog.findViewById<View>(R.id.btn_cancel) as Button
 
         btnAudio.setOnClickListener {
-            startRecordingAudio()
+            showRecordDialog()
             dialog.dismiss()
         }
 
@@ -258,17 +279,18 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
         }
     }
 
+
     private fun startPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 // Pass any permission you want while launching
                 requestPermission.launch(Manifest.permission.RECORD_AUDIO)
             }else{
-                startRecordingAudio()
+                showRecordDialog()
 
             }
         }else{
-            startRecordingAudio()
+            showRecordDialog()
         }
 
     }
@@ -296,7 +318,7 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             // do something
             if(isGranted){
-                startRecordingAudio()
+                showRecordDialog()
             }else{
                 showAllowPermission()
             }
@@ -384,6 +406,49 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
         }
 
         binding.timerView.text = "00:00.00"
+    }
+
+
+    private fun showRecordDialog() {
+        try {
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle(activity?.getString(R.string.notification))
+            builder.setMessage(activity?.getString(R.string.title_recording_dialog))
+            builder.setPositiveButton(activity?.getString(R.string.yes)) { dialog, _ ->
+                startRecordingAudio()
+                dialog.dismiss()
+            }
+            builder.setNegativeButton(activity?.getString(R.string.no)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }catch (e : Exception){
+            setToast(activity,e.message.toString())
+        }
+    }
+
+
+    private fun showCancelDialog() {
+        try {
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle(activity?.getString(R.string.notification))
+            builder.setMessage(activity?.getString(R.string.title_recording_canceled))
+            builder.setPositiveButton(activity?.getString(R.string.yes)) { dialog, _ ->
+
+                stopRecordingAudio(requireActivity().getString(R.string.record_canceled))
+                File(dirPath+fileName).delete()
+
+                dialog.dismiss()
+            }
+            builder.setNegativeButton(activity?.getString(R.string.no)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }catch (e : Exception){
+            setToast(activity,e.message.toString())
+        }
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -568,17 +633,10 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun stopRecordingScreen(){
-
-    }
-
     private fun showBottomSheet(){
         val bottomSheet = BottomSheet(dirPath, fileName, this)
         bottomSheet.show(requireActivity().supportFragmentManager, LOG_TAG)
     }
-
-
 
     @SuppressLint("SetTextI18n")
     override fun onCancelClicked() {
@@ -611,7 +669,6 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
 
             binding.recordText.visibility = View.VISIBLE
             binding.recordText.text = requireActivity().getString(R.string.record)
-            //showInterstitial(activity)
             showRewardInterstitial()
         }
 
@@ -698,9 +755,9 @@ class VoiceRecordFragmentVertical : BaseFragmentWidget(), BottomSheet.OnClickLis
                 release()
                 showBtnStop = false
                 songIsPlaying = false
-                MyMusicListener.postAction(null)
-                MyStopSDKMusicListener.postAction(true)
-                MyStopMusicListener.postAction(true)
+                MyMusicListener.setMyListener(null)
+                MyStopSDKMusicListener.setMyListener(null)
+                MyStopMusicListener.setMyListener(null)
             }
         }
         if(recorder!=null&&recordingAudio){

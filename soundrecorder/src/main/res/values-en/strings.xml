@@ -87,4 +87,29 @@
     <string name="download_success">Download Successful, Please Wait 5 Seconds</string>
     <string name="data_empty">Data Empty</string>
 
+
+    <string name="yes">Yes</string>
+    <string name="title_recording_dialog">The recording process will start after you select YES</string>
+    <string name="title_recording_canceled">Do you want to cancel the recording?</string>
+    <string name="title_recording_stop">Do you want to save the recording?</string>
+    <string name="notification">Notification</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pause</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="play">Play</string>
+    <string name="previously">Previously</string>
+    <string name="version">Version</string>
+    <string name="share">Share</string>
+    <string name="write_note">Write Notes</string>
+    <string name="song_key">Song Key</string>
+    <string name="beginner">Beginner</string>
+    <string name="middle">Middle</string>
+    <string name="Master">Master</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="search">Cari</string>
+    <string name="recommed_message">Let me recommend you this application </string>
+
 </resources>

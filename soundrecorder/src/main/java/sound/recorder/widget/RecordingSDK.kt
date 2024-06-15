@@ -75,41 +75,54 @@ object RecordingSDK {
         }
     }
 
-    fun showDialogColorPicker(context: Context){
-        val colorPicker = ColorPicker(context as Activity)
-        val colors: ArrayList<String> = ArrayList()
-        colors.add("#82B926")
-        colors.add("#a276eb")
-        colors.add("#6a3ab2")
-        colors.add("#666666")
-        colors.add("#FFFF00")
-        colors.add("#3C8D2F")
-        colors.add("#FA9F00")
-        colors.add("#FF0000")
+    fun showDialogColorPicker(context: Context) {
+        try {
+            val colorPicker = ColorPicker(context as Activity)
+            val colors: ArrayList<String> = ArrayList()
+            colors.add("#82B926")
+            colors.add("#a276eb")
+            colors.add("#6a3ab2")
+            colors.add("#666666")
+            colors.add("#FFFF00")
+            colors.add("#3C8D2F")
+            colors.add("#FA9F00")
+            colors.add("#FF0000")
 
-        colorPicker
-            //.setDefaultColorButton(Color.parseColor("#2062af"))
-            //.setColors(colors)
-            .setColumns(5)
-            .setRoundColorButton(true)
-            .setOnChooseColorListener(object : OnChooseColorListener {
-                override fun onChooseColor(position: Int, color: Int) {
+            colorPicker
+                //.setDefaultColorButton(Color.parseColor("#2062af"))
+                //.setColors(colors)
+                .setColumns(5)
+                .setRoundColorButton(true)
+                .setOnChooseColorListener(object : OnChooseColorListener {
+                    override fun onChooseColor(position: Int, color: Int) {
 
-                    if(color!=0){
-                        DataSession(context).saveColor(color,Constant.KeyShared.backgroundColor)
+                        if (color != 0) {
+                            DataSession(context).saveColor(
+                                color,
+                                Constant.KeyShared.backgroundColor
+                            )
+                        }
                     }
-                }
 
-                override fun onCancel() {
+                    override fun onCancel() {
 
-                }
-            })
-            .addListenerButton(
-                "newButton"
-            ) { _, position, _ -> {
-                Log.d("position", "" + position)
-            } }.show()
+                    }
+                })
+                .addListenerButton(
+                    "newButton"
+                ) { _, position, _ ->
+                    {
+                        Log.d("position", "" + position)
+                    }
+                }.show()
+
+        } catch (e: Exception) {
+
+            Log.d("error",e.message.toString())
+
+        }
     }
+
 
 
 }

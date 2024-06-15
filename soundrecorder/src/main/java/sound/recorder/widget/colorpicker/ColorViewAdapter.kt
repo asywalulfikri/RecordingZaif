@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import sound.recorder.widget.R
@@ -39,7 +40,7 @@ class ColorViewAdapter : RecyclerView.Adapter<ColorViewAdapter.ViewHolder> {
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v),
         View.OnClickListener {
-        var colorItem: Button
+        var colorItem: AppCompatButton
         override fun onClick(v: View) {
             if (colorPosition != -1 && colorPosition != layoutPosition) {
                 mDataset[colorPosition].isCheck = false

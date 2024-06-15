@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 object MyFragmentListener {
     private var myListener: FragmentListener? = null
 
-    fun setMyListener(listener: FragmentListener) {
+    fun setMyListener(listener: FragmentListener?=null) {
         myListener = listener
     }
     fun openFragment(fragment : Fragment?) {

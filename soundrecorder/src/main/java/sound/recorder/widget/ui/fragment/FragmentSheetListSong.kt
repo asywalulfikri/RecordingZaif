@@ -28,7 +28,7 @@ import sound.recorder.widget.listener.StopSDKMusicListener
 import sound.recorder.widget.model.Song
 import sound.recorder.widget.util.DataSession
 
-class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var listener: OnClickListener? =null) :
+class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private var listener: OnClickListener? = null) :
     Fragment(), SharedPreferences.OnSharedPreferenceChangeListener, StopSDKMusicListener {
 
     override fun onAttach(context: Context) {
@@ -44,16 +44,14 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
     interface OnClickListener {
         fun onPlaySong(filePath: String)
         fun onStopSong()
-
-        fun onNoteSong(note : String)
-
+        fun onNoteSong(note: String)
     }
 
     private lateinit var binding: BottomSheetSongBinding
     private var sharedPreferences: SharedPreferences? = null
     private var listTitleSong: ArrayList<String>? = null
     private var listLocationSong: ArrayList<String>? = null
-    private var listNoteSong : ArrayList<String>? =null
+    private var listNoteSong: ArrayList<String>? = null
     private var adapter: ArrayAdapter<String>? = null
     private var mPanAnim: Animation? = null
     private var lisSong = ArrayList<Song>()
@@ -70,7 +68,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
 
                 initAnim()
 
-                if (showBtnStop==true) {
+                if (showBtnStop == true) {
                     binding.ivStop.visibility = View.VISIBLE
                     startAnimation()
                 } else {
@@ -100,7 +98,6 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
             } catch (e: Exception) {
                 setLog(e.message)
             }
-
         }
 
         return binding.root
@@ -109,11 +106,10 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
     private fun getSong(list: ArrayList<Song>) {
         try {
             getAllMediaMp3Files(list)
-        }catch (e : Exception){
-           setLog(e.message.toString())
+        } catch (e: Exception) {
+            setLog(e.message.toString())
         }
     }
-
 
     @SuppressLint("Recycle")
     private fun getAllMediaMp3Files(songList: ArrayList<Song>) {
@@ -128,16 +124,14 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
             )
             if (cursor == null) {
                 Toast.makeText(requireContext(), "Something Went Wrong.", Toast.LENGTH_LONG).show()
-            }else {
+            } else {
                 val title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
                 val location = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
-
 
                 MainScope().launch {
                     var songTitle1: String
                     var songLocation1: String
-                    var songNote1 : String
-
+                    var songNote1: String
 
                     withContext(Dispatchers.Default) {
                         for (i in songList.indices) {
@@ -156,14 +150,10 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
 
                             if (cursor.moveToFirst()) {
                                 withContext(Dispatchers.Default) {
-
                                     do {
                                         var songTitle = ""
                                         var songLocation = ""
                                         var songNote = ""
-
-
-
 
                                         if (cursor.getString(title) != null) {
                                             songTitle = cursor.getString(title)
@@ -180,18 +170,16 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
                                     } while (cursor.moveToNext())
                                 }
                                 updateView()
-                            }else{
+                            } else {
                                 updateView()
                             }
                         }
 
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         setLog(e.message.toString())
                     }
                 }
-
             }
-
         }
     }
 
@@ -210,11 +198,10 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
                             listener?.onNoteSong(listNoteSong?.get(i).toString())
                         }
                     }
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 setLog(e.message.toString())
             }
         }
-
     }
 
     private fun startAnimation() {
@@ -266,13 +253,31 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
         sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
+    override fun onDestroy() {
+        // Call super.onDestroy()
+        super.onDestroy()
+
+        // Stop the animation if it is running
+        stopAnimation()
+
+        // Unregister the shared preference change listener
+        sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
+
+        // Unregister any listeners or clean up resources here
+        MyStopSDKMusicListener.setMyListener(null)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
     override fun onPause() {
         super.onPause()
         sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        // Handle shared preference changes if needed
+        // Handle shared preference changes here
     }
 
     private fun setLog(message: String? = null) {
@@ -294,5 +299,4 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? =null, private var
         activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         return false
     }
-
 }

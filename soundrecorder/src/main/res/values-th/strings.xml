@@ -87,5 +87,29 @@
     <string name="download_success">ดาวน์โหลดสำเร็จ รอ 5 วินาที</string>
     <string name="data_empty">ข้อมูลว่าง</string>
 
+    <string name="yes">ใช่</string>
+    <string name="title_recording_dialog">กระบวนการบันทึกเสียงจะเริ่มต้นหลังจากที่คุณเลือก "ใช่"</string>
+    <string name="title_recording_canceled">คุณต้องการยกเลิกการบันทึกเสียงหรือไม่?</string>
+    <string name="title_recording_stop">คุณต้องการบันทึกเสียงหรือไม่?</string>
+    <string name="notification">การแจ้งเตือน</string>
+    <string name="skip">ข้าม</string>
+    <string name="next">ต่อไป</string>
+    <string name="stop">หยุด</string>
+    <string name="pause">หยุดชั่วคราว</string>
+    <string name="open">เปิด</string>
+    <string name="close">ปิด</string>
+    <string name="play">เล่น</string>
+    <string name="previously">ก่อนหน้า</string>
+    <string name="version">เวอร์ชัน</string>
+    <string name="share">แชร์</string>
+    <string name="write_note">เขียนบันทึก</string>
+    <string name="song_key">คีย์เพลง</string>
+    <string name="beginner">ผู้เริ่มต้น</string>
+    <string name="middle">กลาง</string>
+    <string name="Master">มาสเตอร์</string>
+    <string name="remove_ads">ลบโฆษณา</string>
+    <string name="search">ค้นหา</string>
+    <string name="recommed_message">ให้ฉันแนะนำแอปพลิเคชันนี้ให้คุณ</string>
+
 
 </resources>

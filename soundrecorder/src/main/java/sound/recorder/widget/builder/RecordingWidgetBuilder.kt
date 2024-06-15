@@ -10,14 +10,11 @@ class RecordingWidgetBuilder private constructor(
     val versionCode : Int?,
     val versionName: String?,
     val applicationId: String?,
+    val developerName : String?,
     val showNote : Boolean,
     val backgroundWidgetColor : String?
 ) {
 
-
-    fun addInfo(context: Context,versionCode : Int,versionName : String, appId : String,appName : String,jsonName : String,backgroundSplashScreen : String, isNote : Boolean,showSong : Boolean, llRecordBackground : String){
-        DataSession(context).setInfoApp(versionCode,versionName,appId,appName,jsonName,backgroundSplashScreen,isNote,showSong,llRecordBackground)
-    }
 
     // Builder class to construct MyObject
     class Builder(private val context: Context) {
@@ -26,6 +23,7 @@ class RecordingWidgetBuilder private constructor(
         private var versionCode : Int? = null
         private var versionName: String?= null
         private var applicationId: String? = null
+        private var developerName : String? = null
         private var showNote = false
         private var backgroundWidgetColor : String? = null
 
@@ -49,6 +47,11 @@ class RecordingWidgetBuilder private constructor(
             return this
         }
 
+        fun setDeveloperName(developerName: String?): Builder {
+            this.developerName = developerName
+            return this
+        }
+
         fun showNote(showNote: Boolean): Builder {
             this.showNote = showNote
             return this
@@ -61,7 +64,7 @@ class RecordingWidgetBuilder private constructor(
 
         // Build function to create an instance of MyObject
         fun build(): RecordingWidgetBuilder {
-            val myObject = RecordingWidgetBuilder(appName, versionCode, versionName,applicationId,showNote,backgroundWidgetColor)
+            val myObject = RecordingWidgetBuilder(appName, versionCode, versionName,applicationId,developerName,showNote,backgroundWidgetColor)
 
             // Save values to SharedPreferences
             saveToSharedPreferences(myObject)
@@ -80,6 +83,7 @@ class RecordingWidgetBuilder private constructor(
             editor.putString(Constant.KeyShared.versionCode, recordingWidgetBuilder.versionName)
             editor.putString(Constant.KeyShared.versionName, recordingWidgetBuilder.versionName)
             editor.putString(Constant.KeyShared.applicationId, recordingWidgetBuilder.applicationId)
+            editor.putString(Constant.KeyShared.developerName, recordingWidgetBuilder.developerName)
             editor.putBoolean(Constant.KeyShared.showNote, recordingWidgetBuilder.showNote)
             editor.putString(Constant.KeyShared.backgroundWidgetColor, recordingWidgetBuilder.backgroundWidgetColor)
 

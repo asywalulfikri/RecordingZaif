@@ -86,4 +86,30 @@
     <string name="download_success">Tải về thành công, Vui lòng đợi 5 giây</string>
     <string name="data_empty">Dữ liệu trống</string>
 
+
+    <string name="yes">Có</string>
+    <string name="title_recording_dialog">Quá trình ghi âm sẽ bắt đầu sau khi bạn chọn CÓ</string>
+    <string name="title_recording_canceled">Bạn có muốn hủy bỏ việc ghi âm không?</string>
+    <string name="title_recording_stop">Bạn có muốn lưu lại bản ghi âm không?</string>
+    <string name="notification">Thông báo</string>
+    <string name="skip">Bỏ qua</string>
+    <string name="next">Tiếp</string>
+    <string name="stop">Dừng</string>
+    <string name="pause">Tạm dừng</string>
+    <string name="open">Mở</string>
+    <string name="close">Đóng</string>
+    <string name="play">Phát</string>
+    <string name="previously">Trước đó</string>
+    <string name="version">Phiên bản</string>
+    <string name="share">Chia sẻ</string>
+    <string name="write_note">Viết ghi chú</string>
+    <string name="song_key">Khóa bài hát</string>
+    <string name="beginner">Người mới bắt đầu</string>
+    <string name="middle">Trung cấp</string>
+    <string name="Master">Chuyên gia</string>
+    <string name="remove_ads">Xóa quảng cáo</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="recommed_message">Hãy để tôi giới thiệu ứng dụng này cho bạn</string>
+
+
 </resources>

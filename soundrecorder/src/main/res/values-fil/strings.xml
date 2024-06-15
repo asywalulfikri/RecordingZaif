@@ -88,5 +88,32 @@
     <string name="data_empty">Walang Datos</string>
 
 
+    <string name="yes">Oo</string>
+    <string name="title_recording_dialog">Ang proseso ng pagre-record ay magsisimula pagkatapos mong pumili ng Oo</string>
+    <string name="title_recording_canceled">Gusto mo bang kanselahin ang pagre-record?</string>
+    <string name="title_recording_stop">Gusto mo bang i-save ang pagre-record?</string>
+    <string name="notification">Patalastas</string>
+    <string name="skip">Laktawan</string>
+    <string name="next">Susunod</string>
+    <string name="stop">Itigil</string>
+    <string name="pause">Itigil</string>
+    <string name="open">Buksan</string>
+    <string name="close">Isara</string>
+    <string name="play">Magpatugtog</string>
+    <string name="previously">Noong nakaraan</string>
+    <string name="version">Bersyon</string>
+    <string name="share">Ibahagi</string>
+    <string name="write_note">Magsulat ng mga Tala</string>
+    <string name="song_key">Tono ng Awitin</string>
+    <string name="beginner">Baguhan</string>
+    <string name="middle">Gitna</string>
+    <string name="Master">Dalubhasa</string>
+    <string name="remove_ads">Alisin ang mga Anunsiyo</string>
+    <string name="search">Maghanap</string>
+    <string name="recommed_message">Pahintulutan mo akong irekomenda ang aplikasyong ito sa iyo</string>
+
+
+
+
 
 </resources>

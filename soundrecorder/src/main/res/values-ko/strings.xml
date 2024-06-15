@@ -89,5 +89,29 @@
     <string name="data_empty">데이터가 비어 있습니다</string>
 
 
+    <string name="yes">예</string>
+    <string name="title_recording_dialog">예를 선택하면 녹음 프로세스가 시작됩니다</string>
+    <string name="title_recording_canceled">녹음을 취소하시겠습니까?</string>
+    <string name="title_recording_stop">녹음을 저장하시겠습니까?</string>
+    <string name="notification">알림</string>
+    <string name="skip">건너뛰기</string>
+    <string name="next">다음</string>
+    <string name="stop">정지</string>
+    <string name="pause">일시 정지</string>
+    <string name="open">열기</string>
+    <string name="close">닫기</string>
+    <string name="play">재생</string>
+    <string name="previously">이전에</string>
+    <string name="version">버전</string>
+    <string name="share">공유</string>
+    <string name="write_note">노트 작성</string>
+    <string name="song_key">곡 키</string>
+    <string name="beginner">초보자</string>
+    <string name="middle">중급자</string>
+    <string name="Master">마스터</string>
+    <string name="remove_ads">광고 제거</string>
+    <string name="search">검색</string>
+    <string name="recommed_message">이 애플리케이션을 추천합니다</string>
+
 
 </resources>

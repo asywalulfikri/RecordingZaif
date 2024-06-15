@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:fontFamily="@font/rimouski"
+                android:fontFamily="@font/ooredoo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -43,8 +43,9 @@
                 android:id="@+id/etMessage"
                 android:background="@drawable/bg_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:padding="15dp"
+                android:textColor="@color/black_de"
                 android:gravity="top"
                 android:hint="@string/input_message_here"
                 android:layout_gravity="center_horizontal"
@@ -60,11 +61,11 @@
                 <Button
                     android:id="@+id/btnCancel"
                     android:layout_weight="1"
-                    android:fontFamily="@font/rimouski"
+                    android:fontFamily="@font/ooredoo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grayDark"
                     android:text="@string/cancel"
                     />
 
@@ -75,10 +76,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/rimouski"
-                    android:textColor="@color/white"
+                    android:fontFamily="@font/ooredoo"
+                    android:textColor="@color/grayDark"
                     android:text="@string/send"
-                    />
+                    tools:ignore="ButtonStyle" />
 
 
             </LinearLayout>

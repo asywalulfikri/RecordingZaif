@@ -89,4 +89,30 @@
     <string name="data_empty">Data Kosong</string>
 
 
+    <string name="yes">Ya</string>
+    <string name="title_recording_dialog">Proses rakaman akan bermula selepas anda memilih Ya</string>
+    <string name="title_recording_canceled">Adakah anda mahu membatalkan rakaman?</string>
+    <string name="title_recording_stop">Adakah anda mahu menyimpan rakaman?</string>
+    <string name="notification">Pemberitahuan</string>
+    <string name="skip">Lewat</string>
+    <string name="next">Seterusnya</string>
+    <string name="stop">Berhenti</string>
+    <string name="pause">Jeda</string>
+    <string name="open">Buka</string>
+    <string name="close">Tutup</string>
+    <string name="play">Main</string>
+    <string name="previously">Sebelum ini</string>
+    <string name="version">Versi</string>
+    <string name="share">Kongsi</string>
+    <string name="write_note">Tulis Nota</string>
+    <string name="song_key">Kunci Lagu</string>
+    <string name="beginner">Pemula</string>
+    <string name="middle">Pertengahan</string>
+    <string name="Master">Master</string>
+    <string name="remove_ads">Alih Iklan</string>
+    <string name="search">Cari</string>
+    <string name="recommed_message">Biarkan saya mengesyorkan aplikasi ini kepada anda</string>
+
+
+
 </resources>
