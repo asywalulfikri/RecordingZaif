@@ -88,13 +88,14 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.7.1'
     //config admob
     implementation 'com.google.android.gms:play-services-ads:23.1.0'
-    implementation 'com.google.android.gms:play-services-ads-identifier:18.1.0'
+    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
+
 
     //config facebook
     implementation 'com.facebook.android:audience-network-sdk:6.16.0'
 
     //config starApp
- //   implementation 'com.startapp:inapp-sdk:4.11.5'
+    //   implementation 'com.startapp:inapp-sdk:4.11.5'
 /*
     //config InMobi
     implementation 'com.inmobi.monetization:inmobi-ads:10.1.3'
