@@ -874,6 +874,14 @@ open class BaseFragmentWidget : Fragment() {
     }
 
 
+    fun releaseInterstitialAdmob(){
+        mInterstitialAd = null
+    }
+
+    fun releaseInterstitialFAN(){
+        interstitialFANAd = null
+    }
+
     fun showInterstitialFAN(){
         try {
             Log.d("showInters","execute")

@@ -895,6 +895,14 @@ open class BaseActivityWidget : AppCompatActivity() {
         }
     }
 
+    fun releaseInterstitialAdmob(){
+        mInterstitialAd = null
+    }
+
+    fun releaseInterstitialFAN(){
+        interstitialFANAd = null
+    }
+
     fun setupRewardInterstitial(){
         try {
             RewardedInterstitialAd.load(this, DataSession(this).getRewardInterstitialId(),
@@ -966,6 +974,7 @@ open class BaseActivityWidget : AppCompatActivity() {
             setLog(e.message.toString())
         }
     }
+
 
     fun setupReward(){
         try {
