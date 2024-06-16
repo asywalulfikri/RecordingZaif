@@ -34,6 +34,11 @@
             </intent-filter>
         </activity>
 
+
+        <activity android:name="sound.recorder.widget.ui.activity.PlayerActivityWidget"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize"/>
+
         <activity android:name=".MainActivity"/>
     </application>
 

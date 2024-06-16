@@ -20,9 +20,6 @@
             android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT"
             android:value="true"/>
 
-        <activity android:name=".ui.activity.PlayerActivityWidget"
-            android:configChanges="orientation|screenSize"/>
-
         <activity android:name=".ui.activity.ListingActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="sensorLandscape"/>
