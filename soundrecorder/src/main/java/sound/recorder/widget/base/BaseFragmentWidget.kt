@@ -875,11 +875,20 @@ open class BaseFragmentWidget : Fragment() {
 
 
     fun releaseInterstitialAdmob(){
-        mInterstitialAd = null
+        try {
+            mInterstitialAd?.fullScreenContentCallback = null
+            mInterstitialAd = null
+        }catch (e : Exception){
+            setLog(e.message)
+        }
     }
 
     fun releaseInterstitialFAN(){
-        interstitialFANAd = null
+        try {
+            interstitialFANAd = null
+        }catch (e : Exception){
+            setLog(e.message.toString())
+        }
     }
 
     fun showInterstitialFAN(){
