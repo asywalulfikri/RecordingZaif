@@ -109,4 +109,8 @@
     <string name="remove_ads">移除广告</string>
     <string name="search">搜索</string>
     <string name="recommed_message">让我向您推荐这款应用</string>
+    <string name="loading">加载中...</string>
+
+
+
 </resources>

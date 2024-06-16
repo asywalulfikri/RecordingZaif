@@ -110,6 +110,8 @@
     <string name="remove_ads">ลบโฆษณา</string>
     <string name="search">ค้นหา</string>
     <string name="recommed_message">ให้ฉันแนะนำแอปพลิเคชันนี้ให้คุณ</string>
+    <string name="loading">กำลังโหลด...</string>
+
 
 
 </resources>

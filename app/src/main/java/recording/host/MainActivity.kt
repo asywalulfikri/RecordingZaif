@@ -1,6 +1,7 @@
 package recording.host
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.media.AudioManager
@@ -61,7 +62,6 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener, SharedPr
 
         sharedPreferences = DataSession(this).getShared()
         sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-
 
         setupBannerNew(binding.bannerView)
 

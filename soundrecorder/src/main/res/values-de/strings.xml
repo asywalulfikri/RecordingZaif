@@ -1,4 +1,5 @@
 <resources>
+    <!--bahasa Jerman-->
     <string name="default_notification_channel_id">Standardbenachrichtigungskanal-ID</string>
 
     <string name="colorpicker_dialog_title">Wählen Sie die Farbe</string>
@@ -109,4 +110,5 @@
     <string name="remove_ads">Werbung entfernen</string>
     <string name="search">Suche</string>
     <string name="recommed_message">Lassen Sie mich Ihnen diese Anwendung empfehlen</string>
+    <string name="loading">Lädt...</string>
 </resources>

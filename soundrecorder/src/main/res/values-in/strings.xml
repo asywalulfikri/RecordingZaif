@@ -112,6 +112,7 @@
     <string name="remove_ads">Hapus Iklan</string>
     <string name="search">Cari</string>
     <string name="recommed_message">Biarkan saya merekomendasikan aplikasi ini kepada Anda</string>
+    <string name="loading">Memuat...</string>
 
 
 </resources>

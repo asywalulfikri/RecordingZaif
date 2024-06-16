@@ -110,6 +110,7 @@
     <string name="remove_ads">Xóa quảng cáo</string>
     <string name="search">Tìm kiếm</string>
     <string name="recommed_message">Hãy để tôi giới thiệu ứng dụng này cho bạn</string>
+    <string name="loading">Đang tải...</string>
 
 
 </resources>

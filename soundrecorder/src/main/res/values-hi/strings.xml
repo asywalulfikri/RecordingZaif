@@ -109,5 +109,7 @@
     <string name="remove_ads">विज्ञापन हटाएं</string>
     <string name="search">खोजें</string>
     <string name="recommed_message">मैं आपको इस एप्लिकेशन की सिफारिश करना चाहूंगा</string>
+    <string name="loading">लोड हो रहा है...</string>
+
 
 </resources>
