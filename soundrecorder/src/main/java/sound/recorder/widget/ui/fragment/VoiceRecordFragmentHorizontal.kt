@@ -114,7 +114,6 @@ class VoiceRecordFragmentHorizontal : BaseFragmentWidget(), BottomSheet.OnClickL
             volumes = (1 - ln((ToneGenerator.MAX_VOLUME - progress!!).toDouble()) / ln(
                 ToneGenerator.MAX_VOLUME.toDouble())).toFloat()
 
-            setupInterstitial()
 
             if(showNote==true){
                 binding.noteBtn.visibility = View.VISIBLE
