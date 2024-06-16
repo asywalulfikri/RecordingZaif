@@ -74,7 +74,7 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener, SharedPr
                 )
             )
         }
-        setupInterstitial()
+        setupInterstitialFacebook()
 
         permissionNotification()
 
@@ -122,6 +122,7 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener, SharedPr
 
 
         binding.btnInterstitialAdmob.setOnClickListener {
+            //showInterstitial()
             showInterstitial()
         }
 

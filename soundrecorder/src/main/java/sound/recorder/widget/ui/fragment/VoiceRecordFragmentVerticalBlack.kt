@@ -113,7 +113,7 @@ class VoiceRecordFragmentVerticalBlack : BaseFragmentWidget(), BottomSheet.OnCli
             val progress = sharedPreferences?.getInt(Constant.KeyShared.volume,100)
             volumes = (1 - ln((ToneGenerator.MAX_VOLUME - progress!!).toDouble()) / ln(
                 ToneGenerator.MAX_VOLUME.toDouble())).toFloat()
-            
+
 
             if(showNote==true){
                 binding.noteBtn.visibility = View.VISIBLE

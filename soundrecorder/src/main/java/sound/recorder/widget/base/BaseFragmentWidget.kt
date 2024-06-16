@@ -80,6 +80,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import com.google.android.ump.UserMessagingPlatform
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import sound.recorder.widget.BuildConfig
 import sound.recorder.widget.animation.ParticleSystem
 import sound.recorder.widget.animation.modifiers.ScaleModifier
 import kotlin.time.Duration.Companion.seconds
@@ -194,7 +195,11 @@ open class BaseFragmentWidget : Fragment() {
 
             override fun onInterstitialDismissed(ad: Ad) {
                 // Interstitial dismissed callback
-                Log.e("FAN", "Interstitial ad dismissed.")
+                if(BuildConfig.DEBUG){
+                    setToast(activity,"close FAN ads")
+                }
+                interstitialFANAd =null
+                setupInterstitialFacebook()
             }
 
             override fun onError(p0: Ad?, adError: com.facebook.ads.AdError?) {
@@ -817,7 +822,72 @@ open class BaseFragmentWidget : Fragment() {
 
     private val requestPermissionNotification = registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
 
+
     fun setupInterstitial() {
+        if (getDataSession().getFanEnable()) {
+            setupInterstitialFacebook()
+        }
+        try {
+            val adRequest = AdRequest.Builder().build()
+            adRequest.let {
+                InterstitialAd.load(requireContext(), getDataSession().getInterstitialId(), it,
+                    object : InterstitialAdLoadCallback() {
+                        override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                            mInterstitialAd = interstitialAd
+                            isLoad = true
+                            setLog("AdMob Inters Loaded Success")
+
+                            // Set the FullScreenContentCallback
+                            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                                override fun onAdDismissedFullScreenContent() {
+                                    if(BuildConfig.DEBUG){
+                                        setToast(activity,"ads closed")
+                                    }
+                                    mInterstitialAd = null
+                                    setupInterstitial()
+                                }
+
+                                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                                    // Handle the ad failed to show event
+                                    setLog("AdMob Inters Ad Failed to Show: ${adError.message}")
+                                }
+
+                                override fun onAdShowedFullScreenContent() {
+                                    if(BuildConfig.DEBUG){
+                                        setToast(activity,"ads showed")
+                                    }
+                                    mInterstitialAd = null // Reset the interstitial ad
+                                }
+                            }
+                        }
+
+                        override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                            mInterstitialAd = null
+                            isLoad = false
+                            setLog("AdMob Inters Loaded Failed id = " + getDataSession().getInterstitialId() + " ---> " + loadAdError.message)
+                        }
+                    })
+            }
+        } catch (e: Exception) {
+            setLog(e.message.toString())
+        }
+    }
+
+
+    fun showInterstitialFAN(){
+        try {
+            Log.d("showInters","execute")
+            if(showFANInterstitial){
+                Log.d("showIntersFA","true")
+                interstitialFANAd?.show()
+            }
+        }catch (e : Exception){
+            Log.d("showInters","false")
+            setLog(e.message.toString())
+        }
+    }
+
+    /*fun setupInterstitial() {
         if(getDataSession().getFanEnable()){
             setupInterstitialFacebook()
         }
@@ -836,12 +906,19 @@ open class BaseFragmentWidget : Fragment() {
                             mInterstitialAd = null
                             setLog("AdMob Inters Loaded Failed id = "+ getDataSession().getInterstitialId() + "--->"+ loadAdError.message)
                         }
+
+
                     })
             }
         }catch (e : Exception){
             setLog(e.message.toString())
         }
 
+    }
+*/
+    fun releaseInterstitial(){
+        mInterstitialAd = null
+        interstitialFANAd =null
     }
 
 

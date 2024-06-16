@@ -61,12 +61,17 @@ class SplashActivity : BaseActivityWidget() {
         RecordingSDK.addSong(this,song)
         RecordingSDK.run()
 
+        val fanId             = "6371696286185210"
+        val fanBannerId       = "6371696286185210_7264663670221796"
+        val fanInterstitialId = "6371696286185210_7264664310221732"
+
         FanAdsBuilder.builder(this)
-            .setBannerId("")
-            .setApplicationId("")
-            .setInterstitialId("")
-            .setEnable(false)
+            .setBannerId(fanBannerId)
+            .setApplicationId(fanId)
+            .setInterstitialId(fanInterstitialId)
+            .setEnable(true)
             .build()
+
 
         AdmobAdsBuilder.builder(this)
             .setAdmobId("")

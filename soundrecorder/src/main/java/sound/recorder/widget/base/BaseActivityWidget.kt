@@ -274,7 +274,11 @@ open class BaseActivityWidget : AppCompatActivity() {
 
             override fun onInterstitialDismissed(ad: Ad) {
                 // Interstitial dismissed callback
-                Log.e("FAN", "Interstitial ad dismissed.")
+                if(BuildConfig.DEBUG){
+                    setToast("close FAN ads")
+                }
+                interstitialFANAd =null
+                setupInterstitialFacebook()
             }
 
             override fun onError(p0: Ad?, adError: com.facebook.ads.AdError?) {
@@ -308,6 +312,7 @@ open class BaseActivityWidget : AppCompatActivity() {
         )
 
     }
+
 
     fun onDestroyUpdate() {
         try {
@@ -836,7 +841,7 @@ open class BaseActivityWidget : AppCompatActivity() {
     private val requestPermissionNotification = registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
 
     fun setupInterstitial() {
-        if(getDataSession().getFanEnable()){
+        if (getDataSession().getFanEnable()) {
             setupInterstitialFacebook()
         }
         try {
@@ -847,35 +852,48 @@ open class BaseActivityWidget : AppCompatActivity() {
                         override fun onAdLoaded(interstitialAd: InterstitialAd) {
                             mInterstitialAd = interstitialAd
                             isLoad = true
+                            setLog("AdMob Inters Loaded Success")
+
+                            // Set the FullScreenContentCallback
                             mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                                 override fun onAdDismissedFullScreenContent() {
-                                    // Setelah interstitial ditutup, hapus callback
-                                    mInterstitialAd?.fullScreenContentCallback = null
+                                    // Handle the ad dismissed event
+                                    setLog("AdMob Inters Ad Dismissed")
+                                    if(BuildConfig.DEBUG){
+                                        setToast("ads closed")
+                                    }
+                                    // Load a new interstitial ad
+                                    mInterstitialAd = null
+                                    setupInterstitial()
                                 }
 
+                                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                                    // Handle the ad failed to show event
+                                    setLog("AdMob Inters Ad Failed to Show: ${adError.message}")
+                                    if(BuildConfig.DEBUG){
+                                        setToast(adError.message)
+                                    }
+                                }
 
                                 override fun onAdShowedFullScreenContent() {
-                                    // Setelah interstitial ditampilkan, hapus callback
-                                    mInterstitialAd?.fullScreenContentCallback = null
+                                    // Handle the ad showed event
+                                    setLog("AdMob Inters Ad Showed")
+                                    mInterstitialAd = null // Reset the interstitial ad
                                 }
                             }
-                            setLog("AdMob Inters Loaded Success")
                         }
 
                         override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                             mInterstitialAd = null
-                            setLog("AdMob Inters Loaded Failed id = "+ getDataSession().getInterstitialId() + "--->"+ loadAdError.message)
+                            isLoad = false
+                            setLog("AdMob Inters Loaded Failed id = " + getDataSession().getInterstitialId() + " ---> " + loadAdError.message)
                         }
-
-
                     })
             }
-        }catch (e : Exception){
+        } catch (e: Exception) {
             setLog(e.message.toString())
         }
-
     }
-
 
     fun setupRewardInterstitial(){
         try {
@@ -1048,6 +1066,19 @@ open class BaseActivityWidget : AppCompatActivity() {
                     Log.d("showIntersFA","true")
                     interstitialFANAd?.show()
                 }
+            }
+        }catch (e : Exception){
+            Log.d("showInters","false")
+            setLog(e.message.toString())
+        }
+    }
+
+    fun showInterstitialFAN(){
+        try {
+            Log.d("showInters","execute")
+            if(showFANInterstitial){
+                Log.d("showIntersFA","true")
+                interstitialFANAd?.show()
             }
         }catch (e : Exception){
             Log.d("showInters","false")
