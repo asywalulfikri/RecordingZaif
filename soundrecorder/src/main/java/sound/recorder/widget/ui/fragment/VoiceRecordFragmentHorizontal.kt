@@ -218,6 +218,7 @@ class VoiceRecordFragmentHorizontal : BaseFragmentWidget(), BottomSheet.OnClickL
                 MyMusicListener.setMyListener(null)
                 MyStopSDKMusicListener.setMyListener(null)
                 MyStopMusicListener.setMyListener(null)
+                MyPauseListener.setMyListener(null)
             }
         }
         if(recorder!=null&&recordingAudio){
@@ -758,6 +759,7 @@ class VoiceRecordFragmentHorizontal : BaseFragmentWidget(), BottomSheet.OnClickL
                 MyMusicListener.setMyListener(null)
                 MyStopSDKMusicListener.setMyListener(null)
                 MyStopMusicListener.setMyListener(null)
+                MyPauseListener.setMyListener(null)
             }
         }
         if(recorder!=null&&recordingAudio){
