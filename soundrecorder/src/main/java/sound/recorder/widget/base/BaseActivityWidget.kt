@@ -103,7 +103,7 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     private val isMobileAdsInitializeCalled = AtomicBoolean(false)
     private val initialLayoutComplete = AtomicBoolean(false)
-    private lateinit var adView: AdManagerAdView
+    private var adView: AdManagerAdView? =null
     private lateinit var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager
     private lateinit var consentInformation: ConsentInformation
     private var TAG = "GDPR_App"
@@ -327,31 +327,43 @@ open class BaseActivityWidget : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mInterstitialAd = null
-        adView.destroy()
+        if(adView!=null){
+            adView?.destroy()
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        adView.pause()
+        if(adView!=null){
+            adView?.pause()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        adView.resume()
+        if(adView!=null){
+            adView?.resume()
+        }
     }
 
     fun destroyAds(){
-        mInterstitialAd = null
-        adView.destroy()
+        if(adView!=null){
+            adView?.destroy()
+        }
     }
 
     fun pauseAds(){
-        adView.pause()
+        if(adView!=null){
+            adView?.pause()
+        }
     }
 
     fun resumeAds(){
-        adView.resume()
+        if(adView!=null){
+            adView?.resume()
+        }
     }
+
 
 
 
@@ -443,10 +455,10 @@ open class BaseActivityWidget : AppCompatActivity() {
             }else{
                 bannerId
             }
-            adView.adUnitId = id
-            adView.setAdSizes(getSize(adViewContainer))
+            adView?.adUnitId = id
+            adView?.setAdSizes(getSize(adViewContainer))
             val adRequest = AdManagerAdRequest.Builder().build()
-            adView.adListener = object : AdListener() {
+            adView?.adListener = object : AdListener() {
                 override fun onAdLoaded() {
                     Log.d("AdMob", "Ad loaded successfully unit = $id")
                 }
@@ -470,7 +482,7 @@ open class BaseActivityWidget : AppCompatActivity() {
                     Log.d("AdMob", "Ad closed")
                 }
             }
-            adView.loadAd(adRequest)
+            adView?.loadAd(adRequest)
         }catch (e : Exception){
             setLog(e.message.toString())
         }
