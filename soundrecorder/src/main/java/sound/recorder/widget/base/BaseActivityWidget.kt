@@ -327,7 +327,32 @@ open class BaseActivityWidget : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mInterstitialAd = null
+        adView.destroy()
     }
+
+    override fun onPause() {
+        super.onPause()
+        adView.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adView.resume()
+    }
+
+    fun destroyAds(){
+        mInterstitialAd = null
+        adView.destroy()
+    }
+
+    fun pauseAds(){
+        adView.pause()
+    }
+
+    fun resumeAds(){
+        adView.resume()
+    }
+
 
 
     private val installStateUpdatedListener = InstallStateUpdatedListener{ state ->
