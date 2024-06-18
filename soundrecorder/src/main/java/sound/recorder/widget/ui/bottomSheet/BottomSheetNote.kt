@@ -20,7 +20,7 @@ import com.google.gson.Gson
 import org.json.JSONObject
 import sound.recorder.widget.R
 import sound.recorder.widget.databinding.BottomSheetNotesBinding
-import sound.recorder.widget.model.MyEventBus
+import sound.recorder.widget.listener.MyNoteListener
 import sound.recorder.widget.notes.DatabaseHelper
 import sound.recorder.widget.notes.Note
 import sound.recorder.widget.notes.NotesAdapter
@@ -179,7 +179,7 @@ class BottomSheetNote : BottomSheetDialogFragment() {
     }
 
     private fun useNote(note: Note) {
-        MyEventBus.postActionCompleted(note)
+        MyNoteListener.postActionCompleted(note)
         dismiss()
     }
 

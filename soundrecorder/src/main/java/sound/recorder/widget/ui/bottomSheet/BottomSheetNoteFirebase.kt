@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import sound.recorder.widget.databinding.BottomSheetNotesBinding
-import sound.recorder.widget.model.MyEventBus
+import sound.recorder.widget.listener.MyNoteListener
 import sound.recorder.widget.notes.Note
 import sound.recorder.widget.notes.NotesAdapter
 import sound.recorder.widget.notes.utils.MyDividerItemDecoration
@@ -188,7 +188,7 @@ class BottomSheetNoteFirebase : BottomSheetDialogFragment {
 
     private fun showActionsDialog(position: Int) {
         notesList[position]
-        MyEventBus.postActionCompleted(notesList[position])
+        MyNoteListener.postActionCompleted(notesList[position])
         dismiss()
     }
 
