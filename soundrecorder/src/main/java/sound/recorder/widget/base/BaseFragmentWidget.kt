@@ -782,26 +782,26 @@ open class BaseFragmentWidget : Fragment() {
     }
 
 
-    fun getNoteValue(note: Note) : String{
+    fun getNoteValue(note: Note?) : String{
         val valueNote = try {
-            val jsonObject = JSONObject(note.note.toString())
-            val value = Gson().fromJson(note.note, Note::class.java)
+            val jsonObject = JSONObject(note?.note.toString())
+            val value = Gson().fromJson(note?.note, Note::class.java)
             // The JSON string is valid
             value.note.toString()
 
         } catch (e: Exception) {
             // The JSON string is not valid
-            note.note
+            note?.note
         }
 
-        return  valueNote
+        return  valueNote.toString()
     }
 
-    fun getTitleValue(note: Note) : String{
+    fun getTitleValue(note: Note?) : String{
         var valueNote = ""
         valueNote = try {
-            val jsonObject = JSONObject(note.note.toString())
-            val value = Gson().fromJson(note.title, Note::class.java)
+            val jsonObject = JSONObject(note?.note.toString())
+            val value = Gson().fromJson(note?.title, Note::class.java)
             // The JSON string is valid
             value.note.toString()
 
