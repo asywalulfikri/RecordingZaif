@@ -1,49 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="15dp"
-    android:id="@+id/colorpicker_base">
+    android:layout_height="match_parent"
+    android:padding="15dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/intercom_roboto_medium"
-        android:layout_alignStart="@+id/color_palette"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="5dp"
-        android:textStyle="bold" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/color_palette"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title" />
+        android:id="@+id/colorpicker_base">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/color_palette"
-        android:layout_alignEnd="@+id/color_palette"
-        android:layout_alignStart="@+id/color_palette"
-        android:id="@+id/buttons_layout"
-        android:gravity="end">
-
-        <Button
-            android:id="@+id/positive"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/buttonBarButtonStyle" />
-
-        <Button
-            android:id="@+id/negative"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:fontFamily="@font/intercom_roboto_medium"
+            android:layout_alignStart="@+id/color_palette"
+            android:layout_marginBottom="10dp"
             android:layout_marginStart="5dp"
-            style="?android:attr/buttonBarButtonStyle" />
-    </LinearLayout>
+            android:textStyle="bold" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_above="@+id/buttons_layout"
+            android:id="@+id/color_palette"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/title" />
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/color_palette"
+            android:layout_alignStart="@+id/color_palette"
+            android:id="@+id/buttons_layout"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonBarButtonStyle" />
+
+            <Button
+                android:id="@+id/negative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                style="?android:attr/buttonBarButtonStyle" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

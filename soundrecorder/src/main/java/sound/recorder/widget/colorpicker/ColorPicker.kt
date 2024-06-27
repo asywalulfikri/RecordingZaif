@@ -548,6 +548,6 @@ class ColorPicker(context: Activity) {
         negativeText = context.getString(R.string.colorpicker_dialog_cancel)
         positiveText = context.getString(R.string.colorpicker_dialog_ok)
         default_color = 0
-        columns = 5
+        columns = 7
     }
 }
