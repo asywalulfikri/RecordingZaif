@@ -133,7 +133,11 @@ internal class PlayerActivityWidget : BaseActivityWidget() {
                     2.0f -> playbackSpeed = 0.5f
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mediaPlayer.playbackParams = PlaybackParams().setSpeed(playbackSpeed)
+                    try {
+                        mediaPlayer.playbackParams = PlaybackParams().setSpeed(playbackSpeed)
+                    }catch (e : Exception){
+                        setToast(getString(R.string.device_not_support))
+                    }
                 }
                 binding.chip.text = "x $playbackSpeed"
             }
