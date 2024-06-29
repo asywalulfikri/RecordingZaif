@@ -234,30 +234,34 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
 
     fun setupBannerFacebook(adContainer : FrameLayout){
-        val id = getDataSession().getBannerFANId()
-        val adListener = object : com.facebook.ads.AdListener {
-            override fun onError(ad: Ad, adError: com.facebook.ads.AdError) {
-                setupBannerStarApp(adContainer)
-                setLog("FAN error loaded id = "+ ad.placementId +"---> "+ adError.errorMessage)
+        try {
+            val id = getDataSession().getBannerFANId()
+            val adListener = object : com.facebook.ads.AdListener {
+                override fun onError(ad: Ad, adError: com.facebook.ads.AdError) {
+                    setupBannerStarApp(adContainer)
+                    setLog("FAN error loaded id = "+ ad.placementId +"---> "+ adError.errorMessage)
 
+                }
+
+                override fun onAdLoaded(ad: Ad) {
+                    setLog("FAN Banner Success Loaded id = " + ad.placementId)
+                }
+
+                override fun onAdClicked(ad: Ad) {
+                    // Ad clicked callback
+                }
+
+                override fun onLoggingImpression(ad: Ad) {
+                    // Ad impression logged callback
+                }
             }
 
-            override fun onAdLoaded(ad: Ad) {
-                setLog("FAN Banner Success Loaded id = " + ad.placementId)
-            }
-
-            override fun onAdClicked(ad: Ad) {
-                // Ad clicked callback
-            }
-
-            override fun onLoggingImpression(ad: Ad) {
-                // Ad impression logged callback
-            }
+            val adView = com.facebook.ads.AdView(this, id, com.facebook.ads.AdSize.BANNER_HEIGHT_50)
+            adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build())
+            adContainer.addView(adView)
+        }catch (e : Exception){
+            setLog(e.message.toString())
         }
-
-        val adView = com.facebook.ads.AdView(this, id, com.facebook.ads.AdSize.BANNER_HEIGHT_50)
-        adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build())
-        adContainer.addView(adView)
 
     }
 
@@ -505,64 +509,72 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
 
     private fun initializeMobileAdsSdk(adViewContainer: FrameLayout,bannerId: String? =null) {
-        if (isMobileAdsInitializeCalled.getAndSet(true)) {
-            return
-        }
+        try {
+            if (isMobileAdsInitializeCalled.getAndSet(true)) {
+                return
+            }
 
-        // Initialize the Mobile Ads SDK.
-        MobileAds.initialize(this) {}
+            // Initialize the Mobile Ads SDK.
+            MobileAds.initialize(this) {}
 
-        // Load an ad.
-        if (initialLayoutComplete.get()) {
-            loadBanner(adViewContainer,bannerId)
+            // Load an ad.
+            if (initialLayoutComplete.get()) {
+                loadBanner(adViewContainer,bannerId)
+            }
+        }catch (e : Exception){
+            setLog(e.message.toString())
         }
     }
 
     fun setupBannerNew(adViewContainer: FrameLayout,bannerId : String? =null){
-        adView = AdManagerAdView(this)
-        adViewContainer.addView(adView)
+        try {
+            adView = AdManagerAdView(this)
+            adViewContainer.addView(adView)
 
-        googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(this)
-        googleMobileAdsConsentManager.gatherConsent(this) { error ->
-            if (error != null) {
-                // Consent not obtained in current session.
-                Log.d("AdMob New Error", "${error.errorCode}: ${error.message}")
+            googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(this)
+            googleMobileAdsConsentManager.gatherConsent(this) { error ->
+                if (error != null) {
+                    // Consent not obtained in current session.
+                    Log.d("AdMob New Error", "${error.errorCode}: ${error.message}")
+                }
+
+                // This sample attempts to load ads using consent obtained in the previous session.
+                if (googleMobileAdsConsentManager.canRequestAds) {
+                    Log.d("AdMob New Request", "success")
+                    initializeMobileAdsSdk(adViewContainer,bannerId)
+                }
+
+                if (googleMobileAdsConsentManager.isPrivacyOptionsRequired) {
+                    // Regenerate the options menu to include a privacy setting.
+                    invalidateOptionsMenu()
+                }
             }
 
             // This sample attempts to load ads using consent obtained in the previous session.
             if (googleMobileAdsConsentManager.canRequestAds) {
-                Log.d("AdMob New Request", "success")
+                Log.d("AdMob New Request", "success1")
                 initializeMobileAdsSdk(adViewContainer,bannerId)
             }
 
-            if (googleMobileAdsConsentManager.isPrivacyOptionsRequired) {
-                // Regenerate the options menu to include a privacy setting.
-                invalidateOptionsMenu()
+
+            // Since we're loading the banner based on the adContainerView size, we need to wait until this
+            // view is laid out before we can get the width.
+            adViewContainer.viewTreeObserver.addOnGlobalLayoutListener {
+                if (!initialLayoutComplete.getAndSet(true) && googleMobileAdsConsentManager.canRequestAds) {
+                    loadBanner(adViewContainer,bannerId)
+                }
             }
+
+            // Set your test devices. Check your logcat output for the hashed device ID to
+            // get test ads on a physical device. e.g.
+            // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+            // to get test ads on this device."
+           /* MobileAds.setRequestConfiguration(
+                RequestConfiguration.Builder().setTestDeviceIds(listOf("D48A46E523E6A96C8215178502423686")).build()
+            )*/
+        }catch (e : Exception){
+            setLog(e.message.toString())
         }
-
-        // This sample attempts to load ads using consent obtained in the previous session.
-        if (googleMobileAdsConsentManager.canRequestAds) {
-            Log.d("AdMob New Request", "success1")
-            initializeMobileAdsSdk(adViewContainer,bannerId)
-        }
-
-
-        // Since we're loading the banner based on the adContainerView size, we need to wait until this
-        // view is laid out before we can get the width.
-        adViewContainer.viewTreeObserver.addOnGlobalLayoutListener {
-            if (!initialLayoutComplete.getAndSet(true) && googleMobileAdsConsentManager.canRequestAds) {
-                loadBanner(adViewContainer,bannerId)
-            }
-        }
-
-        // Set your test devices. Check your logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
-        // to get test ads on this device."
-        MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder().setTestDeviceIds(listOf("D48A46E523E6A96C8215178502423686")).build()
-        )
     }
 
     fun showArrayLanguage(){
