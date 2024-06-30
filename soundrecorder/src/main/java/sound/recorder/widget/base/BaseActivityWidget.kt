@@ -515,12 +515,17 @@ open class BaseActivityWidget : AppCompatActivity() {
             }
 
             // Initialize the Mobile Ads SDK.
-            MobileAds.initialize(this) {}
+            try {
+                MobileAds.initialize(this) {}
 
-            // Load an ad.
-            if (initialLayoutComplete.get()) {
-                loadBanner(adViewContainer,bannerId)
+                // Load an ad.
+                if (initialLayoutComplete.get()) {
+                    loadBanner(adViewContainer,bannerId)
+                }
+            }catch (e : Exception){
+                setLog(e.message.toString())
             }
+
         }catch (e : Exception){
             setLog(e.message.toString())
         }
