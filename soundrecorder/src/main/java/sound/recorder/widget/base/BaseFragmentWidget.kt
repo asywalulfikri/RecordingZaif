@@ -185,52 +185,56 @@ open class BaseFragmentWidget : Fragment() {
 
     fun setupInterstitialFacebook(){
         val id = getDataSession().getInterstitialFANId()
-        interstitialFANAd = com.facebook.ads.InterstitialAd(requireContext(), id)
-        val interstitialAdListener = object : InterstitialAdListener {
-            override fun onInterstitialDisplayed(ad: Ad) {
-                // Interstitial ad displayed callback
-                //Log.e(, "Interstitial ad displayed.")
-                setLog("FAN show Interstitial success "+ad.placementId)
-            }
-
-            override fun onInterstitialDismissed(ad: Ad) {
-                // Interstitial dismissed callback
-                if(BuildConfig.DEBUG){
-                    setToast(activity,"close FAN ads")
+        try {
+            interstitialFANAd = com.facebook.ads.InterstitialAd(requireContext(), id)
+            val interstitialAdListener = object : InterstitialAdListener {
+                override fun onInterstitialDisplayed(ad: Ad) {
+                    // Interstitial ad displayed callback
+                    //Log.e(, "Interstitial ad displayed.")
+                    setLog("FAN show Interstitial success "+ad.placementId)
                 }
-                interstitialFANAd =null
-                setupInterstitialFacebook()
-            }
 
-            override fun onError(p0: Ad?, adError: com.facebook.ads.AdError?) {
-                Log.e(TAG, "Interstitial ad failed to load: ${adError?.errorMessage}")
-            }
+                override fun onInterstitialDismissed(ad: Ad) {
+                    // Interstitial dismissed callback
+                    if(BuildConfig.DEBUG){
+                        setToast(activity,"close FAN ads")
+                    }
+                    interstitialFANAd =null
+                    setupInterstitialFacebook()
+                }
 
-            override fun onAdLoaded(ad: Ad) {
-                // Interstitial ad is loaded and ready to be displayed
-                Log.d(TAG, "Interstitial ad is loaded and ready to be displayed!")
-                showFANInterstitial = true
+                override fun onError(p0: Ad?, adError: com.facebook.ads.AdError?) {
+                    Log.e(TAG, "Interstitial ad failed to load: ${adError?.errorMessage}")
+                }
 
-            }
+                override fun onAdLoaded(ad: Ad) {
+                    // Interstitial ad is loaded and ready to be displayed
+                    Log.d(TAG, "Interstitial ad is loaded and ready to be displayed!")
+                    showFANInterstitial = true
 
-            override fun onAdClicked(ad: Ad) {
-                // Ad clicked callback
-                Log.d(TAG, "Interstitial ad clicked!")
-            }
+                }
 
-            override fun onLoggingImpression(ad: Ad) {
-                // Ad impression logged callback
-                Log.d(TAG, "Interstitial ad impression logged!")
+                override fun onAdClicked(ad: Ad) {
+                    // Ad clicked callback
+                    Log.d(TAG, "Interstitial ad clicked!")
+                }
+
+                override fun onLoggingImpression(ad: Ad) {
+                    // Ad impression logged callback
+                    Log.d(TAG, "Interstitial ad impression logged!")
+                }
             }
-        }
 
 // For auto-play video ads, it's recommended to load the ad
 // at least 30 seconds before it is shown
-        interstitialFANAd?.loadAd(
-            interstitialFANAd?.buildLoadAdConfig()
-                ?.withAdListener(interstitialAdListener)
-                ?.build()
-        )
+            interstitialFANAd?.loadAd(
+                interstitialFANAd?.buildLoadAdConfig()
+                    ?.withAdListener(interstitialAdListener)
+                    ?.build()
+            )
+        }catch (e : Exception){
+            setLog("asywalul fb fr :"+e.message)
+        }
 
     }
 
@@ -908,7 +912,7 @@ open class BaseFragmentWidget : Fragment() {
                     })
             }
         } catch (e: Exception) {
-            setLog(e.message.toString())
+            setLog("asywalul interstitial : "+e.message.toString())
         }
     }
 

@@ -74,7 +74,13 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener, SharedPr
                 )
             )
         }
-        setupInterstitialFacebook()
+
+        try {
+            setupInterstitial()
+        }catch (e : Exception){
+            setLog("asywalul xx : "+ e.message.toString())
+        }
+
 
         permissionNotification()
 
