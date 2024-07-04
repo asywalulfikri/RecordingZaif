@@ -27,12 +27,16 @@ import sound.recorder.widget.listener.MyStopSDKMusicListener
 import sound.recorder.widget.listener.StopSDKMusicListener
 import sound.recorder.widget.model.Song
 import sound.recorder.widget.util.DataSession
+import java.lang.ref.WeakReference
 
 class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private var listener: OnClickListener? = null) :
     Fragment(), SharedPreferences.OnSharedPreferenceChangeListener, StopSDKMusicListener {
 
+    private var weakContext: WeakReference<Context>? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        weakContext = WeakReference(context)
     }
 
     companion object {
@@ -47,7 +51,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private va
         fun onNoteSong(note: String)
     }
 
-    private lateinit var binding: BottomSheetSongBinding
+    private var binding: BottomSheetSongBinding? = null
     private var sharedPreferences: SharedPreferences? = null
     private var listTitleSong: ArrayList<String>? = null
     private var listLocationSong: ArrayList<String>? = null
@@ -69,18 +73,18 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private va
                 initAnim()
 
                 if (showBtnStop == true) {
-                    binding.ivStop.visibility = View.VISIBLE
+                    binding?.ivStop?.visibility = View.VISIBLE
                     startAnimation()
                 } else {
-                    binding.ivStop.visibility = View.GONE
+                    binding?.ivStop?.visibility = View.GONE
                 }
 
-                binding.ivStop.setOnClickListener {
+                binding?.ivStop?.setOnClickListener {
                     listener?.onStopSong()
                     stopAnimation()
                 }
 
-                binding.btnCLose.setOnClickListener {
+                binding?.btnCLose?.setOnClickListener {
                     onBackPressed()
                 }
 
@@ -89,7 +93,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private va
                 listNoteSong = ArrayList()
 
                 try {
-                    if (!RecordingSDK.isHaveSong(requireContext())) {
+                    if (!RecordingSDK.isHaveSong(requireActivity())) {
                         getSong(lisSong)
                     }
                 } catch (e: Exception) {
@@ -100,7 +104,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private va
             }
         }
 
-        return binding.root
+        return binding!!.root
     }
 
     private fun getSong(list: ArrayList<Song>) {
@@ -153,7 +157,7 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private va
                                     do {
                                         var songTitle = ""
                                         var songLocation = ""
-                                        var songNote = ""
+                                        val songNote = ""
 
                                         if (cursor.getString(title) != null) {
                                             songTitle = cursor.getString(title)
@@ -189,9 +193,9 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private va
                 val listSong = listTitleSong!!.toTypedArray()
 
                 adapter = ArrayAdapter(requireContext(), R.layout.item_simple_song, listSong)
-                binding.listView.adapter = adapter
+                binding?.listView?.adapter = adapter
                 adapter?.notifyDataSetChanged()
-                binding.listView.onItemClickListener =
+                binding?.listView?.onItemClickListener =
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
                         run {
                             listener?.onPlaySong(listLocationSong?.get(i).toString())
@@ -205,14 +209,14 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private va
     }
 
     private fun startAnimation() {
-        binding.ivStop.visibility = View.VISIBLE
-        binding.ivStop.startAnimation(mPanAnim)
+        binding?.ivStop?.visibility = View.VISIBLE
+        binding?.ivStop?.startAnimation(mPanAnim)
     }
 
     private fun stopAnimation() {
         try {
-            binding.ivStop.clearAnimation()
-            binding.ivStop.visibility = View.GONE
+            binding?.ivStop?.clearAnimation()
+            binding?.ivStop?.visibility = View.GONE
         } catch (e: Exception) {
             setLog(e.message)
         }
@@ -253,27 +257,22 @@ class FragmentSheetListSong(private var showBtnStop: Boolean? = null, private va
         sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onDestroy() {
-        // Call super.onDestroy()
-        super.onDestroy()
-
-        // Stop the animation if it is running
-        stopAnimation()
-
-        // Unregister the shared preference change listener
+    override fun onPause() {
+        super.onPause()
         sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
-
-        // Unregister any listeners or clean up resources here
-        MyStopSDKMusicListener.setMyListener(null)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding = null
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
+        stopAnimation()
         sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
+        MyStopSDKMusicListener.setMyListener(null)
+        weakContext = null // Nullify the weak context reference
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
