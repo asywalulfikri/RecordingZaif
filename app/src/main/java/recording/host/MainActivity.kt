@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import recording.host.databinding.ActivityMainBinding
 import sound.recorder.widget.RecordingSDK
@@ -60,6 +61,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener, SharedPr
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         sharedPreferences = DataSession(this).getShared()
         sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
@@ -80,6 +83,8 @@ class MainActivity : BaseActivityWidget(),FragmentListener,AdsListener, SharedPr
         }catch (e : Exception){
             setLog("asywalul xx : "+ e.message.toString())
         }
+
+        setupGDPR()
 
 
         permissionNotification()

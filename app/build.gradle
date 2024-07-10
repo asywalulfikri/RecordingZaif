@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
 }
 
@@ -46,6 +47,13 @@ dependencies {
 
     //debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
     //releaseImplementation("com.squareup.leakcanary:leakcanary-android-no-op:2.7")
+    debugImplementation ("com.squareup.leakcanary:leakcanary-android:3.0-alpha-1")
+
+
+   // implementation (platform("com.google.firebase:firebase-bom:29.0.2"))
+    implementation ("com.google.firebase:firebase-crashlytics-ktx:18.0.0")
+   // implementation ("com.google.firebase:firebase-analytics-ktx:22.0.2")
+   // implementation("com.google.firebase:firebase-config:22.0.0")
 
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'

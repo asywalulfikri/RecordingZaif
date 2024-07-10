@@ -71,6 +71,8 @@ import com.google.android.ump.UserMessagingPlatform
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -119,12 +121,6 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        try {
-            FirebaseApp.initializeApp(this)
-        }catch (e : Exception){
-            setLog(e.message.toString())
-        }
 
         try {
             val languageCode = Locale.getDefault().language
@@ -388,19 +384,54 @@ open class BaseActivityWidget : AppCompatActivity() {
     }
 
 
-    fun setupGDPR(){
+    fun setupGDPR() {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val params = ConsentRequestParameters
+                    .Builder()
+                    .setTagForUnderAgeOfConsent(false)
+                    .build()
+
+                consentInformation = UserMessagingPlatform.getConsentInformation(this@BaseActivityWidget)
+                isPrivacyOptionsRequired = consentInformation.privacyOptionsRequirementStatus == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED
+
+                consentInformation.requestConsentInfoUpdate(
+                    this@BaseActivityWidget,
+                    params, {
+                        UserMessagingPlatform.loadAndShowConsentFormIfRequired(this@BaseActivityWidget) { loadAndShowError ->
+                            loadAndShowError?.let {
+                                Log.w(TAG, String.format("%s: %s", it.errorCode, it.message))
+                            }
+
+                            if (isPrivacyOptionsRequired) {
+                                // Regenerate the options menu to include a privacy setting.
+                                UserMessagingPlatform.showPrivacyOptionsForm(this@BaseActivityWidget) { formError ->
+                                    formError?.let {
+                                        setToastError(it.message.toString())
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    { requestConsentError ->
+                        // Consent gathering failed.
+                        Log.w(TAG, String.format("%s: %s", requestConsentError.errorCode, requestConsentError.message))
+                    })
+
+                if (consentInformation.canRequestAds()) {
+                    MobileAds.initialize(this@BaseActivityWidget) {}
+                }
+            } catch (e: Exception) {
+                Log.d("message", e.message.toString())
+            }
+        }
+    }
+
+
+    fun setupGDPR1(){
         try {
-            // Set tag for under age of consent. false means users are not under age
-            // of consent.
-
-            /*  val debugSettings = ConsentDebugSettings.Builder(this)
-                  .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
-                  .addTestDeviceHashedId("0c302266-17a0-4f2a-a11a-10ca1ad1abe1")
-                  .build()*/
-
             val params = ConsentRequestParameters
                 .Builder()
-                // .setConsentDebugSettings(debugSettings)
                 .setTagForUnderAgeOfConsent(false)
                 .build()
 
@@ -533,7 +564,49 @@ open class BaseActivityWidget : AppCompatActivity() {
         }
     }
 
-    fun setupBannerNew(adViewContainer: FrameLayout,bannerId : String? =null){
+    fun setupBannerNew(adViewContainer: FrameLayout, bannerId: String? = null) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                adView = AdManagerAdView(this@BaseActivityWidget)
+                adViewContainer.addView(adView)
+
+                googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(this@BaseActivityWidget)
+                googleMobileAdsConsentManager.gatherConsent(this@BaseActivityWidget) { error ->
+                    if (error != null) {
+                        // Consent not obtained in current session.
+                        Log.d("AdMob New Error", "${error.errorCode}: ${error.message}")
+                    }
+
+                    // This sample attempts to load ads using consent obtained in the previous session.
+                    if (googleMobileAdsConsentManager.canRequestAds) {
+                        Log.d("AdMob New Request", "success")
+                        initializeMobileAdsSdk(adViewContainer, bannerId)
+                    }
+
+                    if (googleMobileAdsConsentManager.isPrivacyOptionsRequired) {
+                        // Regenerate the options menu to include a privacy setting.
+                        invalidateOptionsMenu()
+                    }
+                }
+
+                // This sample attempts to load ads using consent obtained in the previous session.
+                if (googleMobileAdsConsentManager.canRequestAds) {
+                    Log.d("AdMob New Request", "success1")
+                    initializeMobileAdsSdk(adViewContainer, bannerId)
+                }
+
+                adViewContainer.viewTreeObserver.addOnGlobalLayoutListener {
+                    if (!initialLayoutComplete.getAndSet(true) && googleMobileAdsConsentManager.canRequestAds) {
+                        loadBanner(adViewContainer, bannerId)
+                    }
+                }
+            } catch (e: Exception) {
+                setLog(e.message.toString())
+            }
+        }
+    }
+
+    fun setupBannerNew1(adViewContainer: FrameLayout,bannerId : String? =null){
         try {
             adView = AdManagerAdView(this)
             adViewContainer.addView(adView)
@@ -563,22 +636,11 @@ open class BaseActivityWidget : AppCompatActivity() {
                 initializeMobileAdsSdk(adViewContainer,bannerId)
             }
 
-
-            // Since we're loading the banner based on the adContainerView size, we need to wait until this
-            // view is laid out before we can get the width.
             adViewContainer.viewTreeObserver.addOnGlobalLayoutListener {
                 if (!initialLayoutComplete.getAndSet(true) && googleMobileAdsConsentManager.canRequestAds) {
                     loadBanner(adViewContainer,bannerId)
                 }
             }
-
-            // Set your test devices. Check your logcat output for the hashed device ID to
-            // get test ads on a physical device. e.g.
-            // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
-            // to get test ads on this device."
-           /* MobileAds.setRequestConfiguration(
-                RequestConfiguration.Builder().setTestDeviceIds(listOf("D48A46E523E6A96C8215178502423686")).build()
-            )*/
         }catch (e : Exception){
             setLog(e.message.toString())
         }
@@ -896,7 +958,68 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     private val requestPermissionNotification = registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
 
+
     fun setupInterstitial() {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                if (getDataSession().getFanEnable()) {
+                    setupInterstitialFacebook()
+                }
+            } catch (e: Exception) {
+                setLog("asywalul fbb :${e.message}")
+            }
+
+            try {
+                val adRequest = AdRequest.Builder().build()
+                InterstitialAd.load(this@BaseActivityWidget, getDataSession().getInterstitialId(), adRequest,
+                    object : InterstitialAdLoadCallback() {
+                        override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                            mInterstitialAd = interstitialAd
+                            isLoad = true
+                            setLog("AdMob Inters Loaded Success")
+
+                            // Set the FullScreenContentCallback
+                            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                                override fun onAdDismissedFullScreenContent() {
+                                    // Handle the ad dismissed event
+                                    setLog("AdMob Inters Ad Dismissed")
+                                    if (BuildConfig.DEBUG) {
+                                        setToast("ads closed")
+                                    }
+                                    // Load a new interstitial ad
+                                    mInterstitialAd = null
+                                    setupInterstitial()
+                                }
+
+                                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                                    // Handle the ad failed to show event
+                                    setLog("AdMob Inters Ad Failed to Show: ${adError.message}")
+                                    if (BuildConfig.DEBUG) {
+                                        setToast(adError.message)
+                                    }
+                                }
+
+                                override fun onAdShowedFullScreenContent() {
+                                    // Handle the ad showed event
+                                    setLog("AdMob Inters Ad Showed")
+                                    mInterstitialAd = null // Reset the interstitial ad
+                                }
+                            }
+                        }
+
+                        override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                            mInterstitialAd = null
+                            isLoad = false
+                            setLog("AdMob Inters Loaded Failed id = ${getDataSession().getInterstitialId()} ---> ${loadAdError.message}")
+                        }
+                    })
+            } catch (e: Exception) {
+                setLog("asywalul inters :${e.message}")
+            }
+        }
+    }
+
+    fun setupInterstitial1() {
         try {
             if (getDataSession().getFanEnable()) {
                 setupInterstitialFacebook()
