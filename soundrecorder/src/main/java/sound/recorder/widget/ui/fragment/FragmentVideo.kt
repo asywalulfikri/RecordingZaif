@@ -10,6 +10,11 @@ import android.util.Log
 import android.view.*
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import sound.recorder.widget.adapter.VideoListAdapter
 import sound.recorder.widget.base.BaseFragmentWidget
 import sound.recorder.widget.databinding.ActivityListVideoBinding
@@ -50,53 +55,48 @@ class FragmentVideo : BaseFragmentWidget(), VideoListAdapter.OnItemClickListener
         binding.recyclerView.setHasFixedSize(true)
     }
 
+
+
     @SuppressLint("NotifyDataSetChanged")
     private fun load(loadMore: Boolean) {
-        try {
-            firestore?.collection("videos")
-                ?.get()
-                ?.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        if (isAdded) {
-                            val wrapper = VideoWrapper()
-                            wrapper.list = ArrayList()
-                            var rowList = 1
-                            for (doc in task.result!!) {
-                                if (rowList <= mPage * 50 && rowList > (mPage - 1) * 50) {
-                                    val video = Video()
-                                    video.datepublish = doc.getString("datepublish")
-                                    video.description = doc.getString("description")
-                                    video.thumbnail = doc.getString("thumbnail")
-                                    video.url = doc.getString("url")
-                                    video.title = doc.getString("title")
-                                    Log.d("title", video.url + "-")
-                                    wrapper.list.add(video)
-                                }
-                                rowList++
-                            }
-                            binding.progressBar.visibility = View.GONE
-
-                            try {
-                                if (wrapper.list.isNotEmpty()) {
-                                    result(wrapper, loadMore)
-                                    mAdapter?.notifyDataSetChanged()
-                                } else if (task.result!!.isEmpty) {
-                                    setToastInfo(activity, "No Data")
-                                    binding.progressBar.visibility = View.GONE
-                                    binding.tvEmpty.visibility = View.VISIBLE
-                                }
-                            }catch (e : Exception){
-                                setLog(e.message.toString())
-                            }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val querySnapshot = firestore?.collection("videos")?.get()?.await()
+                if (querySnapshot != null) {
+                    val wrapper = VideoWrapper()
+                    wrapper.list = ArrayList()
+                    var rowList = 1
+                    for (doc in querySnapshot.documents) { // Menggunakan documents untuk mendapatkan List<DocumentSnapshot>
+                        if (rowList <= mPage * 50 && rowList > (mPage - 1) * 50) {
+                            val video = Video()
+                            video.datepublish = doc.getString("datepublish")
+                            video.description = doc.getString("description")
+                            video.thumbnail = doc.getString("thumbnail")
+                            video.url = doc.getString("url")
+                            video.title = doc.getString("title")
+                            Log.d("title", video.url + "-")
+                            wrapper.list.add(video)
                         }
-                    } else {
-                        setToast(activity, "Failed get data")
+                        rowList++
+                    }
+                    withContext(Dispatchers.Main) {
+                        binding.progressBar.visibility = View.GONE
+                        result(wrapper, loadMore)
+                        mAdapter?.notifyDataSetChanged()
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        setToast(activity, "Failed to get data")
                     }
                 }
-        } catch (e: Exception) {
-            setToast(activity, e.message.toString())
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    setToast(activity, "Error: ${e.message}")
+                }
+            }
         }
     }
+
 
     private fun result(wrapper: VideoWrapper?, loadMore: Boolean) {
         if (wrapper != null) {
