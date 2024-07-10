@@ -108,8 +108,11 @@
     <string name="Master">高级</string>
     <string name="remove_ads">移除广告</string>
     <string name="search">搜索</string>
-    <string name="recommed_message">让我向您推荐这款应用</string>
+    <string name="recommend_message">让我向您推荐这款应用</string>
     <string name="loading">加载中...</string>
+
+    <string name="whatsapp_support">WhatsApp 支持</string>
+    <string name="share_via">通过...分享</string>
 
 
 

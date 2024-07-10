@@ -109,6 +109,11 @@
     <string name="Master">Experte</string>
     <string name="remove_ads">Werbung entfernen</string>
     <string name="search">Suche</string>
-    <string name="recommed_message">Lassen Sie mich Ihnen diese Anwendung empfehlen</string>
+    <string name="recommend_message">Lassen Sie mich Ihnen diese Anwendung empfehlen</string>
     <string name="loading">Lädt...</string>
+
+    <string name="whatsapp_support">WhatsApp Unterstützung</string>
+    <string name="share_via">Teilen über</string>
+
+
 </resources>

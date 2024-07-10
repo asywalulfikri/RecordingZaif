@@ -111,8 +111,12 @@
     <string name="Master">마스터</string>
     <string name="remove_ads">광고 제거</string>
     <string name="search">검색</string>
-    <string name="recommed_message">이 애플리케이션을 추천합니다</string>
+    <string name="recommend_message">이 애플리케이션을 추천합니다</string>
     <string name="loading">로딩 중...</string>
+
+    <string name="whatsapp_support">WhatsApp 지원</string>
+    <string name="share_via">공유 방법</string>
+
 
 
 </resources>

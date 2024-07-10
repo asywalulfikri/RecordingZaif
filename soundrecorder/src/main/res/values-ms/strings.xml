@@ -111,8 +111,12 @@
     <string name="Master">Master</string>
     <string name="remove_ads">Alih Iklan</string>
     <string name="search">Cari</string>
-    <string name="recommed_message">Biarkan saya mengesyorkan aplikasi ini kepada anda</string>
+    <string name="recommend_message">Biarkan saya mengesyorkan aplikasi ini kepada anda</string>
     <string name="loading">Memuatkan...</string>
+
+    <string name="whatsapp_support">Sokongan WhatsApp</string>
+    <string name="share_via">Kongsi melalui</string>
+
 
 
 

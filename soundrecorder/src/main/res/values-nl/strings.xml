@@ -110,8 +110,12 @@
     <string name="Master">Meester</string>
     <string name="remove_ads">Advertenties verwijderen</string>
     <string name="search">Zoeken</string>
-    <string name="recommed_message">Laat mij u deze applicatie aanbevelen</string>
+    <string name="recommend_message">Laat mij u deze applicatie aanbevelen</string>
     <string name="loading">Laden...</string>
+
+    <string name="whatsapp_support">WhatsApp Ondersteuning</string>
+    <string name="share_via">Delen via</string>
+
 
 
 

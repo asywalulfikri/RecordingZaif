@@ -75,6 +75,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import sound.recorder.widget.BuildConfig
 import sound.recorder.widget.R
@@ -132,14 +134,6 @@ open class BaseActivityWidget : AppCompatActivity() {
 
     }
 
-
-    fun initFANSDK(){
-        if(getDataSession().getFanEnable()){
-            AudienceNetworkAds.initialize(this)
-        }
-
-    }
-
     protected fun setupFragment(id : Int, fragment : Fragment?){
         try {
             if(fragment!=null){
@@ -153,7 +147,8 @@ open class BaseActivityWidget : AppCompatActivity() {
         }
     }
 
-    protected fun checkUpdate(){
+
+    private fun checkUpdate() {
         try {
             appUpdateManager = AppUpdateManagerFactory.create(this)
 
@@ -161,7 +156,11 @@ open class BaseActivityWidget : AppCompatActivity() {
                 appUpdateManager.registerListener(installStateUpdatedListener)
             }
 
-            appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            lifecycleScope.launch {
+                val info = withContext(Dispatchers.IO) {
+                    appUpdateManager.appUpdateInfo.await()
+                }
+
                 val isUpdateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
 
                 val isUpdateAllowed = when (updateType) {
@@ -176,7 +175,7 @@ open class BaseActivityWidget : AppCompatActivity() {
                         appUpdateManager.startUpdateFlowForResult(
                             info,
                             updateType,
-                            this,
+                            this@BaseActivityWidget,
                             123
                         )
                     } catch (e: IntentSender.SendIntentException) {
@@ -187,10 +186,9 @@ open class BaseActivityWidget : AppCompatActivity() {
                     }
                 }
             }
-        }catch (e : Exception){
-            setLog(e.message.toString())
+        } catch (e: Exception) {
+            Log.e("YourActivity", "Error checking update: ${e.message}")
         }
-
     }
     
     fun setupBannerStarApp(adViewContainer: FrameLayout){
@@ -426,59 +424,6 @@ open class BaseActivityWidget : AppCompatActivity() {
             }
         }
     }
-
-
-    fun setupGDPR1(){
-        try {
-            val params = ConsentRequestParameters
-                .Builder()
-                .setTagForUnderAgeOfConsent(false)
-                .build()
-
-            consentInformation = UserMessagingPlatform.getConsentInformation(this)
-            isPrivacyOptionsRequired  = consentInformation.privacyOptionsRequirementStatus == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED
-
-            consentInformation.requestConsentInfoUpdate(
-                this,
-                params, {
-                    UserMessagingPlatform.loadAndShowConsentFormIfRequired(this) {
-
-                            loadAndShowError -> run {
-                        Log.w(
-                            TAG, String.format(
-                                "%s: %s",
-                                loadAndShowError?.errorCode,
-                                loadAndShowError?.message
-                            )
-                        )
-
-                    }
-                        if (isPrivacyOptionsRequired) {
-                            // Regenerate the options menu to include a privacy setting.
-                            UserMessagingPlatform.showPrivacyOptionsForm(this) { formError ->
-                                formError?.let {
-                                    setToastError(it.message.toString())
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                        requestConsentError ->
-                    // Consent gathering failed.
-                    Log.w(TAG, String.format("%s: %s",
-                        requestConsentError.errorCode,
-                        requestConsentError.message))
-                })
-
-            if (consentInformation.canRequestAds()) {
-                MobileAds.initialize(this) {}
-            }
-        }catch (e :Exception){
-            Log.d("message",e.message.toString())
-        }
-    }
-
 
     fun getDataSession() : DataSession{
         return DataSession(this)

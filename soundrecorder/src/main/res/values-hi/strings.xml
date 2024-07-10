@@ -108,8 +108,12 @@
     <string name="Master">मास्टर</string>
     <string name="remove_ads">विज्ञापन हटाएं</string>
     <string name="search">खोजें</string>
-    <string name="recommed_message">मैं आपको इस एप्लिकेशन की सिफारिश करना चाहूंगा</string>
+    <string name="recommend_message">मैं आपको इस एप्लिकेशन की सिफारिश करना चाहूंगा</string>
     <string name="loading">लोड हो रहा है...</string>
+
+    <string name="whatsapp_support">व्हाट्सएप समर्थन</string>
+    <string name="share_via">इसके माध्यम से साझा करें</string>
+
 
 
 </resources>

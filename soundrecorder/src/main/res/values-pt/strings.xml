@@ -109,8 +109,11 @@
     <string name="Master">Mestre</string>
     <string name="remove_ads">Remover Anúncios</string>
     <string name="search">Buscar</string>
-    <string name="recommed_message">Deixe-me recomendar este aplicativo para você</string>
+    <string name="recommend_message">Deixe-me recomendar este aplicativo para você</string>
     <string name="loading">Carregando...</string>
+
+    <string name="whatsapp_support">Suporte do WhatsApp</string>
+    <string name="share_via">Compartilhar via</string>
 
 
 

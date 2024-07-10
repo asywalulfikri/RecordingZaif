@@ -1,4 +1,5 @@
 <resources>
+    <!--Spanyol-->
     <string name="default_notification_channel_id">ID de canal predeterminado</string>
 
     <string name="colorpicker_dialog_title">Elige el color</string>
@@ -109,8 +110,11 @@
     <string name="Master">Maestro</string>
     <string name="remove_ads">Eliminar Anuncios</string>
     <string name="search">Buscar</string>
-    <string name="recommed_message">Déjame recomendarte esta aplicación</string>
+    <string name="recommend_message">Déjame recomendarte esta aplicación</string>
     <string name="loading">Cargando...</string>
+
+    <string name="whatsapp_support">Soporte de WhatsApp</string>
+    <string name="share_via">Compartir vía</string>
 
 
 

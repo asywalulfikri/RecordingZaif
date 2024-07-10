@@ -78,7 +78,7 @@ open class FragmentSettings : BaseFragmentWidget() {
                     val shareIntent = Intent(Intent.ACTION_SEND)
                     shareIntent.type = "text/plain"
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, dataSession?.getAppId())
-                    val shareMessage = activity?.getString(R.string.recommed_message) +
+                    val shareMessage = activity?.getString(R.string.recommend_message) +
                             "\n\nhttps://play.google.com/store/apps/details?id="+dataSession?.getAppId()
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
                     startActivity(Intent.createChooser(shareIntent, requireActivity().getString(R.string.choose_one)))

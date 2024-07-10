@@ -110,8 +110,12 @@
     <string name="Master">マスター</string>
     <string name="remove_ads">広告を削除</string>
     <string name="search">検索</string>
-    <string name="recommed_message">このアプリをお勧めします</string>
+    <string name="recommend_message">このアプリをお勧めします</string>
     <string name="loading">読み込み中...</string>
+
+    <string name="whatsapp_support">WhatsAppサポート</string>
+    <string name="share_via">共有方法</string>
+
 
 
 
